@@ -36,7 +36,7 @@ OGRERR_DICT = { 1 : (OGRException, "Not enough data."),
                 }
 */
 
-static Handle<Value> inspect_spatial_reference(const Arguments& args)
+static Handle<Value> parse(const Arguments& args)
 {
     HandleScope scope;
 
@@ -182,10 +182,11 @@ extern "C" {
 
   static void init (Handle<Object> target)
   {
-    NODE_SET_METHOD(target, "inspect", inspect_spatial_reference);            
 
     // node-srs version
     target->Set(String::NewSymbol("version"), String::New("0.1.0"));
+
+    NODE_SET_METHOD(target, "parse", parse);
     
     // versions of deps
     Local<Object> versions = Object::New();
