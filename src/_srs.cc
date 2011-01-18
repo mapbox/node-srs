@@ -7,18 +7,34 @@
 
 // stl
 #include <sstream>
+#include <iostream>
 
 // osr
-#include "ogr/ogr_spatialref.h"
-//#include "ogr/ogr_core.h"
-//#include "cpl/cpl_conv.h"
-#include "cpl/cpl_string.h"
-//#include "ogr/ogr_p.h"
-//#include "cpl/cpl_multiproc.h"
-//#include "ogr/ogr_srs_api.h"
+#include "ogr_spatialref.h"
+//#include "ogr_core.h"
+//#include "cpl_conv.h"
+#include "cpl_string.h"
+//#include "ogr_p.h"
+//#include "cpl_multiproc.h"
+//#include "ogr_srs_api.h"
 
 using namespace node;
 using namespace v8;
+
+#define TOSTR(obj) (*String::Utf8Value((obj)->ToString()))
+
+
+/*
+OGRERR_DICT = { 1 : (OGRException, "Not enough data."),
+                2 : (OGRException, "Not enough memory."),
+                3 : (OGRException, "Unsupported geometry type."),
+                4 : (OGRException, "Unsupported operation."),
+                5 : (OGRException, "Corrupt data."),
+                6 : (OGRException, "OGR failure."),
+                7 : (SRSException, "Unsupported SRS."),
+                8 : (OGRException, "Invalid handle."),
+                }
+*/
 
 static Handle<Value> inspect_spatial_reference(const Arguments& args)
 {
@@ -33,38 +49,47 @@ static Handle<Value> inspect_spatial_reference(const Arguments& args)
     Local<Object> result = Object::New();
 
     result->Set(String::NewSymbol("input"), args[0]->ToString());
+    // intialize as undefined
+    result->Set(String::NewSymbol("proj4"), Undefined());
+    result->Set(String::NewSymbol("epsg"), Undefined());
+    result->Set(String::NewSymbol("auth"), Undefined());
+    result->Set(String::NewSymbol("pretty_wkt"), Undefined());
+    result->Set(String::NewSymbol("esri"), Undefined());
 
-    const char *wkt_string = *String::AsciiValue(args[0]->ToString());
+    std::string wkt_string = TOSTR(args[0]->ToString());
+
+    const char *wkt_char = wkt_string.c_str();
 
     bool error = false;
 
     Handle<Value> err;
     
-    if( oSRS.SetFromUserInput(wkt_string) != OGRERR_NONE )
+    if( oSRS.SetFromUserInput(wkt_char) != OGRERR_NONE )
     {
         error = true;
         std::ostringstream s;
-        s << "OGR Error type #" << CPLE_AppDefined 
-          << " problem occured translating " << wkt_string << ".\n";;
+        s << "a: OGR Error type #" << CPLE_AppDefined 
+          << " problem occured importing from srs wkt" << wkt_string << ".\n";;
         err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
 
         // try again to import from ESRI
         oSRS.Clear();
         char **wkt_lines = NULL;
-        wkt_lines = CSLTokenizeString2( wkt_string, " \t\n", 
+        wkt_lines = CSLTokenizeString2( wkt_char, " \t\n", 
                                 CSLT_HONOURSTRINGS | CSLT_ALLOWEMPTYTOKENS );
         if( oSRS.importFromESRI(wkt_lines) != OGRERR_NONE )
         {
             error = true;
             std::ostringstream s;
-            s << "OGR Error type #" << CPLE_AppDefined 
-              << " problem occured translating " << wkt_string << ".\n";
+            s << "b: OGR Error type #" << CPLE_AppDefined 
+              << " problem occured importing assuming esri wkt " << wkt_string << ".\n";
             oSRS.Clear();
-            err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
+            //err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
         }
         else
         {
             error = false;
+            std::clog << "imported assuming esri format...\n";
             result->Set(String::NewSymbol("esri"), Boolean::New(true));
         }
     }
@@ -91,8 +116,10 @@ static Handle<Value> inspect_spatial_reference(const Arguments& args)
     {
         std::ostringstream s;
         s << "OGR Error type #" << CPLE_AppDefined 
-          << " problem occured translating " << wkt_string << ".\n";
-        return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
+          << " problem occured when converting to proj4 format " << wkt_string << ".\n";
+        std::clog << s.str();
+        //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
+        
     }
     else
     {
@@ -102,30 +129,43 @@ static Handle<Value> inspect_spatial_reference(const Arguments& args)
 
     if (oSRS.AutoIdentifyEPSG() != OGRERR_NONE )
     {
-        std::ostringstream s;
+        /*std::ostringstream s;
         s << "OGR Error type #" << CPLE_AppDefined 
-          << " problem occured translating " << wkt_string << ".\n";
-        return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
+          << " problem occured when attempting to auto identify epsg code " << wkt_string << ".\n";
+        std::clog << s.str();
+        */
+        //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
     }
 
     if (oSRS.IsGeographic())
     {
-        result->Set(String::NewSymbol("epsg"), String::New(oSRS.GetAuthorityCode("GEOGCS")));
-        result->Set(String::NewSymbol("auth"), String::New(oSRS.GetAuthorityName("GEOGCS")));
+        result->Set(String::NewSymbol("is_geographic"), Boolean::New(true));
+        const char *code = oSRS.GetAuthorityCode("GEOGCS");
+        if (code)
+            result->Set(String::NewSymbol("epsg"), String::New(code));
+        const char *auth = oSRS.GetAuthorityName("GEOGCS");
+        if (auth)
+            result->Set(String::NewSymbol("auth"), String::New(auth));
     }
     else
     {
-        result->Set(String::NewSymbol("epsg"), String::New(oSRS.GetAuthorityCode("PROJCS")));
-        result->Set(String::NewSymbol("auth"), String::New(oSRS.GetAuthorityName("PROJCS")));
+        result->Set(String::NewSymbol("is_geographic"), Boolean::New(false));
+        const char *code = oSRS.GetAuthorityCode("PROJCS");
+        if (code)
+            result->Set(String::NewSymbol("epsg"), String::New(code));
+        const char *auth = oSRS.GetAuthorityName("PROJCS");
+        if (auth)
+            result->Set(String::NewSymbol("auth"), String::New(auth));
     }
 
-    if (oSRS.exportToPrettyWkt( &srs_output ) != OGRERR_NONE )
+    if (oSRS.exportToPrettyWkt( &srs_output , 0) != OGRERR_NONE )
     {
         // this does not yet actually return errors
         std::ostringstream s;
         s << "OGR Error type #" << CPLE_AppDefined 
-          << " problem occured translating " << wkt_string << ".\n";
-        return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
+          << " problem occured when converting to pretty wkt format " << wkt_string << ".\n";
+        std::clog << s.str();
+        //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
     }
     else
     {
