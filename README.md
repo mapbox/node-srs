@@ -15,8 +15,10 @@
   
     $ git clone git://github.com/springmeyer/node-srs.git
     $ cd node-srs
-    $ node-waf configure build install
-    $ node test.js
+    $ ./configure
+    $ make
+    $ sudo make install
+    $ ./test.js
 
   Make sure the node modules is on your path:
   
