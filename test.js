@@ -5,6 +5,7 @@ var assert = require('assert');
 //var path = require('path');
 var fs = require('fs');
 
+
 assert.throws(function () { srs.inspect('foo') })
   
 var srs_input1 = '+init=epsg:4326';

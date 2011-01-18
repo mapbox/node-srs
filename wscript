@@ -5,6 +5,8 @@ from os.path import exists
 from shutil import copy2 as copy
 from subprocess import call
 
+# http://www.freehackers.org/~tnagy/wafbook/index.html
+
 # node-wafadmin
 import Options
 import Utils
@@ -52,15 +54,9 @@ def build(bld):
     obj.target = TARGET
     obj.source = "src/_srs.cc"
     obj.uselib = "OSR"
-    files = glob('lib/*')
-    # loop to make sure we can install
-    # directories as well as files
-    for f in files:
-        if os.path.isdir(f):
-            path = f.replace('lib','srs')
-            bld.install_files('${PREFIX}/lib/node/%s' % path, '%s/*' % path)
-        else:
-            bld.install_files('${PREFIX}/lib/node/srs/', f)
+    start_dir = bld.path.find_dir('lib')
+    # http://www.freehackers.org/~tnagy/wafbook/index.html#_installing_files
+    bld.install_files('${PREFIX}/lib/node/srs', start_dir.ant_glob('**/*'), cwd=start_dir, relative_trick=True)
 
 def shutdown():
     if Options.commands['clean']:
