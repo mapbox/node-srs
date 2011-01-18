@@ -1,0 +1,221 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/gdal/!svn/ver/21527/sandbox/libosr/cpl
+END
+cpl_csv.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_csv.h
+END
+cpl_atomic_ops.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_atomic_ops.h
+END
+cpl_conv.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_conv.cpp
+END
+makefile.vc
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/gdal/!svn/ver/18871/sandbox/libosr/cpl/makefile.vc
+END
+cpl_vsi.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsi.h
+END
+cpl_string.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_string.h
+END
+cpl_vsi_virtual.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsi_virtual.h
+END
+cpl_vsil.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsil.cpp
+END
+cpl_minixml.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_minixml.cpp
+END
+cpl_multiproc.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_multiproc.cpp
+END
+cpl_strtod.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_strtod.cpp
+END
+cpl_config.h.vc
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/gdal/!svn/ver/18871/sandbox/libosr/cpl/cpl_config.h.vc
+END
+cpl_http.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_http.h
+END
+cpl_port.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_port.h
+END
+cpl_csv.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_csv.cpp
+END
+cpl_vsil_unix_stdio_64.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsil_unix_stdio_64.cpp
+END
+cpl_path.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_path.cpp
+END
+cpl_atomic_ops.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_atomic_ops.cpp
+END
+cpl_error.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_error.h
+END
+.cvsignore
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/gdal/!svn/ver/18871/sandbox/libosr/cpl/.cvsignore
+END
+cpl_getexecpath.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_getexecpath.cpp
+END
+cplgetsymbol.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cplgetsymbol.cpp
+END
+cpl_string.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_string.cpp
+END
+cplstring.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cplstring.cpp
+END
+GNUmakefile
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/gdal/!svn/ver/21527/sandbox/libosr/cpl/GNUmakefile
+END
+cpl_conv.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_conv.h
+END
+cpl_vsisimple.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsisimple.cpp
+END
+cpl_http.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_http.cpp
+END
+cpl_config.h.in
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/gdal/!svn/ver/18871/sandbox/libosr/cpl/cpl_config.h.in
+END
+cpl_findfile.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_findfile.cpp
+END
+cpl_minixml.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_minixml.h
+END
+cpl_multiproc.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_multiproc.h
+END
+cpl_vsil_simple.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsil_simple.cpp
+END
+cpl_error.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_error.cpp
+END
+cpl_vsil_win32.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsil_win32.cpp
+END
+cpl_vsi_mem.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/gdal/!svn/ver/18874/sandbox/libosr/cpl/cpl_vsi_mem.cpp
+END

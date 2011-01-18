@@ -1,0 +1,15 @@
+# $Id: nmake.opt,v 1.5 2007/11/08 21:51:23 dmorissette Exp $
+
+INC	=	-I. -I.. -I../ogr -I../cpl
+OPTFLAGS=	/Zi /nologo /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /EHsc
+
+CFLAGS	=	$(OPTFLAGS) $(INC) $(EXTRAFLAGS)
+MAKE	=	nmake /nologo
+
+CC	=	cl
+
+.c.obj:	
+	$(CC) $(CFLAGS) /c $*.c
+
+.cpp.obj:	
+	$(CC) $(CFLAGS) /c $*.cpp

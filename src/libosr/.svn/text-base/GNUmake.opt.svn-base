@@ -1,0 +1,47 @@
+
+#
+#  Byte ordering ... default is Intel ordering (CPL_LSB),
+#  Select CPL_MSB for SUNs or other platforms with MSB first ordering.
+#
+# BYTE_ORDER_FL = -DCPL_MSB
+BYTE_ORDER_FL = -DCPL_LSB
+
+OPTFLAGS =	-g -Wall -DDEBUG $(BYTE_ORDER_FL)
+INCLUDE = 	-I. -I.. -I../cpl 
+#CXXFLAGS =	$(INCLUDE) -fPIC --no-rtti -fno-exceptions $(OPTFLAGS)
+CFLAGS =	$(INCLUDE) -fPIC $(OPTFLAGS)
+
+LINK	=	ld -shared --whole-archive
+
+#
+#       Default compiler is gcc,
+#       but for Redhat 5 systems, we must use EGCS for C++
+#
+ifneq ($(wildcard /usr/bin/i486-linuxlibc5-gc?),)
+CC      =       i486-linuxlibc5-gcc
+CXX     =       i486-linuxlibc5-gcc
+CXXFLAGS =      $(INCLUDE) -fPIC --no-rtti $(OPTFLAGS)
+else
+  ifneq ($(wildcard /usr/bin/egc?),)
+    CC    =     egcs
+    CXX   =     egcs
+  else
+    ifneq ($(wildcard /usr/bin/c+?),)
+      CC    =     gcc
+      CXX   =     c++
+    else
+      CC  =       gcc
+      CXX =       gcc
+    endif
+  endif
+  CXXFLAGS =      $(INCLUDE) -fPIC --no-rtti -fno-exceptions $(OPTFLAGS)
+endif
+
+
+%.o:	%.c
+	$(CC) -c $(CFLAGS) $*.c -o $*.o
+
+%.o:	%.cpp
+	$(CXX) -c $(CXXFLAGS) $*.cpp -o $*.o
+
+

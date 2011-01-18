@@ -1,0 +1,19 @@
+#
+# VC++ makefile to build the libOSR library and test programs
+#
+
+default:
+	cd cpl
+	nmake -f makefile.vc
+	cd ..\ogr
+	nmake -f makefile.vc
+	cd ..\test_srs
+	nmake -f makefile.vc
+
+clean:
+	cd cpl
+	nmake -f makefile.vc clean
+	cd ..\ogr
+	nmake -f makefile.vc clean
+	cd ..\test_srs
+	nmake -f makefile.vc clean
