@@ -30,9 +30,9 @@ def configure(conf):
     
     #conf.env.append_value("LIB_OSR", "gdal")
     
-    cxxflags = ['-I../src/libosr']
+    cxxflags = ['-I../src/libosr/ogr','-I../src/libosr/cpl']
 
-    conf.env.append_value("CXXFLAGS_OSR", cxxflags)
+    conf.env.append_value("CXXFLAGS", cxxflags)
     
     #ldflags = []
     #conf.env.append_value("LDFLAGS", ldflags)
