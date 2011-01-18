@@ -42,6 +42,10 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    const char *code = OSRGetAuthorityCode(hSRS, "GEOGCS");
+    printf("dane: %s\n", code);
+    
+
     printf("PROJ.4 defn: %s\n", pszProj);
     
     OSRDestroySpatialReference( hSRS );
