@@ -57,6 +57,7 @@ static Handle<Value> parse(const Arguments& args)
     result->Set(String::NewSymbol("auth"), Undefined());
     result->Set(String::NewSymbol("pretty_wkt"), Undefined());
     result->Set(String::NewSymbol("esri"), Undefined());
+    result->Set(String::NewSymbol("name"), Undefined());
 
     std::string wkt_string = TOSTR(args[0]->ToString());
 
@@ -150,6 +151,9 @@ static Handle<Value> parse(const Arguments& args)
         const char *auth = oSRS.GetAuthorityName("GEOGCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
+        const char *name = oSRS.GetAttrValue("GEOGCS");
+        if (name)
+            result->Set(String::NewSymbol("name"), String::New(name));
     }
     else
     {
@@ -160,6 +164,9 @@ static Handle<Value> parse(const Arguments& args)
         const char *auth = oSRS.GetAuthorityName("PROJCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
+        const char *name = oSRS.GetAttrValue("PROJCS");
+        if (name)
+            result->Set(String::NewSymbol("name"), String::New(name));
     }
 
     if (oSRS.exportToPrettyWkt( &srs_output , 0) != OGRERR_NONE )
