@@ -147,7 +147,7 @@ static Handle<Value> parse(const Arguments& args)
         result->Set(String::NewSymbol("is_geographic"), Boolean::New(true));
         const char *code = oSRS.GetAuthorityCode("GEOGCS");
         if (code)
-            result->Set(String::NewSymbol("epsg"), Integer::New(std::atoi(code)));
+            result->Set(String::NewSymbol("epsg"), Integer::New(atoi(code)));
         const char *auth = oSRS.GetAuthorityName("GEOGCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
@@ -160,7 +160,7 @@ static Handle<Value> parse(const Arguments& args)
         result->Set(String::NewSymbol("is_geographic"), Boolean::New(false));
         const char *code = oSRS.GetAuthorityCode("PROJCS");
         if (code)
-            result->Set(String::NewSymbol("epsg"), Integer::New(std::atoi(code)));
+            result->Set(String::NewSymbol("epsg"), Integer::New(atoi(code)));
         const char *auth = oSRS.GetAuthorityName("PROJCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
