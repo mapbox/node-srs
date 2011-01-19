@@ -8,6 +8,8 @@
 // stl
 #include <sstream>
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 
 // osr
 #include "ogr_spatialref.h"
@@ -80,10 +82,10 @@ static Handle<Value> parse(const Arguments& args)
         if( oSRS.importFromESRI(wkt_lines) != OGRERR_NONE )
         {
             error = true;
-            std::ostringstream s;
-            s << "b: OGR Error type #" << CPLE_AppDefined 
-              << " problem occured importing assuming esri wkt " << wkt_string << ".\n";
             oSRS.Clear();
+            //std::ostringstream s;
+            //s << "b: OGR Error type #" << CPLE_AppDefined 
+            //  << " problem occured importing assuming esri wkt " << wkt_string << ".\n";
             //err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
         }
         else
@@ -105,7 +107,8 @@ static Handle<Value> parse(const Arguments& args)
     char  *srs_output = NULL;
 
     // missing ogr_srs_validate.cpp
-    /*if( oSRS.Validate() != OGRERR_NONE )
+    /*
+    if( oSRS.Validate() != OGRERR_NONE )
         result->Set(String::NewSymbol("valid"), Boolean::New(false));
     else
         result->Set(String::NewSymbol("valid"), Boolean::New(true));
@@ -123,7 +126,8 @@ static Handle<Value> parse(const Arguments& args)
     }
     else
     {
-        result->Set(String::NewSymbol("proj4"), String::New(srs_output));
+        // proj4 strings from osr have an uneeded trailing slash, so we trim it...
+        result->Set(String::NewSymbol("proj4"), String::New(CPLString(srs_output).Trim()));
     }
     CPLFree( srs_output );
 
@@ -142,7 +146,7 @@ static Handle<Value> parse(const Arguments& args)
         result->Set(String::NewSymbol("is_geographic"), Boolean::New(true));
         const char *code = oSRS.GetAuthorityCode("GEOGCS");
         if (code)
-            result->Set(String::NewSymbol("epsg"), String::New(code));
+            result->Set(String::NewSymbol("epsg"), Integer::New(std::atoi(code)));
         const char *auth = oSRS.GetAuthorityName("GEOGCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
@@ -152,7 +156,7 @@ static Handle<Value> parse(const Arguments& args)
         result->Set(String::NewSymbol("is_geographic"), Boolean::New(false));
         const char *code = oSRS.GetAuthorityCode("PROJCS");
         if (code)
-            result->Set(String::NewSymbol("epsg"), String::New(code));
+            result->Set(String::NewSymbol("epsg"), Integer::New(std::atoi(code)));
         const char *auth = oSRS.GetAuthorityName("PROJCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
