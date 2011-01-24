@@ -26,9 +26,7 @@ STATICALLY_LINK_OSR = True
 
 # this goes into a settings.js file beside the C++ _srs.node
 settings_template = """
-module.exports.paths = {
-    'static_osr': %s,
-};
+module.exports.static_osr = %s;
 """
 
 def write_settings(static_osr='true'):

@@ -13,6 +13,8 @@
   
   Install node-srs:
   
+  From source:
+  
     $ git clone git://github.com/springmeyer/node-srs.git
     $ cd node-srs
     $ ./configure
@@ -24,6 +26,10 @@
   
     export NODE_PATH=/usr/local/lib/node/
 
+  Or you can install via npm:
+  
+    $ npm install srs
+  
 
 ## License
 
