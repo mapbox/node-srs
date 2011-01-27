@@ -7,6 +7,10 @@
 ## Depends
 
   node >= 0.2.4 (development headers)
+  
+  No other required depedencies
+  
+  Optionally can depend/dynamically link to libgdal (see STATICALLY_LINK_OSR in wscript)
 
 
 ## Installation

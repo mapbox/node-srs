@@ -16,6 +16,7 @@ TARGET_FILE = '%s.node' % TARGET
 built = 'build/default/%s' % TARGET_FILE
 dest = 'lib/%s' % TARGET_FILE
 settings = 'lib/settings.js'
+
 # by default we compile local libosr code,
 # statically link it, and bundle projection csv's
 # alternative is to dynamically link against
