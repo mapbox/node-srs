@@ -4,3 +4,4 @@ build
 *.o
 *.a
 lib/settings.js
+lib/_srs.node
