@@ -96,9 +96,9 @@ def build(bld):
     start_dir = bld.path.find_dir('lib')
     # http://www.freehackers.org/~tnagy/wafbook/index.html#_installing_files
     if STATICALLY_LINK_OSR:
-        bld.install_files('${PREFIX}/lib/node/srs', start_dir.ant_glob('**/*'), cwd=start_dir, relative_trick=True)
+        bld.install_files('${LIBPATH_NODE}/node/srs', start_dir.ant_glob('**/*'), cwd=start_dir, relative_trick=True)
     else:
-        bld.install_files('${PREFIX}/lib/node/srs', start_dir.ant_glob('*'), cwd=start_dir, relative_trick=True)
+        bld.install_files('${LIBPATH_NODE}/node/srs', start_dir.ant_glob('*'), cwd=start_dir, relative_trick=True)
     
 
 def shutdown():

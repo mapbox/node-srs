@@ -60,8 +60,9 @@ static Handle<Value> parse(const Arguments& args)
     result->Set(String::NewSymbol("name"), Undefined());
 
     std::string wkt_string = TOSTR(args[0]->ToString());
+    //std::string wkt_string = std::string("ESRI::") + TOSTR(args[0]->ToString());
 
-    const char *wkt_char = wkt_string.c_str();
+    const char *wkt_char = wkt_string.data();
 
     bool error = false;
 
@@ -121,7 +122,7 @@ static Handle<Value> parse(const Arguments& args)
         std::ostringstream s;
         s << "OGR Error type #" << CPLE_AppDefined 
           << " problem occured when converting to proj4 format " << wkt_string << ".\n";
-        std::clog << s.str();
+        //std::clog << s.str();
         //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
         
     }
@@ -130,7 +131,6 @@ static Handle<Value> parse(const Arguments& args)
         // proj4 strings from osr have an uneeded trailing slash, so we trim it...
         result->Set(String::NewSymbol("proj4"), String::New(CPLString(srs_output).Trim()));
     }
-    CPLFree( srs_output );
 
     if (oSRS.AutoIdentifyEPSG() != OGRERR_NONE )
     {
@@ -175,7 +175,7 @@ static Handle<Value> parse(const Arguments& args)
         std::ostringstream s;
         s << "OGR Error type #" << CPLE_AppDefined 
           << " problem occured when converting to pretty wkt format " << wkt_string << ".\n";
-        std::clog << s.str();
+        //std::clog << s.str();
         //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
     }
     else
@@ -195,7 +195,7 @@ extern "C" {
   {
 
     // node-srs version
-    target->Set(String::NewSymbol("version"), String::New("0.1.1"));
+    target->Set(String::NewSymbol("version"), String::New("0.1.2"));
 
     NODE_SET_METHOD(target, "parse", parse);
     

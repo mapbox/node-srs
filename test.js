@@ -60,4 +60,11 @@ ref = check_result('+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0
 //check_result('+init=epsg:3857',expected, true);
 // also 3785, 4055
 
+//expected = { epsg: undefined, auth: undefined, esri: false, is_geographic: false };
+//var data = fs.readFileSync('./airport_bdy/airport_bdy.prj');
+//console.log(srs.parse(data.toString()))
+//check_result(data.toString(), expected);
+
+//console.log(srs.parse('PROJCS["NAD_1983_StatePlane_Maryland_FIPS_1900",GEOGCS["GCS_North_American_1983",DATUM["D_North_American_1983",SPHEROID["GRS_1980",6378137.0,298.257222101]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic"],PARAMETER["False_Easting",400000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-77.0],PARAMETER["Standard_Parallel_1",38.3],PARAMETER["Standard_Parallel_2",39.45],PARAMETER["Latitude_Of_Origin",37.66666666666666],UNIT["Meter",1.0]]'))
+
 console.log('All tests pass...');
