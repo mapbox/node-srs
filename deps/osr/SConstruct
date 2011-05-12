@@ -10,7 +10,7 @@ import pickle
 
 env = Environment(ENV=os.environ)
 
-env.Append(CXXFLAGS = '-O3 -Wall -DNDEBUG -fPIC --no-rtti -fno-exceptions -DCPL_LSB')
+env.Append(CXXFLAGS = '-Iport -Iogr -O3 -Wall -DNDEBUG -fPIC --no-rtti -fno-exceptions -DCPL_LSB')
 #env.Append(LDFLAGS = 'ld -shared --whole-archive')
 
 Export('env')
