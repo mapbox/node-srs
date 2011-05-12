@@ -1,9 +1,9 @@
 {
   "name"          : "srs",
-  "version"       : "0.1.2",
+  "version"       : "0.2.0",
   "main"          : "./lib/index.js",
-  "description"   : "C++ spatial reference library for node",
-  "keywords"      : ["map", "projection", "spatialreference", "srid", "proj4"],
+  "description"   : "Spatial reference library for node",
+  "keywords"      : ["map", "projection", "spatialreference", "srid", "proj4", "mercator"],
   "url"           : "http://github.com/springmeyer/node-srs",
    "repositories" : [
        {
@@ -17,7 +17,7 @@
   "dependencies"  : [],
    "directories"  : {
        "examples" : "examples",
-       "src": "src"
+       "src"      : "src"
    },
   "engines"       : { "node": ">= 0.2.4" },
   "scripts"       : {"install": "node-waf -v configure build"}
