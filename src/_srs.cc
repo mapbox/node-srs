@@ -73,7 +73,7 @@ static Handle<Value> parse(const Arguments& args)
         error = true;
         std::ostringstream s;
         s << "a: OGR Error type #" << CPLE_AppDefined 
-          << " problem occured importing from srs wkt" << wkt_string << ".\n";;
+          << " problem occured importing from srs wkt: " << wkt_string << ".\n";;
         err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
 
         // try again to import from ESRI
@@ -107,14 +107,12 @@ static Handle<Value> parse(const Arguments& args)
         return err;
     
     char  *srs_output = NULL;
-
-    // missing ogr_srs_validate.cpp
-    /*
-    if( oSRS.Validate() != OGRERR_NONE )
-        result->Set(String::NewSymbol("valid"), Boolean::New(false));
-    else
+    if( oSRS.Validate() == OGRERR_NONE)
         result->Set(String::NewSymbol("valid"), Boolean::New(true));
-    */
+    else if (oSRS.Validate() == OGRERR_UNSUPPORTED_SRS)
+        result->Set(String::NewSymbol("valid"), Boolean::New(false));    
+    else
+        result->Set(String::NewSymbol("valid"), Boolean::New(false));
     
     // TODO - trim output of proj4 result
     if (oSRS.exportToProj4( &srs_output ) != OGRERR_NONE )
@@ -197,7 +195,7 @@ extern "C" {
     // node-srs version
     target->Set(String::NewSymbol("version"), String::New("0.1.2"));
 
-    NODE_SET_METHOD(target, "parse", parse);
+    NODE_SET_METHOD(target, "_parse", parse);
     
     // versions of deps
     Local<Object> versions = Object::New();
