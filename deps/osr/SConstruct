@@ -7,14 +7,15 @@ from subprocess import Popen, PIPE
 from SCons.SConf import SetCacheMode
 import pickle
 
-
 env = Environment(ENV=os.environ)
 
-env.Append(CXXFLAGS = '-Iport -Iogr -O3 -Wall -DNDEBUG -fPIC --no-rtti -fno-exceptions -DCPL_LSB')
+if os.environ.get('CXX'):
+    env['CXX'] = os.environ.get('CXX')
+
+env.Append(CXXFLAGS = '-Iport -Iogr -O3 -Wall -DNDEBUG -fPIC -fno-exceptions -DCPL_LSB')
 #env.Append(LDFLAGS = 'ld -shared --whole-archive')
 
 Export('env')
-
 
 SConscript('port/SConscript')
 SConscript('ogr/SConscript')
