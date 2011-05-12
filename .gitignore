@@ -5,3 +5,4 @@ build
 *.a
 lib/settings.js
 lib/_srs.node
+*pyc
