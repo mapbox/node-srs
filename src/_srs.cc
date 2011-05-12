@@ -53,7 +53,7 @@ static Handle<Value> parse(const Arguments& args)
     result->Set(String::NewSymbol("input"), args[0]->ToString());
     // intialize as undefined
     result->Set(String::NewSymbol("proj4"), Undefined());
-    result->Set(String::NewSymbol("epsg"), Undefined());
+    result->Set(String::NewSymbol("srid"), Undefined());
     result->Set(String::NewSymbol("auth"), Undefined());
     result->Set(String::NewSymbol("pretty_wkt"), Undefined());
     result->Set(String::NewSymbol("esri"), Undefined());
@@ -145,7 +145,7 @@ static Handle<Value> parse(const Arguments& args)
         result->Set(String::NewSymbol("is_geographic"), Boolean::New(true));
         const char *code = oSRS.GetAuthorityCode("GEOGCS");
         if (code)
-            result->Set(String::NewSymbol("epsg"), Integer::New(atoi(code)));
+            result->Set(String::NewSymbol("srid"), Integer::New(atoi(code)));
         const char *auth = oSRS.GetAuthorityName("GEOGCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
@@ -158,7 +158,7 @@ static Handle<Value> parse(const Arguments& args)
         result->Set(String::NewSymbol("is_geographic"), Boolean::New(false));
         const char *code = oSRS.GetAuthorityCode("PROJCS");
         if (code)
-            result->Set(String::NewSymbol("epsg"), Integer::New(atoi(code)));
+            result->Set(String::NewSymbol("srid"), Integer::New(atoi(code)));
         const char *auth = oSRS.GetAuthorityName("PROJCS");
         if (auth)
             result->Set(String::NewSymbol("auth"), String::New(auth));
