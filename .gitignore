@@ -6,3 +6,4 @@ build
 lib/settings.js
 lib/_srs.node
 *pyc
+.sconsign.dblite
