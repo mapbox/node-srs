@@ -1,0 +1,20 @@
+import os
+import sys
+import re
+import platform
+from glob import glob
+from subprocess import Popen, PIPE
+from SCons.SConf import SetCacheMode
+import pickle
+
+
+env = Environment(ENV=os.environ)
+
+env.Append(CXXFLAGS = '-O3 -Wall -DNDEBUG -fPIC --no-rtti -fno-exceptions -DCPL_LSB')
+#env.Append(LDFLAGS = 'ld -shared --whole-archive')
+
+Export('env')
+
+
+SConscript('port/SConscript')
+SConscript('ogr/SConscript')

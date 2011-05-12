@@ -1,0 +1,22 @@
+import os
+import sys
+import glob
+from subprocess import Popen, PIPE
+
+
+Import('env')
+
+lib_env = env.Clone()
+
+# -g -O3 -Wall -DNDEBUG
+# -fPIC --no-rtti -fno-exceptions
+# ld -shared --whole-archive
+source = glob.glob('ogr_srs*.cpp')
+source.extend([
+  'ogrct.cpp',
+  'ogrspatialreference.cpp',
+  'ogr_fromepsg.cpp',
+  'ogrct.cpp'
+  ])
+
+lib_env.StaticLibrary('ogr', source)

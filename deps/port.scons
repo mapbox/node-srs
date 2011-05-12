@@ -1,0 +1,17 @@
+import os
+import sys
+import glob
+from subprocess import Popen, PIPE
+
+
+Import('env')
+
+lib_env = env.Clone()
+
+# -g -O3 -Wall -DNDEBUG
+# -fPIC --no-rtti -fno-exceptions
+# ld -shared --whole-archive
+source = glob.glob('*.cpp')
+source.remove('cpl_win32ce_api.cpp')
+
+lib_env.StaticLibrary('cpl', source)
