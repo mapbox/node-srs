@@ -231,6 +231,25 @@ var parse_900913 = function() {
     */
 
 
+
+    // qgis/ogr produced wkt
+    var data = fs.readFileSync('./data/world_borders_merc.prj');
+    check_result(data.toString(), srs.canonical.spherical_mercator, false);
+
+    var data = fs.readFileSync('./data/admin-0-poly.prj');
+    check_result(data.toString(), srs.canonical.spherical_mercator, false);
+    
+    // sr-org produced by older ogr version
+    var data = fs.readFileSync('./data/sr-org-6-esriwkt.prj');
+    check_result(data.toString(), srs.canonical.spherical_mercator, false);
+
+    var data = fs.readFileSync('./data/sr-org-6-ogcwkt.prj');
+    check_result(data.toString(), srs.canonical.spherical_mercator, false);
+    
+    var sr_org6 = '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs';
+    check_result(sr_org6, srs.canonical.spherical_mercator, false);
+    
+      
     //expected = { srid: undefined, auth: undefined, esri: false, is_geographic: false, valid: true };
 
     // basically exactly the same, but with the +over stripped
