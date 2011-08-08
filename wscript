@@ -55,7 +55,11 @@ def configure(conf):
         if not has_ogr:
             Utils.pprint('YELLOW', 'ogr appears not to be anabled in your gdal build based on "gdal-config --ogr-enabled"')
             conf.fatal('please rebuild gdal with ogr support or set STATICALLY_LINK_OSR = True in the node-srs/wscript file.')
+
     linkflags = []
+    if os.environ.has_key('LINKFLAGS'):
+        linkflags.extend(os.environ['LINKFLAGS'].split(' '))
+
     if STATICALLY_LINK_OSR:
         write_settings(static_osr='true')
         linkflags.append('../deps/osr/ogr/libogr.a')
@@ -92,6 +96,9 @@ def build_ogr(bld):
     rule = cmd ,
     before        = "cxx",
     install_path  = None)
+
+def clean(bld):
+    pass
 
 def build(bld):
     if STATICALLY_LINK_OSR:

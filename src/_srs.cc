@@ -193,7 +193,7 @@ extern "C" {
   {
 
     // node-srs version
-    target->Set(String::NewSymbol("version"), String::New("0.2.3"));
+    target->Set(String::NewSymbol("version"), String::New("0.2.4"));
 
     NODE_SET_METHOD(target, "_parse", parse);
     

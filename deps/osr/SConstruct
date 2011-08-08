@@ -12,8 +12,18 @@ env = Environment(ENV=os.environ)
 if os.environ.get('CXX'):
     env['CXX'] = os.environ.get('CXX')
 
-env.Append(CXXFLAGS = '-Iport -Iogr -O3 -Wall -DNDEBUG -fPIC -fno-exceptions -DCPL_LSB')
-#env.Append(LDFLAGS = 'ld -shared --whole-archive')
+cxxflags = ''
+if os.environ.has_key('CXXFLAGS'):
+    cxxflags += os.environ['CXXFLAGS']
+cxxflags += ' -Iport -Iogr -O3 -Wall -DNDEBUG -fPIC -fno-exceptions -DCPL_LSB'
+env.Append(CXXFLAGS = cxxflags)
+
+linkflags = ''
+if os.environ.has_key('LINKFLAGS'):
+    linkflags += os.environ['LINKFLAGS']
+
+if linkflags:
+    env.Append(LINKFLAGS = linkflags)
 
 Export('env')
 
