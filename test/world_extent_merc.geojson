@@ -1,0 +1,20 @@
+{
+"crs": { "type": "name", "properties": { "name": "epsg:900913" } },
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature",
+  "properties": { "FID": 0.000000 },
+  "geometry": 
+  { "type": "Polygon",
+    "coordinates": [[
+      [-20037508.34,-20037508.34],
+      [-20037508.34,20037508.34],
+      [20037508.34,20037508.34],
+      [20037508.34,-20037508.34],
+      [-20037508.34,-20037508.34] 
+    ]] 
+  } 
+}
+
+]
+}
