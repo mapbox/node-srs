@@ -1955,9 +1955,11 @@ OGRErr OGRSpatialReference::exportToProj4( char ** ppszProj4 ) const
 
     else
     {
+        /*
         CPLError( CE_Failure, CPLE_NotSupported,
                   "No translation for %s to PROJ.4 format is known.", 
                   pszProjection );
+        */
         *ppszProj4 = CPLStrdup("");
         return OGRERR_UNSUPPORTED_SRS;
     }

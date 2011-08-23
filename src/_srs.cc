@@ -120,6 +120,7 @@ static Handle<Value> parse(const Arguments& args)
         std::ostringstream s;
         s << "OGR Error type #" << CPLE_AppDefined 
           << " problem occured when converting to proj4 format " << wkt_string << ".\n";
+        // for now let proj4 errors be non-fatal so that some info can be known...
         //std::clog << s.str();
         //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
         
