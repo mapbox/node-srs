@@ -16,7 +16,6 @@ import Utils
 
 TARGET = '_srs'
 TARGET_FILE = '%s.node' % TARGET
-built = 'build/default/%s' % TARGET_FILE
 dest = 'lib/%s' % TARGET_FILE
 settings = 'lib/settings.js'
 
@@ -125,5 +124,9 @@ def shutdown():
         cmd = join(cwd, 'tools/scons/scons.py -C deps/osr -c')
         os.system(cmd)
     else:
-        if exists(built):
+        # node 0.4.x
+        if exists('build/default/%s' % TARGET_FILE):
+            copy(built,dest)
+        # node 0.6.x
+        else if exists('build/Release/%s' % TARGET_FILE):
             copy(built,dest)
