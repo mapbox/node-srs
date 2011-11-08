@@ -126,7 +126,7 @@ def shutdown():
     else:
         # node 0.4.x
         if exists('build/default/%s' % TARGET_FILE):
-            copy(built,dest)
+            copy('build/default/%s' % TARGET_FILE,dest)
         # node 0.6.x
-        else if exists('build/Release/%s' % TARGET_FILE):
-            copy(built,dest)
+        elif exists('build/Release/%s' % TARGET_FILE):
+            copy('build/Release/%s' % TARGET_FILE,dest)
