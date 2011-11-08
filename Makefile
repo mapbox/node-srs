@@ -13,7 +13,7 @@ uninstall:
 	node-waf -v uninstall
 
 test:
-	@NODE_PATH=.:./lib:$NODE_PATH expresso
+	@NODE_PATH=./lib:$NODE_PATH expresso
 
 lint:
 	@jshint lib/*js test/*js --config=jshint.json
