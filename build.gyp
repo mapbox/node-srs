@@ -43,7 +43,7 @@
             'BUILDING_NODE_EXTENSION'
           ],
           'libraries': [ 
-              'ogr.lib',
+              'gdal.lib',
               'node.lib',
           ],
           'include_dirs': [
@@ -51,6 +51,7 @@
              'c:\\dev2\\gdal',
              'c:\\dev2\\gdal\\ogr',
              'c:\\dev2\\gdal\\gcore',
+             'c:\\dev2\\gdal\\port',
              'c:\\dev2\\node-v0.6.2\\deps\\v8\\include',
              'c:\\dev2\\node-v0.6.2\\src',
              'c:\\dev2\\node-v0.6.2\\deps\\uv\\include',
@@ -64,7 +65,7 @@
               'AdditionalLibraryDirectories': [
                 'c:\\dev2\\node-v0.6.2\\Release\\lib',
                 'c:\\dev2\\node-v0.6.2\\Release',
-                'c:\\dev2\\gdal\\ogr',
+                'c:\\dev2\\gdal\\',
               ],
             },
           },
