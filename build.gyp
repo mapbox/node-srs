@@ -54,9 +54,9 @@
              '<@(deps_root_win)\\gdal\\ogr',
              '<@(deps_root_win)\\gdal\\gcore',
              '<@(deps_root_win)\\gdal\\port',
-             '<@(node_root_win)\\node-v0.6.2\\deps\\v8\\include',
-             '<@(node_root_win)\\node-v0.6.2\\src',
-             '<@(node_root_win)\\node-v0.6.2\\deps\\uv\\include',
+             '<@(node_root_win)\\deps\\v8\\include',
+             '<@(node_root_win)\\src',
+             '<@(node_root_win)\\deps\\uv\\include',
           ],
           'msvs_settings': {
             'VCLinkerTool': {
@@ -65,8 +65,8 @@
                 '/FORCE:MULTIPLE'
               ],
               'AdditionalLibraryDirectories': [
-                '<@(node_root_win)\\node-v0.6.2\\Release\\lib',
-                '<@(node_root_win)\\node-v0.6.2\\Release',
+                '<@(node_root_win)\\Release\\lib',
+                '<@(node_root_win)\\Release',
                 '<@(deps_root_win)\\gdal\\',
               ],
             },
