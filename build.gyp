@@ -4,7 +4,9 @@
       'node_module_sources': [
           "src/_srs.cc",
       ],
-      'node_root': '/usr/local'
+      'node_root': '/usr/local',
+      'node_root_win': 'c:\\node',
+      'deps_root_win': 'c:\\dev2'
   },
   'targets': [
     {
@@ -48,13 +50,13 @@
           ],
           'include_dirs': [
              'c:\\mapnik-2.0\\include',
-             'c:\\dev2\\gdal',
-             'c:\\dev2\\gdal\\ogr',
-             'c:\\dev2\\gdal\\gcore',
-             'c:\\dev2\\gdal\\port',
-             'c:\\dev2\\node-v0.6.2\\deps\\v8\\include',
-             'c:\\dev2\\node-v0.6.2\\src',
-             'c:\\dev2\\node-v0.6.2\\deps\\uv\\include',
+             '<@(deps_root_win)\\gdal',
+             '<@(deps_root_win)\\gdal\\ogr',
+             '<@(deps_root_win)\\gdal\\gcore',
+             '<@(deps_root_win)\\gdal\\port',
+             '<@(node_root_win)\\node-v0.6.2\\deps\\v8\\include',
+             '<@(node_root_win)\\node-v0.6.2\\src',
+             '<@(node_root_win)\\node-v0.6.2\\deps\\uv\\include',
           ],
           'msvs_settings': {
             'VCLinkerTool': {
@@ -63,9 +65,9 @@
                 '/FORCE:MULTIPLE'
               ],
               'AdditionalLibraryDirectories': [
-                'c:\\dev2\\node-v0.6.2\\Release\\lib',
-                'c:\\dev2\\node-v0.6.2\\Release',
-                'c:\\dev2\\gdal\\',
+                '<@(node_root_win)\\node-v0.6.2\\Release\\lib',
+                '<@(node_root_win)\\node-v0.6.2\\Release',
+                '<@(deps_root_win)\\gdal\\',
               ],
             },
           },
