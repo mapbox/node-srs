@@ -1,8 +1,8 @@
 set PROJ_LIB=C:\dev2\proj\nad
 set GDAL_DATA=C:\dev2\gdal\data
-set target=Build
-set config=Release
-rm build.sln
+del build.sln
+rd /q /s Default
+del lib\\_srs.node
 python gyp/gyp build.gyp --depth=. -f msvs -G msvs_version=2010
 msbuild build.sln
 copy Default\\_srs.node lib\\_srs.node
