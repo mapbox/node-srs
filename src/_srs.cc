@@ -131,6 +131,8 @@ static Handle<Value> parse(const Arguments& args)
         result->Set(String::NewSymbol("proj4"), String::New(CPLString(srs_output).Trim()));
     }
 
+    CPLFree( srs_output );
+
     if (oSRS.AutoIdentifyEPSG() != OGRERR_NONE )
     {
         /*std::ostringstream s;
@@ -168,7 +170,8 @@ static Handle<Value> parse(const Arguments& args)
             result->Set(String::NewSymbol("name"), String::New(name));
     }
 
-    if (oSRS.exportToPrettyWkt( &srs_output , 0) != OGRERR_NONE )
+    char  *srs_output2 = NULL;
+    if (oSRS.exportToPrettyWkt( &srs_output2 , 0) != OGRERR_NONE )
     {
         // this does not yet actually return errors
         std::ostringstream s;
@@ -179,10 +182,10 @@ static Handle<Value> parse(const Arguments& args)
     }
     else
     {
-        result->Set(String::NewSymbol("pretty_wkt"), String::New(srs_output));
+        result->Set(String::NewSymbol("pretty_wkt"), String::New(srs_output2));
     }
-    CPLFree( srs_output );
 
+    CPLFree( srs_output2 );
     //OGRSpatialReference::DestroySpatialReference( &oSRS );
     return scope.Close(result);
 }
