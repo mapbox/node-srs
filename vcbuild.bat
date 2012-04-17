@@ -7,7 +7,7 @@ python gyp/gyp build.gyp --depth=. -f msvs -G msvs_version=2010
 msbuild build.sln
 copy Default\\_srs.node lib\\_srs.node
 rem test!
-echo module.exports.static_osr = true; > lib\settings.js
+echo module.exports.static_osr = false; > lib\settings.js
 set NODE_PATH=lib
 node node_modules\expresso\bin\expresso
 rem node -e "console.log(require('mapnik'))"
