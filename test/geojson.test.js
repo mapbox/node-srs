@@ -15,5 +15,10 @@ module.exports = {
     'GeoJSON wgs84_2': function(beforeEdit,assert) {
         var wgs84_2 = srs.parse('./test/data/test.json');
         assert.equal(wgs84_2.proj4, '+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs');
+    },
+
+    'GeoJSON no ext': function(beforeEdit,assert) {
+        var wgs84 = srs.parse('./test/data/mystery-api');
+        assert.equal(wgs84.proj4, '+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs');
     }
 };
