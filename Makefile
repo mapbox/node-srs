@@ -25,6 +25,8 @@ uninstall:
 test:
 	@NODE_PATH=./lib:$NODE_PATH expresso
 
+check: test
+
 lint:
 	@jshint lib/*js test/*js --config=jshint.json
 
