@@ -56,7 +56,7 @@ Detect a WKT string as WGS84:
     $ ./configure
     $ make
     $ sudo make install
-    $ ./test.js
+    $ make test
 
   Make sure the node modules is on your path:
   

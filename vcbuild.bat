@@ -10,5 +10,5 @@ copy Default\\_srs.node lib\\_srs.node
 rem test!
 echo module.exports.static_osr = false; > lib\settings.js
 set NODE_PATH=lib
-node node_modules\expresso\bin\expresso
+node node_modules\mocha\bin\mocha
 rem node -e "console.log(require('mapnik'))"

@@ -14,14 +14,15 @@
   "author"        : "Dane Springmeyer <dane@dbsgeo.com>",
   "contributors"  : [],
   "licenses"      : ["BSD"],
-  "devDependencies": {
-    "expresso": "~0.9.x"
-   },
   "dependencies"  : {},
    "directories"  : {
        "examples" : "examples",
        "src"      : "src"
    },
   "engines"       : { "node": ">= 0.2.4" },
-  "scripts"       : {"install": "node-waf -v configure build"}
+  "scripts"       : {
+      "install" : "node-waf -v configure build",
+      "pretest" : "npm install mocha",
+      "test"    : "make test"
+   }
 }

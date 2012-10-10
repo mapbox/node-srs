@@ -23,7 +23,7 @@ uninstall:
 	node-waf -v uninstall
 
 test:
-	@NODE_PATH=./lib:$NODE_PATH expresso
+	@PATH="./node_modules/mocha/bin:${PATH}" && NODE_PATH="./lib:$(NODE_PATH)" mocha -R spec
 
 check: test
 

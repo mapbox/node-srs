@@ -1,16 +1,13 @@
 var srs = require('srs');
+var fs = require('fs');
+var assert = require('assert');
 
-if (parseInt(process.version.split('.')[1]) > 4) {
 
-    var info = require('../package.json');
-
-    exports['test version updated for release'] = function(beforeExit, assert) {
-        assert.equal(info.version, srs.version);
-    };
-
-} else {
-
-    exports['test version updated for release'] = function(beforeExit, assert) {
-    };
-
-}
+describe('Version check', function() {
+    it('test version updated for release', function() {
+        if (parseInt(process.version.split('.')[1]) > 4) {
+            var info = require('../package.json');
+            assert.equal(info.version, srs.version);
+        }    
+    });
+});
