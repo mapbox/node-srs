@@ -40,9 +40,17 @@ Detect a WKT string as WGS84:
 
   node >= 0.2.4 (development headers)
   
-  No other required depedencies
+  No other required dependencies
   
-  Optionally can depend/dynamically link to libgdal (see STATICALLY_LINK_OSR in wscript)
+  Optionally can depend/dynamically link to libgdal by doing:
+
+      ./configure --shared-gdal
+      make
+
+  or:
+
+      export NODE_SRS_SHARED_GDAL=1
+      npm install srs
 
 
 ## Installation
