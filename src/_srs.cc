@@ -72,7 +72,7 @@ static Handle<Value> parse(const Arguments& args)
     {
         error = true;
         std::ostringstream s;
-        s << "a: OGR Error type #" << CPLE_AppDefined 
+        s << "OGR Error type #" << CPLE_AppDefined
           << " problem occured importing from srs wkt: " << wkt_string << ".\n";;
         err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
 
