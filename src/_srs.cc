@@ -60,7 +60,6 @@ static Handle<Value> parse(const Arguments& args)
     result->Set(String::NewSymbol("name"), Undefined());
 
     std::string wkt_string = TOSTR(args[0]->ToString());
-    //std::string wkt_string = std::string("ESRI::") + TOSTR(args[0]->ToString());
 
     const char *wkt_char = wkt_string.data();
 
@@ -100,7 +99,14 @@ static Handle<Value> parse(const Arguments& args)
     else
     {
         error = false;
-        result->Set(String::NewSymbol("esri"), Boolean::New(false));
+        if (wkt_string.substr(0,6) == "ESRI::")
+        {
+            result->Set(String::NewSymbol("esri"), Boolean::New(true));
+        }
+        else
+        {
+            result->Set(String::NewSymbol("esri"), Boolean::New(false));
+        }
     }
     
     if (error)
