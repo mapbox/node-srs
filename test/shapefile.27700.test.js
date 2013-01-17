@@ -36,12 +36,11 @@ describe('OSGB 1936', function() {
         // and test parsing without forcing ESRI:: prepend
         var esri_result2 = srs.parse(esri_srs);
         assert.equal(esri_result2.proj4,expected);
-        
     });
 
     it('should detect correct srid for ESRI format for OSGB 1936 / British National Grid', function() {
         var esri_srs = fs.readFileSync('./test/data/27700_esri_wkt.prj').toString();
-        var esri_result = srs.parse('ESRI::'+esri_srs);
+        var esri_result = srs.parse(esri_srs);
         assert.equal(esri_result.srid,27700);
     });
 });
