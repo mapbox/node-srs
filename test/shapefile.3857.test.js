@@ -5,7 +5,7 @@ var assert = require('assert');
 var expected = srs.canonical.spherical_mercator;
 
 describe('Mercator', function() {
-    it('should detect non-sperical mercator', function() {
+    it('should detect non-spherical mercator', function() {
         // non spherical merc's - should not match
         //# WGS 84 / PDC Mercator (deprecated)
         //<3349> +proj=merc +lon_0=-150 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs  <>
@@ -43,8 +43,8 @@ describe('Mercator', function() {
         assert.equal(parsed.valid, expected.valid);
     });
 
-    it('should detect r-org produced by older ogr version', function() {
-        var val = fs.readFileSync('./test/data/sr-org-6-esriwkt.prj');
+    it('should detect sr-org produced by older ogr version', function() {
+        var val = fs.readFileSync('./test/data/sr-org-6-esriwkt.prj').toString();
         var parsed = srs.parse(val);
         assert.ok(parsed.proj4);
         //assert.equal(parsed.proj4,'');
@@ -68,7 +68,7 @@ describe('Mercator', function() {
     });
 
     it('should detect http://prj2epsg.org/epsg/3857', function() {
-        var val = fs.readFileSync('./test/data/prj2epsg-wkt-3857.prj');
+        var val = fs.readFileSync('./test/data/prj2epsg-wkt-3857.prj').toString();
         var parsed = srs.parse(val);
         assert.ok(parsed.proj4);
         //assert.equal(parsed.proj4,'');

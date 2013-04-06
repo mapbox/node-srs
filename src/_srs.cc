@@ -60,7 +60,6 @@ static Handle<Value> parse(const Arguments& args)
     result->Set(String::NewSymbol("name"), Undefined());
 
     std::string wkt_string = TOSTR(args[0]->ToString());
-    //std::string wkt_string = std::string("ESRI::") + TOSTR(args[0]->ToString());
 
     const char *wkt_char = wkt_string.data();
 
@@ -72,7 +71,7 @@ static Handle<Value> parse(const Arguments& args)
     {
         error = true;
         std::ostringstream s;
-        s << "a: OGR Error type #" << CPLE_AppDefined 
+        s << "OGR Error type #" << CPLE_AppDefined
           << " problem occured importing from srs wkt: " << wkt_string << ".\n";;
         err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
 
@@ -100,7 +99,14 @@ static Handle<Value> parse(const Arguments& args)
     else
     {
         error = false;
-        result->Set(String::NewSymbol("esri"), Boolean::New(false));
+        if (wkt_string.substr(0,6) == "ESRI::")
+        {
+            result->Set(String::NewSymbol("esri"), Boolean::New(true));
+        }
+        else
+        {
+            result->Set(String::NewSymbol("esri"), Boolean::New(false));
+        }
     }
     
     if (error)
@@ -197,7 +203,7 @@ extern "C" {
   {
 
     // node-srs version
-    target->Set(String::NewSymbol("version"), String::New("0.2.18"));
+    target->Set(String::NewSymbol("version"), String::New("0.2.20"));
 
     NODE_SET_METHOD(target, "_parse", parse);
     
