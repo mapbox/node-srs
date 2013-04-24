@@ -202,9 +202,6 @@ extern "C" {
   static void init (Handle<Object> target)
   {
 
-    // node-srs version
-    target->Set(String::NewSymbol("version"), String::New("0.2.20"));
-
     NODE_SET_METHOD(target, "_parse", parse);
     
     // versions of deps
