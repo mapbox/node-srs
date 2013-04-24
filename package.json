@@ -1,6 +1,6 @@
 {
   "name"          : "srs",
-  "version"       : "0.2.20",
+  "version"       : "0.3.0",
   "main"          : "./lib/index.js",
   "description"   : "Spatial reference library for node",
   "keywords"      : ["map", "projection", "spatialreference", "srid", "proj4", "mercator"],
@@ -16,13 +16,9 @@
   "licenses"      : ["BSD"],
   "dependencies"  : {},
    "directories"  : {
-       "examples" : "examples",
        "src"      : "src"
    },
-  "engines"       : { "node": ">= 0.2.4" },
   "scripts"       : {
-      "install" : "node-waf -v configure build",
-      "pretest" : "npm install mocha",
       "test"    : "make test"
    }
 }
