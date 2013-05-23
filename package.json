@@ -5,12 +5,10 @@
   "description"   : "Spatial reference library for node",
   "keywords"      : ["map", "projection", "spatialreference", "srid", "proj4", "mercator"],
   "url"           : "http://github.com/springmeyer/node-srs",
-   "repositories" : [
-       {
+   "repository" : {
            "type" : "git",
            "url"  : "git://github.com/springmeyer/node-srs.git" 
-       } 
-   ],
+  },
   "author"        : "Dane Springmeyer <dane@dbsgeo.com>",
   "contributors"  : [],
   "licenses"      : ["BSD"],
