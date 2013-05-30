@@ -31,6 +31,19 @@ describe('Mercator', function() {
 
     */
 
+    // https://github.com/springmeyer/node-srs/issues/27
+    it('should detect qgis/ogr wkt', function() {
+        var val = fs.readFileSync('./test/data/3857-ogr-1.10.0-wkt.prj').toString();
+        var parsed = srs.parse(val);
+        assert.ok(parsed.proj4);
+        //assert.equal(parsed.proj4,'');
+        assert.equal(parsed.srid, expected.srid);
+        assert.equal(parsed.auth, expected.auth);
+        assert.equal(parsed.esri, expected.esri);
+        assert.equal(parsed.is_geographic, expected.is_geographic);
+        assert.equal(parsed.valid, expected.valid);
+    });
+
     it('should detect qgis/ogr wkt', function() {
         var val = fs.readFileSync('./test/data/world_borders_merc.prj').toString();
         var parsed = srs.parse(val);
