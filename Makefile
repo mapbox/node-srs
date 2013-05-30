@@ -10,17 +10,12 @@ ifeq ($(OS),Darwin)
 	NPROCS:=$(shell sysctl -n hw.ncpu)
 endif
 
-install: all
-	node-waf -v build install
-
 srs.node:
-	node-waf -v build
+	`npm explore npm -g -- pwd`/bin/node-gyp-bin/node-gyp build
 
 clean:
-	node-waf -v clean distclean
-
-uninstall:
-	node-waf -v uninstall
+	rm -rf build
+	rm -f lib/_srs.node
 
 test:
 	@PATH="./node_modules/mocha/bin:${PATH}" && NODE_PATH="./lib:$(NODE_PATH)" mocha -R spec
@@ -30,10 +25,4 @@ check: test
 lint:
 	@jshint lib/*js test/*js --config=jshint.json
 
-gyp:
-	rm -rf ./projects/makefiles/
-	python gyp/gyp build.gyp --depth=. -f make --generator-output=./projects/makefiles
-	make -j$(NPROCS) -C ./projects/makefiles/ V=1
-	cp projects/makefiles/out/Default/_srs.node lib/_srs.node
-
-.PHONY: test gyp
+.PHONY: test
