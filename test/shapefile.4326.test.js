@@ -105,4 +105,17 @@ describe('WGS84', function() {
         assert.equal(parsed.valid, expected.valid);
     });
 
+    it('should wgs84 wkt from another prj file', function() {
+
+        var data = fs.readFileSync('./test/data/4326.prj');
+        var parsed = srs.parse(data);
+        assert.ok(parsed.proj4);
+        assert.equal(parsed.proj4, '+proj=longlat +ellps=WGS84 +no_defs');
+        assert.equal(parsed.srid, expected.srid);
+        assert.equal(parsed.auth, expected.auth);
+        assert.equal(parsed.esri, expected.esri);
+        assert.equal(parsed.is_geographic, expected.is_geographic);
+        assert.equal(parsed.valid, expected.valid);
+    });
+
 });
