@@ -1,4 +1,15 @@
 {
+  'conditions': [
+      ['OS=="win"', {
+        'variables': {
+          'copy_command%': 'copy'
+        },
+      },{
+        'variables': {
+          'copy_command%': 'cp'
+        },
+      }]
+  ],
   'targets': [
     {
       'target_name': '_srs',
@@ -29,7 +40,7 @@
           'outputs': [
             'lib/_mapnik.node'
           ],
-          'action': ['cp', '<@(PRODUCT_DIR)/_srs.node', 'lib/_srs.node']
+          'action': ['<@(copy_command)', '<@(PRODUCT_DIR)/_srs.node', 'lib/_srs.node']
         }
       ]
     }
