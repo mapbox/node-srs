@@ -13,7 +13,7 @@
   'targets': [
     {
       'target_name': '_srs',
-      'libraries' : ['<!@(gdal-config --libs)'],
+      'libraries' : ['<!@(gdal-config --libs)','<!@(gdal-config --dep-libs)'],
       'cflags_cc' : ['<!@(gdal-config --cflags)'],
       'cflags_cc!': ['-fno-rtti', '-fno-exceptions'],
       'xcode_settings': {
