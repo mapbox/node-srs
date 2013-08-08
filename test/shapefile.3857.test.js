@@ -21,6 +21,16 @@ describe('Mercator', function() {
         assert.equal(parsed.esri, not_3857.esri);
         assert.equal(parsed.is_geographic, not_3857.is_geographic);
         assert.equal(parsed.valid, not_3857.valid);
+        var epsg3395 = fs.readFileSync('./test/data/3395-non-spherical-merc.prj').toString();
+        parsed = srs.parse(epsg3395);
+        assert.ok(parsed.proj4);
+        assert.equal(parsed.proj4, '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+        assert.equal(parsed.srid, not_3857.srid);
+        assert.equal(parsed.auth, not_3857.auth);
+        assert.equal(parsed.esri, not_3857.esri);
+        assert.equal(parsed.is_geographic, not_3857.is_geographic);
+        assert.equal(parsed.valid, not_3857.valid);
+        
     });
 
     /*
@@ -252,6 +262,53 @@ describe('Mercator', function() {
     it('should detect bogus proj 2', function() {
         var val = '+proj=merc +lon_0=0 +lat_ts=0 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +units=m';
         var parsed = srs.parse(val);
+        assert.ok(parsed.proj4);
+        //assert.equal(parsed.proj4,'');
+        assert.equal(parsed.srid, expected.srid);
+        assert.equal(parsed.auth, expected.auth);
+        assert.equal(parsed.esri, expected.esri);
+        assert.equal(parsed.is_geographic, expected.is_geographic);
+        assert.equal(parsed.valid, expected.valid);
+    });
+
+    /*
+    Mercator_1SP and Mercator_2SP
+      lots of confusion with these:
+      http://trac.osgeo.org/gdal/ticket/2744
+      http://trac.osgeo.org/gdal/ticket/1797
+      http://www.remotesensing.org/geotiff/proj_list/mercator_2sp.html
+
+      These are not spherical merc, but for our purposes we are going to ignore complexity
+      and assume when these keywords are used in the top level name, aka the `PROJCS`
+      then this is meant to be spherical mercator and may originate from some app or
+      lonely soul grabbing a wkt in deparation from
+      http://spatialreference.org/ref/sr-org/7299/ogcwkt/
+      which at the time of writing was equal to:
+
+    PROJCS["Mercator_1SP",GEOGCS["GCS_Geographic Coordinate System",DATUM["D_WGS_1984_MAJOR_AUXILIARY_SPHERE",SPHEROID["Sphere_Radius_6378137_m",6378137,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Mercator"],PARAMETER["central_meridian",0],PARAMETER["standard_parallel_1",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["Meter",1]]
+
+      or http://spatialreference.org/ref/sr-org/google-projection/esriwkt/:
+
+    PROJCS["Mercator_2SP",GEOGCS["unnamed ellipse",DATUM["D_unknown",SPHEROID["Unknown",6378137,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Mercator_2SP"],PARAMETER["standard_parallel_1",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["Meter",1]]      
+    */
+
+    it('should detect sr.org mercator1sp', function() {
+        var val = 'ESRI::' + fs.readFileSync('./test/data/esri-mercator-1sp.prj').toString();
+        var parsed = srs.parse(val);
+        assert.ok(parsed.proj4);
+        assert.ok(parsed.proj4);
+        //assert.equal(parsed.proj4,'');
+        assert.equal(parsed.srid, expected.srid);
+        assert.equal(parsed.auth, expected.auth);
+        assert.equal(parsed.esri, expected.esri);
+        assert.equal(parsed.is_geographic, expected.is_geographic);
+        assert.equal(parsed.valid, expected.valid);
+    });
+
+    it('should detect sr.org messed up mercator2sp', function() {
+        var val = 'ESRI::' + fs.readFileSync('./test/data/bogus_mercator2sp.prj').toString();
+        var parsed = srs.parse(val);
+        assert.ok(parsed.proj4);
         assert.ok(parsed.proj4);
         //assert.equal(parsed.proj4,'');
         assert.equal(parsed.srid, expected.srid);
