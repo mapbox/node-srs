@@ -318,32 +318,20 @@ describe('Mercator', function() {
         assert.equal(parsed.valid, expected.valid);
     });
 
-// failing, need attention
-/*
-    'esri 102100': function(beforeEdit,assert) {
-        var val = '+init=esri:102100';
+    it('should detect openstreetmapdata.com as 3857', function() {
+        var val = fs.readFileSync('./test/data/simplified-land-polygons-complete-3857.prj').toString();
         var parsed = srs.parse(val);
         assert.ok(parsed.proj4);
-        //assert.equal(parsed.proj4,'');
-        assert.equal(parsed.srid,expected.srid);
-        assert.equal(parsed.auth,expected.auth);
-        assert.equal(parsed.esri,expected.esri);
-        assert.equal(parsed.is_geographic,expected.is_geographic);
-        assert.equal(parsed.valid,expected.valid);
-    },
-    'esri 102113': function(beforeEdit,assert) {
-        var val = '+init=esri:102113';
-        var parsed = srs.parse(val);
         assert.ok(parsed.proj4);
         //assert.equal(parsed.proj4,'');
-        assert.equal(parsed.srid,expected.srid);
-        assert.equal(parsed.auth,expected.auth);
-        assert.equal(parsed.esri,expected.esri);
-        assert.equal(parsed.is_geographic,expected.is_geographic);
-        assert.equal(parsed.valid,expected.valid);
-    },
+        assert.equal(parsed.srid, expected.srid);
+        assert.equal(parsed.auth, expected.auth);
+        assert.equal(parsed.esri, expected.esri);
+        assert.equal(parsed.is_geographic, expected.is_geographic);
+        assert.equal(parsed.valid, expected.valid);
+    });
 
-    'epsg 3857': function(beforeEdit,assert) {
+    it('should detect +init=epsg:3857 as 3857', function() {
         var val = '+init=epsg:3857';
         var parsed = srs.parse(val);
         assert.ok(parsed.proj4);
@@ -353,9 +341,33 @@ describe('Mercator', function() {
         assert.equal(parsed.esri,expected.esri);
         assert.equal(parsed.is_geographic,expected.is_geographic);
         assert.equal(parsed.valid,expected.valid);
-    },
+    });
 
-    'epsg 3785': function(beforeEdit,assert) {
+    it('should detect +init=esri:102100 as 3857', function() {
+        var val = '+init=esri:102100';
+        var parsed = srs.parse(val);
+        assert.ok(parsed.proj4);
+        //assert.equal(parsed.proj4,'');
+        assert.equal(parsed.srid,expected.srid);
+        assert.equal(parsed.auth,expected.auth);
+        assert.equal(parsed.esri,expected.esri);
+        assert.equal(parsed.is_geographic,expected.is_geographic);
+        assert.equal(parsed.valid,expected.valid);
+    });
+
+    it('should detect +init=esri:102113 as 3857', function() {
+        var val = '+init=esri:102113';
+        var parsed = srs.parse(val);
+        assert.ok(parsed.proj4);
+        //assert.equal(parsed.proj4,'');
+        assert.equal(parsed.srid,expected.srid);
+        assert.equal(parsed.auth,expected.auth);
+        assert.equal(parsed.esri,expected.esri);
+        assert.equal(parsed.is_geographic,expected.is_geographic);
+        assert.equal(parsed.valid,expected.valid);
+    });
+
+    it('should detect +init=epsg:3785 as 3857', function() {
         var val = '+init=epsg:3785';
         var parsed = srs.parse(val);
         assert.ok(parsed.proj4);
@@ -365,8 +377,19 @@ describe('Mercator', function() {
         assert.equal(parsed.esri,expected.esri);
         assert.equal(parsed.is_geographic,expected.is_geographic);
         assert.equal(parsed.valid,expected.valid);
-    },
-*/
+    });
+
+    it('should detect +init=osgeo:41001 as 3857', function() {
+        var val = '+init=osgeo:41001';
+        var parsed = srs.parse(val);
+        assert.ok(parsed.proj4);
+        //assert.equal(parsed.proj4,'');
+        assert.equal(parsed.srid,expected.srid);
+        assert.equal(parsed.auth,expected.auth);
+        assert.equal(parsed.esri,expected.esri);
+        assert.equal(parsed.is_geographic,expected.is_geographic);
+        assert.equal(parsed.valid,expected.valid);
+    });
 
 });
 
