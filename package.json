@@ -1,6 +1,6 @@
 {
   "name"          : "srs",
-  "version"       : "0.3.0",
+  "version"       : "0.3.1",
   "main"          : "./lib/index.js",
   "description"   : "Spatial reference library for node",
   "keywords"      : ["map", "projection", "spatialreference", "srid", "proj4", "mercator"],
