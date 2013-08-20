@@ -1,5 +1,9 @@
 # changelog
 
+0.3.2
+
+ - Re-enabled optional linking with `gdal-config --dep-libs` by passing `npm install --runtime_link=static`
+
 0.3.1
 
  - Removed build linking to gdal libs / gdal-config --dep-libs, now only linking to libgdal itself by default
