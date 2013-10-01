@@ -13,18 +13,14 @@
 
 // osr
 #include "ogr_spatialref.h"
-//#include "ogr_core.h"
-//#include "cpl_conv.h"
-#include "cpl_string.h"
-//#include "ogr_p.h"
-//#include "cpl_multiproc.h"
-//#include "ogr_srs_api.h"
+#include "cpl_error.h" // CPLE_AppDefined
+#include "cpl_conv.h" // CPLFree
+#include "cpl_string.h" // CPLString
 
 using namespace node;
 using namespace v8;
 
 #define TOSTR(obj) (*String::Utf8Value((obj)->ToString()))
-
 
 /*
 OGRERR_DICT = { 1 : (OGRException, "Not enough data."),
@@ -84,15 +80,10 @@ static Handle<Value> parse(const Arguments& args)
         {
             error = true;
             oSRS.Clear();
-            //std::ostringstream s;
-            //s << "b: OGR Error type #" << CPLE_AppDefined 
-            //  << " problem occured importing assuming esri wkt " << wkt_string << ".\n";
-            //err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
         }
         else
         {
             error = false;
-            std::clog << "imported assuming esri format...\n";
             result->Set(String::NewSymbol("esri"), Boolean::New(true));
         }
     }
@@ -123,9 +114,9 @@ static Handle<Value> parse(const Arguments& args)
     // TODO - trim output of proj4 result
     if (oSRS.exportToProj4( &srs_output ) != OGRERR_NONE )
     {
-        std::ostringstream s;
-        s << "OGR Error type #" << CPLE_AppDefined 
-          << " problem occured when converting to proj4 format " << wkt_string << ".\n";
+        //std::ostringstream s;
+        //s << "OGR Error type #" << CPLE_AppDefined
+        //  << " problem occured when converting to proj4 format " << wkt_string << ".\n";
         // for now let proj4 errors be non-fatal so that some info can be known...
         //std::clog << s.str();
         //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
@@ -142,7 +133,7 @@ static Handle<Value> parse(const Arguments& args)
     if (oSRS.AutoIdentifyEPSG() != OGRERR_NONE )
     {
         /*std::ostringstream s;
-        s << "OGR Error type #" << CPLE_AppDefined 
+        s << "OGR Error type #" << CPLE_AppDefined
           << " problem occured when attempting to auto identify epsg code " << wkt_string << ".\n";
         std::clog << s.str();
         */
@@ -180,9 +171,9 @@ static Handle<Value> parse(const Arguments& args)
     if (oSRS.exportToPrettyWkt( &srs_output2 , 0) != OGRERR_NONE )
     {
         // this does not yet actually return errors
-        std::ostringstream s;
-        s << "OGR Error type #" << CPLE_AppDefined 
-          << " problem occured when converting to pretty wkt format " << wkt_string << ".\n";
+        //std::ostringstream s;
+        //s << "OGR Error type #" << CPLE_AppDefined
+        //  << " problem occured when converting to pretty wkt format " << wkt_string << ".\n";
         //std::clog << s.str();
         //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
     }
