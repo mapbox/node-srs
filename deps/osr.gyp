@@ -7,6 +7,17 @@
       'include_dirs': [
         'osr/src'
       ],
+      'conditions': [
+        ['OS == "win"', {
+          'include_dirs': [
+             './win-include'
+          ]
+        }, {
+          'include_dirs': [
+             './unix-include'
+          ]
+        }]
+      ],
       'sources': [
         '<!@(python -c "import glob;print \' \'.join(glob.glob(\'osr/src/*.c\'))")',
         '<!@(python -c "import glob;print \' \'.join(glob.glob(\'osr/src/*.cpp\'))")'
@@ -18,6 +29,17 @@
       'direct_dependent_settings': {
         'include_dirs': [
           'osr/src'
+        ],
+        'conditions': [
+          ['OS == "win"', {
+            'include_dirs': [
+               './win-include'
+            ]
+          }, {
+            'include_dirs': [
+               './unix-include'
+            ]
+          }]
         ],
         'defines': [
           "_FILE_OFFSET_BITS=64",

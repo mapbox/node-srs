@@ -40,6 +40,18 @@
       'target_name': 'action_after_build',
       'type': 'none',
       'dependencies': [ '_srs' ],
+      'actions': [
+          {
+            'action_name': 'generate_setting',
+            'inputs': [
+              'gen_settings.py'
+            ],
+            'outputs': [
+              'lib/srs_settings.js'
+            ],
+            'action': ['python', 'gen_settings.py', '<@(gdal)']
+          },
+      ],
       'copies': [
           {
             'files': [ '<(PRODUCT_DIR)/_srs.node' ],
