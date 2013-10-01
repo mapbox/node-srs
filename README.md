@@ -3,6 +3,8 @@
       
   Bindings to libosr for handling spatial references in [node](http://nodejs.org).
 
+[![Build Status](https://secure.travis-ci.org/springmeyer/node-srs.png)](http://travis-ci.org/springmeyer/node-srs)
+
 ## Example
 
 Detect a proj4 literal string as spherical mercator:
