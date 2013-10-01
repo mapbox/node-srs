@@ -1,0 +1,15 @@
+--- osr/ogr/ogr_srs_proj4.cpp	2013-09-11 19:13:20.000000000 -0700
++++ osr/ogr/ogr_srs_proj4.cpp_	2013-09-11 19:13:18.000000000 -0700
+@@ -2103,9 +2103,9 @@
+ 
+     else
+     {
+-        CPLError( CE_Failure, CPLE_NotSupported,
+-                  "No translation for %s to PROJ.4 format is known.", 
+-                  pszProjection );
++        //CPLError( CE_Failure, CPLE_NotSupported,
++        //          "No translation for %s to PROJ.4 format is known.", 
++        //          pszProjection );
+         *ppszProj4 = CPLStrdup("");
+         return OGRERR_UNSUPPORTED_SRS;
+     }
