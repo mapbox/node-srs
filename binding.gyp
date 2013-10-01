@@ -2,22 +2,33 @@
   'includes': [ 'common.gypi' ],
   'variables': {
       'runtime_link%':'shared',
+      'gdal%':'internal',
   },
   'targets': [
     {
       'target_name': '_srs',
-      'libraries' : ['<!@(gdal-config --libs)'],
       'conditions': [
         ['runtime_link == "static"', {
             'libraries': ['<!@(gdal-config --dep-libs)']
-        }]
+        }],
+        ['gdal != "internal"', {
+           'libraries' : ['<!@(gdal-config --libs)'],
+            'cflags_cc' : ['<!@(gdal-config --cflags)'],
+            'xcode_settings': {
+              'OTHER_CPLUSPLUSFLAGS':[
+                '<!@(gdal-config --cflags)'
+              ]
+            }
+        },
+        {
+            'dependencies': [
+              'deps/osr.gyp:osr'
+            ]
+        }
+        ]
       ],
-      'cflags_cc' : ['<!@(gdal-config --cflags)'],
       'cflags_cc!': ['-fno-rtti', '-fno-exceptions'],
       'xcode_settings': {
-        'OTHER_CPLUSPLUSFLAGS':[
-           '<!@(gdal-config --cflags)'
-        ],
         'GCC_ENABLE_CPP_RTTI': 'YES',
         'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
       },
