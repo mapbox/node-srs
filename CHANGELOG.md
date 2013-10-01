@@ -1,5 +1,12 @@
 # changelog
 
+0.3.3
+
+ - Now building against internal `osr` again by default. Pass `npm install --gdal=shared` to build against systemwide GDAL (#30)
+ - Now forcing canonical wgs84/epsg:4326 represenation
+ - Now translating `+init` syntax to `+proj` for known projections (epsg:4326 and epsg:3857)
+ - Various fixes to detect more projections
+
 0.3.2
 
  - Re-enabled optional linking with `gdal-config --dep-libs` by passing `npm install --runtime_link=static`
