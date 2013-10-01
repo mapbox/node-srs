@@ -1,4 +1,4 @@
-var srs = require('srs');
+var srs = require('../');
 var fs = require('fs');
 var assert = require('assert');
 

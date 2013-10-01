@@ -1,4 +1,4 @@
-var srs = require('srs');
+var srs = require('../');
 var assert = require('assert');
 
 describe('GeoJSON', function() {
