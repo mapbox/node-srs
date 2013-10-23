@@ -15,8 +15,7 @@ describe('Mercator', function() {
         var srid3349 = '+proj=merc +lon_0=-150 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs';
         var parsed = srs.parse(srid3349);
         assert.ok(parsed.proj4);
-        // not stable across gdal versions
-        //assert.equal(parsed.proj4, '+proj=merc +lon_0=-150 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+        assert.equal(parsed.proj4.indexOf('+nadgrids=@null'), -1);
         assert.equal(parsed.srid, not_3857.srid);
         assert.equal(parsed.auth, not_3857.auth);
         assert.equal(parsed.esri, not_3857.esri);
@@ -25,7 +24,7 @@ describe('Mercator', function() {
         var epsg3395 = fs.readFileSync('./test/data/3395-non-spherical-merc.prj').toString();
         parsed = srs.parse(epsg3395);
         assert.ok(parsed.proj4);
-        assert.equal(parsed.proj4, '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+        assert.equal(parsed.proj4.indexOf('+nadgrids=@null'), -1);
         assert.equal(parsed.srid, not_3857.srid);
         assert.equal(parsed.auth, not_3857.auth);
         assert.equal(parsed.esri, not_3857.esri);
