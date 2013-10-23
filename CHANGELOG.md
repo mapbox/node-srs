@@ -1,5 +1,9 @@
 # changelog
 
+0.3.5
+
+ - Minor test fixes to work with variable external gdal versions
+
 0.3.4
 
  - Changed name of build option to configure against shared gdal lib. Now pass `npm install --shared_gdal` (to be consistent with older node-srs).
