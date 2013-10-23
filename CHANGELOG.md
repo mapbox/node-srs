@@ -1,5 +1,9 @@
 # changelog
 
+0.3.4
+
+ - Changed name of build option to configure against shared gdal lib. Now pass `npm install --shared_gdal` (to be consistent with older node-srs).
+
 0.3.3
 
  - Now building against internal `osr` again by default. Pass `npm install --gdal=shared` to build against systemwide GDAL (#30)

@@ -2,7 +2,7 @@
   'includes': [ 'common.gypi' ],
   'variables': {
       'runtime_link%':'shared',
-      'gdal%':'internal',
+      'shared_gdal%':'false',
   },
   'targets': [
     {
@@ -11,7 +11,13 @@
         ['runtime_link == "static"', {
             'libraries': ['<!@(gdal-config --dep-libs)']
         }],
-        ['gdal != "internal"', {
+        ['shared_gdal == "false"',
+        {
+            'dependencies': [
+              'deps/osr.gyp:osr'
+            ]
+        },
+        {
            'libraries' : ['<!@(gdal-config --libs)'],
             'cflags_cc' : ['<!@(gdal-config --cflags)'],
             'xcode_settings': {
@@ -19,11 +25,6 @@
                 '<!@(gdal-config --cflags)'
               ]
             }
-        },
-        {
-            'dependencies': [
-              'deps/osr.gyp:osr'
-            ]
         }
         ]
       ],
@@ -49,7 +50,7 @@
             'outputs': [
               'lib/srs_settings.js'
             ],
-            'action': ['python', 'gen_settings.py', '<@(gdal)']
+            'action': ['python', 'gen_settings.py', '<@(shared_gdal)']
           },
       ],
       'copies': [

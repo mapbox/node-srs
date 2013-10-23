@@ -40,42 +40,26 @@ Detect a WKT string as WGS84:
 
 ## Depends
 
-  node >= 0.2.4 (development headers)
-  
-  No other required dependencies
-  
-  Optionally can depend/dynamically link to libgdal by doing:
-
-      ./configure --shared-gdal
-      make
-
-  or:
-
-      export NODE_SRS_SHARED_GDAL=1
-      npm install srs
-
+ - Node >= 0.6.13 (development headers)
+ - No other required dependencies (though can optionally depend on external `libgdal`)
 
 ## Installation
-  
-  Install node-srs:
-  
-  From source:
-  
-    $ git clone git://github.com/springmeyer/node-srs.git
-    $ cd node-srs
-    $ ./configure
-    $ make
-    $ sudo make install
-    $ make test
 
-  Make sure the node modules is on your path:
-  
-    export NODE_PATH=/usr/local/lib/node/
+    npm install srs
 
-  Or you can install via npm:
-  
-    $ npm install srs
-  
+From source:
+
+    git clone git://github.com/springmeyer/node-srs.git
+    cd node-srs
+    npm install
+
+Against external libgdal (avoids compiling internal copy of libosr)
+
+    npm install --shared_gdal
+
+## Test
+
+    npm test
 
 ## License
 
