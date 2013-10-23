@@ -7,7 +7,6 @@ node_js:
 
 before_install:
  - sudo apt-get -qq update
- - sudo apt-get -qq install libgdal1-dev
 
 install:
  - npm install mocha
@@ -18,5 +17,12 @@ before_script:
 
 script:
  - make clean
+ - sudo apt-get -qq install libgdal1-dev
+ - npm install --shared_gdal
+ - npm test
+ - make clean
+ - sudo apt-add-repository --yes ppa:ubuntugis/ubuntugis-unstable
+ - sudo apt-get -qq update
+ - sudo apt-get -qq install libgdal1-dev
  - npm install --shared_gdal
  - npm test
