@@ -1,9 +1,21 @@
 language: node_js
 
 node_js:
-  - "0.10"
-  - "0.8"
-  - "0.6"
+ - "0.10"
+ - "0.8"
+ - "0.6"
+
+before_install:
+ - sudo apt-get -qq install libgdal1-dev
+
+install:
+ - npm install mocha
 
 before_script:
-  - npm install mocha
+ - npm install
+ - npm test
+
+script:
+ - make clean
+ - npm install --shared_gdal
+ - npm test
