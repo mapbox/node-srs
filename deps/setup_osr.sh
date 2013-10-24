@@ -22,29 +22,14 @@ cp osr/ogr/ogr_fromepsg.* osr/src/
 cp osr/ogr/ogr_core.h osr/src/
 cp osr/ogr/ogr_p.h osr/src/
 cp osr/ogr/ogr_geometry.h osr/src/
-
-cp osr/port/cpl_conv.* osr/src/
-cp osr/port/cpl_error.* osr/src/
-cp osr/port/cpl_string.* osr/src/
-cp osr/port/cplstring.* osr/src/
-cp osr/port/cplstringlist.* osr/src/
-cp osr/port/cpl_vsisimple.* osr/src/
-cp osr/port/cpl_http.* osr/src/
-cp osr/port/cplgetsymbol.* osr/src/
-cp osr/port/cpl_multiproc.* osr/src/
-cp osr/port/cpl_csv.* osr/src/
-cp osr/port/cpl_findfile.* osr/src/
-cp osr/port/cpl_path.* osr/src/
-cp osr/port/cpl_vsil_unix_stdio_64.* osr/src/
-cp osr/port/cpl_strtod.* osr/src/
-cp osr/port/cpl_port.h osr/src/
-cp osr/port/cpl_vsi.h osr/src/
-cp osr/port/gdal_csv.h osr/src/
-cp osr/port/cpl_vsi_virtual.h osr/src/
-cp osr/port/cpl_minixml.h osr/src/
-cp osr/port/cpl_atomic_ops.h osr/src/
-cp osr/port/ osr/src/
-cp osr/port/ osr/src/
-cp osr/port/ osr/src/
-cp osr/port/ osr/src/
-cp osr/port/ osr/src/
+# cpl
+cp osr/port/*.h osr/src/
+cp osr/port/*.cpp osr/src/
+rm osr/src/cpl_odbc.cpp
+rm osr/src/cpl_vsil_gzip.cpp
+rm osr/src/cpl_minizip_ioapi.cpp
+rm osr/src/cpl_minizip_unzip.cpp
+rm osr/src/cpl_minizip_zip.cpp
+rm osr/src/cpl_win32ce_api.cpp
+rm osr/src/vsipreload.cpp
+rm osr/src/cpl_vsil_simple.cpp
