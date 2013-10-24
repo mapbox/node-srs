@@ -1,5 +1,10 @@
 # changelog
 
+0.3.6
+
+ - Build fixes to avoid possible undefined symbol errors are runtime on ubuntu linux
+ - Additional travis.ci testing of 32bit builds
+
 0.3.5
 
  - Minor test fixes to work with variable external gdal versions
