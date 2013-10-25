@@ -33,3 +33,4 @@ rm osr/src/cpl_minizip_zip.cpp
 rm osr/src/cpl_win32ce_api.cpp
 rm osr/src/vsipreload.cpp
 rm osr/src/cpl_vsil_simple.cpp
+rm osr/src/xmlreformat.cpp
