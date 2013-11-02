@@ -1,5 +1,9 @@
 # changelog
 
+0.3.7
+
+ - Build fix for python3 (#33)
+
 0.3.6
 
  - Build fixes to avoid possible undefined symbol errors are runtime on ubuntu linux

@@ -19,8 +19,8 @@
         }]
       ],
       'sources': [
-        '<!@(python -c "import glob;print \' \'.join(glob.glob(\'osr/src/*.c\'))")',
-        '<!@(python -c "import glob;print \' \'.join(glob.glob(\'osr/src/*.cpp\'))")'
+        '<!@(python -c "import glob;print(\' \'.join(glob.glob(\'osr/src/*.c\')))")',
+        '<!@(python -c "import glob;print(\' \'.join(glob.glob(\'osr/src/*.cpp\')))")'
       ],
       'defines': [
         "_FILE_OFFSET_BITS=64",
