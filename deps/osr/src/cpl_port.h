@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_port.h 26232 2013-07-29 08:48:50Z rouault $
+ * $Id: cpl_port.h 26569 2013-10-29 23:51:12Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Author:   Frank Warmerdam, warmerdam@pobox.com
@@ -552,6 +552,13 @@ static char *cvsid_aw() { return( cvsid_aw() ? ((char *) NULL) : cpl_cvsid ); }
 #endif
 #else
 #  define CPL_CVSID(string)
+#endif
+
+/* Null terminated variadic */
+#if defined(__GNUC__) && __GNUC__ >= 4 && !defined(DOXYGEN_SKIP)
+#   define CPL_NULL_TERMINATED     __attribute__((__sentinel__))
+#else
+#   define CPL_NULL_TERMINATED
 #endif
 
 #if defined(__GNUC__) && __GNUC__ >= 3 && !defined(DOXYGEN_SKIP)

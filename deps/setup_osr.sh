@@ -4,7 +4,7 @@ cd osr
 svn co https://svn.osgeo.org/gdal/trunk/gdal/port
 svn co https://svn.osgeo.org/gdal/trunk/gdal/ogr
 svn co https://svn.osgeo.org/gdal/trunk/gdal/data
-cp data/* 
+cp data/*.{csv,txt,wkt} ../../lib/srs_data/
 rm -rf ogr/ogrsf_frmts
 rm -rf ogr/wcts
 cd ../
@@ -34,3 +34,7 @@ rm osr/src/cpl_win32ce_api.cpp
 rm osr/src/vsipreload.cpp
 rm osr/src/cpl_vsil_simple.cpp
 rm osr/src/xmlreformat.cpp
+#cleanup
+#rm -rf osr/port
+#rm -rf osr/data
+#rm -rf osr/ogr
