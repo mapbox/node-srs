@@ -4,7 +4,7 @@
       
 This module tries its best to understand your projections, also known as "spatial reference systems".
   
-`node-srs` supports parsing a variety of textual representations of projections, like the formats known as `OGC WKT`, `ESRI WKT`, `OGC CRS URN`, or `proj4`. It is `ESRI WKT` that lives inside the `.prj` files that come with shapefiles and usually `OGC CRS URN` that optionally lives inside the `crs` property inside of GeoJSON files. TileMil - through Mapnik - needs the `proj4` representation to create coordinate transformations between two projections in order to reproject vector or raster data on the fly.
+`node-srs` supports parsing a variety of textual representations of projections, like the formats known as `OGC WKT`, `ESRI WKT`, `OGC CRS URN`, or `proj4`. It is `ESRI WKT` that lives inside the `.prj` files that come with shapefiles and usually `OGC CRS URN` that optionally lives inside the `crs` property inside of GeoJSON files. TileMill - through Mapnik - needs the `proj4` representation to create coordinate transformations between two projections in order to reproject vector or raster data on the fly.
 
 `node-srs` does not support looking for, or detecting, projection information in formats like GeoTIFF, PostGIS, or SQLite. Rather for those formats you would need to extract the projection information yourself and then pass it to `node-srs`.
 
