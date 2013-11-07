@@ -1,5 +1,5 @@
---- p	2013-11-06 17:33:55.000000000 -0800
-+++ osr/src/ogr_p.h	2013-11-06 17:33:58.000000000 -0800
+--- osr/ogr/ogr_p.h	2013-11-06 17:46:39.000000000 -0800
++++ osr/src/ogr_p.h	2013-11-06 17:44:21.000000000 -0800
 @@ -39,8 +39,8 @@
  #include "cpl_conv.h"
  #include "cpl_minixml.h"
@@ -20,13 +20,13 @@
  void OGRFormatDouble( char *pszBuffer, int nBufferLen, double dfVal, char chDecimalSep, int nPrecision = 15 );
  
  /* -------------------------------------------------------------------- */
-@@ -110,6 +108,7 @@
- extern const swq_field_type SpecialFieldTypes[SPECIAL_FIELD_COUNT];
- #endif
+@@ -94,6 +92,7 @@
+ /* General utility option processing. */
+ int CPL_DLL OGRGeneralCmdLineProcessor( int nArgc, char ***ppapszArgv, int nOptions );
  
 +#endif
  /************************************************************************/
- /*     Some SRS related stuff, search in SRS data files.                */
+ /*     Support for special attributes (feature query and selection)     */
  /************************************************************************/
 @@ -123,19 +122,21 @@
  

@@ -109,7 +109,6 @@ extern const char* SpecialFieldNames[SPECIAL_FIELD_COUNT];
 extern const swq_field_type SpecialFieldTypes[SPECIAL_FIELD_COUNT];
 #endif
 
-#endif
 /************************************************************************/
 /*     Some SRS related stuff, search in SRS data files.                */
 /************************************************************************/
