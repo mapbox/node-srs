@@ -1,7 +1,12 @@
-
 # Node-Srs
       
-  Bindings to libosr for handling spatial references in [node](http://nodejs.org).
+This module tries its best to understand your projections, also known as "spatial reference systems".
+  
+`node-srs` supports parsing a variety of textual representations of projections, like the formats known as `OGC WKT`, `ESRI WKT`, `OGC CRS URN`, or `proj4`. It is `ESRI WKT` that lives inside the `.prj` files that come with shapefiles and usually `OGC CRS URN` that optionally lives inside the `crs` property inside of GeoJSON files. TileMil - through Mapnik - needs the `proj4` representation to create coordinate transformations between two projections in order to reproject vector or raster data on the fly.
+
+`node-srs` does not support looking for, or detecting, projection information in formats like GeoTIFF, PostGIS, or SQLite. Rather for those formats you would need to extract the projection information yourself and then pass it to `node-srs`.
+
+`node-srs` works overtime to try determine if your projection looks like `web mercator` (epsg:3857) or `wgs84` (epsg:4326) and if so returns the canonical representations of these projections (according to @springmeyer). This ensures applications like TileMill can avoid uneeded reprojection. It is common for data out in the wild in web mercator projection to store slighly different projection strings in WKT based on the software that created the files. `node-srs` ensures a consistent final `proj4` representation is returned for all of the variety of representations of web mercator.
 
 [![Build Status](https://secure.travis-ci.org/springmeyer/node-srs.png)](http://travis-ci.org/springmeyer/node-srs)
 
