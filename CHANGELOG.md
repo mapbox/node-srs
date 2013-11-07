@@ -1,5 +1,9 @@
 # changelog
 
+0.3.8
+
+ - Build fixes for windows
+
 0.3.7
 
  - Build fix for python3 (#33)
