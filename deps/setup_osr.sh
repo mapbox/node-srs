@@ -8,7 +8,8 @@ cp data/*.{csv,txt,wkt} ../../lib/srs_data/
 rm -rf ogr/ogrsf_frmts
 rm -rf ogr/wcts
 cd ../
-patch osr/ogr/ogr_srs_proj4.cpp < ogr_srs_proj4.diff
+patch osr/src/ogr_srs_proj4.cpp < ogr_srs_proj4.diff
+patch osr/src/ogr_p.h < ogr_p.diff
 mkdir osr/src
 wget http://svn.osgeo.org/gdal/trunk/gdal/gcore/gdal_version.h
 mv gdal_version.h osr/src/gdal_version.h

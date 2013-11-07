@@ -39,8 +39,8 @@
 #include "cpl_conv.h"
 #include "cpl_minixml.h"
 
-#include "ogr_core.h"
-#include "ogr_geometry.h"
+//#include "ogr_core.h"
+//#include "ogr_geometry.h"
 
 #ifdef CPL_MSB 
 #  define OGR_SWAP(x)   (x == wkbNDR)
@@ -64,8 +64,6 @@ const char CPL_DLL * OGRWktReadPoints( const char * pszInput,
                                        int * pnReadPoints );
 
 void CPL_DLL OGRMakeWktCoordinate( char *, double, double, double, int );
-
-#endif
 
 void OGRFormatDouble( char *pszBuffer, int nBufferLen, double dfVal, char chDecimalSep, int nPrecision = 15 );
 
@@ -94,6 +92,7 @@ int OGRCompareDate(   OGRField *psFirstTuple,
 /* General utility option processing. */
 int CPL_DLL OGRGeneralCmdLineProcessor( int nArgc, char ***ppapszArgv, int nOptions );
 
+#endif
 /************************************************************************/
 /*     Support for special attributes (feature query and selection)     */
 /************************************************************************/
@@ -110,6 +109,7 @@ extern const char* SpecialFieldNames[SPECIAL_FIELD_COUNT];
 extern const swq_field_type SpecialFieldTypes[SPECIAL_FIELD_COUNT];
 #endif
 
+#endif
 /************************************************************************/
 /*     Some SRS related stuff, search in SRS data files.                */
 /************************************************************************/
@@ -123,19 +123,21 @@ OGRErr CPL_DLL OGRCheckPermutation(int* panPermutation, int nSize);
 
 /* GML related */
 
+/*
 OGRGeometry *GML2OGRGeometry_XMLNode( const CPLXMLNode *psNode,
                                       int bGetSecondaryGeometryOption,
                                       int nRecLevel = 0,
                                       int bIgnoreGSG = FALSE,
                                       int bOrientation = TRUE,
                                       int bFaceHoleNegative = FALSE );
+*/
 
 /************************************************************************/
 /*                        PostGIS EWKB encoding                         */
 /************************************************************************/
 
-OGRGeometry CPL_DLL *OGRGeometryFromEWKB( GByte *pabyWKB, int nLength, int* pnSRID );
-OGRGeometry CPL_DLL *OGRGeometryFromHexEWKB( const char *pszBytea, int* pnSRID );
-char CPL_DLL * OGRGeometryToHexEWKB( OGRGeometry * poGeometry, int nSRSId );
+//OGRGeometry CPL_DLL *OGRGeometryFromEWKB( GByte *pabyWKB, int nLength, int* pnSRID );
+//OGRGeometry CPL_DLL *OGRGeometryFromHexEWKB( const char *pszBytea, int* pnSRID );
+//char CPL_DLL * OGRGeometryToHexEWKB( OGRGeometry * poGeometry, int nSRSId );
 
 #endif /* ndef OGR_P_H_INCLUDED */
