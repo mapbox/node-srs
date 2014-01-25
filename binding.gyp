@@ -8,9 +8,6 @@
     {
       'target_name': '_srs',
       'conditions': [
-        ['runtime_link == "static"', {
-            'libraries': ['<!@(gdal-config --dep-libs)']
-        }],
         ['shared_gdal == "false"',
         {
             'dependencies': [
@@ -18,6 +15,11 @@
             ]
         },
         {
+           'conditions': [
+               ['runtime_link == "static"', {
+                  'libraries': ['<!@(gdal-config --dep-libs)']
+              }],
+           ],
            'libraries' : ['<!@(gdal-config --libs)'],
             'cflags_cc' : ['<!@(gdal-config --cflags)'],
             'xcode_settings': {
