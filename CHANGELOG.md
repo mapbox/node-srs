@@ -1,5 +1,9 @@
 # changelog
 
+0.3.10
+
+ - Improved support for topojson
+
 0.3.9
 
  - `--runtime_link` option fixed to only apply when `--shared_gdal` is passed.
