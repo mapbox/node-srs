@@ -11,7 +11,7 @@ describe('OSGB 1936', function() {
         assert.equal(esri_result.esri,true);
     });
 
-    // https://github.com/springmeyer/node-srs/issues/25
+    // https://github.com/mapbox/node-srs/issues/25
     it('should detect OGC format for OSGB 1936 / British National Grid', function() {
         var ogc_srs = fs.readFileSync('./test/data/27700_ogc_wkt.prj').toString();
         var ogc = srs.parse(ogc_srs);
@@ -24,7 +24,7 @@ describe('OSGB 1936', function() {
         //assert.equal(ogc.proj4,'+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs');
     });
 
-    // https://github.com/springmeyer/node-srs/issues/25
+    // https://github.com/mapbox/node-srs/issues/25
     it('should detect correct proj4 for ESRI format for OSGB 1936 / British National Grid', function() {
         var esri_srs = fs.readFileSync('./test/data/27700_esri_wkt.prj').toString();
         // parse by forcing ESRI:: prepend

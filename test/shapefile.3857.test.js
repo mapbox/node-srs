@@ -41,7 +41,7 @@ describe('Mercator', function() {
 
     */
 
-    // https://github.com/springmeyer/node-srs/issues/27
+    // https://github.com/mapbox/node-srs/issues/27
     it('should detect qgis/ogr wkt', function() {
         var val = fs.readFileSync('./test/data/3857-ogr-1.10.0-wkt.prj').toString();
         var parsed = srs.parse(val);

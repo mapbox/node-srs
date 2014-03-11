@@ -1,6 +1,6 @@
 # Node-Srs
 
-[![Build Status](https://secure.travis-ci.org/springmeyer/node-srs.png)](http://travis-ci.org/springmeyer/node-srs)
+[![Build Status](https://secure.travis-ci.org/mapbox/node-srs.png)](http://travis-ci.org/mapbox/node-srs)
       
 This module tries its best to understand your projections, also known as "spatial reference systems". It works similiarly to [gdalsrsinfo](http://www.gdal.org/gdalsrsinfo.html)
   
@@ -54,7 +54,7 @@ Detect a WKT string as WGS84:
 
 From source:
 
-    git clone git://github.com/springmeyer/node-srs.git
+    git clone git://github.com/mapbox/node-srs.git
     cd node-srs
     npm install
 

@@ -4,12 +4,12 @@
   "main"          : "./lib/index.js",
   "description"   : "Spatial reference library for node",
   "keywords"      : ["map", "projection", "spatialreference", "srid", "proj4", "mercator"],
-  "url"           : "http://github.com/springmeyer/node-srs",
+  "url"           : "http://github.com/mapbox/node-srs",
   "repository" : {
            "type" : "git",
-           "url"  : "git://github.com/springmeyer/node-srs.git" 
+           "url"  : "git://github.com/mapbox/node-srs.git"
   },
-  "author"        : "Dane Springmeyer <dane@dbsgeo.com>",
+  "author"        : "Dane Springmeyer <dane@mapbox.com>",
   "licenses"      : ["BSD"],
   "engines": {
     "node": ">= 0.6.13"
