@@ -1,5 +1,10 @@
 # changelog
 
+0.3.11
+
+ - Removed binary stripping on OS X which may cause link problems on mavericks
+ - Move to Mapbox organization
+
 0.3.10
 
  - Improved support for topojson

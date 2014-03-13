@@ -15,10 +15,7 @@
                 'GCC_OPTIMIZATION_LEVEL': 's',
                 'GCC_GENERATE_DEBUGGING_SYMBOLS': 'NO',
                 'DEAD_CODE_STRIPPING':'YES',
-                'GCC_INLINES_ARE_PRIVATE_EXTERN':'YES',
-                'OTHER_LDFLAGS': [
-                    '-s' # warns 'option -s is obsolete and being ignored' but actually works
-                ]
+                'GCC_INLINES_ARE_PRIVATE_EXTERN':'YES'
               },
               'ldflags': [
                     '-Wl,-s'
