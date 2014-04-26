@@ -15,8 +15,6 @@ install:
   - cmd: SET PATH=c:\python27;%PATH%
   - npm install --build-from-source
   - npm install mocha
-  - node lib/srs.js
-  - cmd: node lib/srs.js
   - npm test
 
 build: OFF

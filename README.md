@@ -1,7 +1,9 @@
 # Node-Srs
 
-[![Build Status](https://secure.travis-ci.org/mapbox/node-srs.png)](http://travis-ci.org/mapbox/node-srs)
-[![Build status](https://ci.appveyor.com/api/projects/status/m0qrfj79nbsoe5gb)](https://ci.appveyor.com/project/springmeyer/node-srs)
+
+Linux: [![Build Status](https://secure.travis-ci.org/mapbox/node-srs.png)](http://travis-ci.org/mapbox/node-srs)
+
+Windows: [![Build status](https://ci.appveyor.com/api/projects/status/m0qrfj79nbsoe5gb)](https://ci.appveyor.com/project/springmeyer/node-srs)
 
 This module tries its best to understand your projections, also known as "spatial reference systems". It works similiarly to [gdalsrsinfo](http://www.gdal.org/gdalsrsinfo.html)
   
