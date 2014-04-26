@@ -1,7 +1,8 @@
 # Node-Srs
 
 [![Build Status](https://secure.travis-ci.org/mapbox/node-srs.png)](http://travis-ci.org/mapbox/node-srs)
-      
+[![Build status](https://ci.appveyor.com/api/projects/status/m0qrfj79nbsoe5gb)](https://ci.appveyor.com/project/springmeyer/node-srs)
+
 This module tries its best to understand your projections, also known as "spatial reference systems". It works similiarly to [gdalsrsinfo](http://www.gdal.org/gdalsrsinfo.html)
   
 `node-srs` supports parsing a variety of textual representations of projections, like the formats known as `OGC WKT`, `ESRI WKT`, `OGC CRS URN`, or `proj4`. It is `ESRI WKT` that lives inside the `.prj` files that come with shapefiles and usually `OGC CRS URN` that optionally lives inside the `crs` property inside of GeoJSON files. TileMill - through Mapnik - needs the `proj4` representation to create coordinate transformations between two projections in order to reproject vector or raster data on the fly.
