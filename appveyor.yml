@@ -1,5 +1,6 @@
-platform:
+platforms:
   - x64
+  - x32
 
 environment:
   matrix:
@@ -10,16 +11,8 @@ install:
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
   - node --version
   - npm --version
-
-build_script:
   - npm install --build-from-source --msvs_version=2013
   - npm test
-  #- cmd: SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
-  #- cmd: SET PATH=c:\python27;%PATH%
-
-on_success:
-  # test installing from binary package works
-  - cmd: ECHO "ON SUCCESS:"
 
 build: OFF
 
