@@ -1,13 +1,6 @@
 {
   'target_defaults': {
       'default_configuration': 'Release',
-      'msvs_settings': {
-          'VCCLCompilerTool': {
-              'ExceptionHandling': 1, # /EHsc
-              'RuntimeTypeInfo': 'true', # /GR
-              'RuntimeLibrary': '2' # /MD
-          }
-      },
       'configurations': {
           'Debug': {
               'cflags_cc!': ['-O3', '-Os', '-DNDEBUG'],
@@ -15,6 +8,12 @@
                 'OTHER_CPLUSPLUSFLAGS!':['-O3', '-Os', '-DNDEBUG'],
                 'GCC_OPTIMIZATION_LEVEL': '0',
                 'GCC_GENERATE_DEBUGGING_SYMBOLS': 'YES'
+              },
+              'msvs_settings': {
+                  'VCCLCompilerTool': {
+                      'ExceptionHandling': 1, # /EHsc
+                      'RuntimeTypeInfo': 'true' # /GR
+                  }
               }
           },
           'Release': {
@@ -26,7 +25,13 @@
               },
               'ldflags': [
                     '-Wl,-s'
-              ]
+              ],
+              'msvs_settings': {
+                  'VCCLCompilerTool': {
+                      'ExceptionHandling': 1, # /EHsc
+                      'RuntimeTypeInfo': 'true' # /GR
+                  }
+              }
           }
       }
   }
