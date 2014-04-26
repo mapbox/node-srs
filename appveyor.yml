@@ -11,7 +11,7 @@ install:
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
   - node --version
   - npm --version
-  - npm install --build-from-source --msvs_version=2013
+  - npm install --build-from-source
   - npm test
 
 build: OFF
