@@ -16,6 +16,7 @@ install:
   - npm install --build-from-source
   - npm install mocha
   - node lib/srs.js
+  - cmd: node lib/srs.js
   - npm test
 
 build: OFF
