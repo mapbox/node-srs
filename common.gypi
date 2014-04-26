@@ -1,6 +1,13 @@
 {
   'target_defaults': {
       'default_configuration': 'Release',
+      'msvs_settings': {
+          'VCCLCompilerTool': {
+              'ExceptionHandling': 1, # /EHsc
+              'RuntimeTypeInfo': 'true', # /GR
+              'RuntimeLibrary': '2' # /MD
+          }
+      }
       'configurations': {
           'Debug': {
               'cflags_cc!': ['-O3', '-Os', '-DNDEBUG'],
