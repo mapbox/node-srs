@@ -7,7 +7,7 @@
               'RuntimeTypeInfo': 'true', # /GR
               'RuntimeLibrary': '2' # /MD
           }
-      }
+      },
       'configurations': {
           'Debug': {
               'cflags_cc!': ['-O3', '-Os', '-DNDEBUG'],
