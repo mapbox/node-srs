@@ -1,7 +1,7 @@
 # Node-Srs
 
 
-Linux: [![Build Status](https://secure.travis-ci.org/mapbox/node-srs.png)](http://travis-ci.org/mapbox/node-srs)
+Linux: [![Build Status](https://secure.travis-ci.org/mapbox/node-srs.svg)](http://travis-ci.org/mapbox/node-srs)
 
 Windows: [![Build status](https://ci.appveyor.com/api/projects/status/m0qrfj79nbsoe5gb)](https://ci.appveyor.com/project/springmeyer/node-srs)
 
