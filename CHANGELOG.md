@@ -1,5 +1,11 @@
 # changelog
 
+0.3.12
+
+ - Fixed generation of valid `srs_settings.js` on windows (#39)
+ - Fixed detection of some ESRI variant projections (#38)
+ - Added preliminary appveyor.yml for continuous builds on windows
+
 0.3.11
 
  - Removed binary stripping on OS X which may cause link problems on mavericks
