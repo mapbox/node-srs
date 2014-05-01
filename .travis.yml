@@ -7,9 +7,6 @@ node_js:
 before_install:
  - sudo apt-get -qq update
 
-install:
- - npm install mocha
-
 before_script:
  - npm install
  - npm test
