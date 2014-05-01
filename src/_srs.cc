@@ -62,7 +62,7 @@ static Handle<Value> parse(const Arguments& args)
     bool error = false;
 
     Handle<Value> err;
-    
+
     if( oSRS.SetFromUserInput(wkt_char) != OGRERR_NONE )
     {
         error = true;
@@ -74,7 +74,7 @@ static Handle<Value> parse(const Arguments& args)
         // try again to import from ESRI
         oSRS.Clear();
         char **wkt_lines = NULL;
-        wkt_lines = CSLTokenizeString2( wkt_char, " \t\n", 
+        wkt_lines = CSLTokenizeString2( wkt_char, " \t\n",
                                 CSLT_HONOURSTRINGS | CSLT_ALLOWEMPTYTOKENS );
         if( oSRS.importFromESRI(wkt_lines) != OGRERR_NONE )
         {
@@ -99,18 +99,18 @@ static Handle<Value> parse(const Arguments& args)
             result->Set(String::NewSymbol("esri"), Boolean::New(false));
         }
     }
-    
+
     if (error)
         return err;
-    
+
     char  *srs_output = NULL;
     if( oSRS.Validate() == OGRERR_NONE)
         result->Set(String::NewSymbol("valid"), Boolean::New(true));
     else if (oSRS.Validate() == OGRERR_UNSUPPORTED_SRS)
-        result->Set(String::NewSymbol("valid"), Boolean::New(false));    
+        result->Set(String::NewSymbol("valid"), Boolean::New(false));
     else
         result->Set(String::NewSymbol("valid"), Boolean::New(false));
-    
+
     // TODO - trim output of proj4 result
     if (oSRS.exportToProj4( &srs_output ) != OGRERR_NONE )
     {
@@ -120,7 +120,7 @@ static Handle<Value> parse(const Arguments& args)
         // for now let proj4 errors be non-fatal so that some info can be known...
         //std::clog << s.str();
         //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
-        
+
     }
     else
     {
@@ -194,7 +194,7 @@ extern "C" {
   {
 
     NODE_SET_METHOD(target, "_parse", parse);
-    
+
     // versions of deps
     Local<Object> versions = Object::New();
     versions->Set(String::NewSymbol("node"), String::New(NODE_VERSION+1));
