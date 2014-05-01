@@ -148,10 +148,10 @@
 #define HOST_FILLORDER FILLORDER_LSB2MSB
 
 /* Define as const if the declaration of iconv() needs const. */
-#define ICONV_CONST 
+#define ICONV_CONST const
 
 /* For .cpp files, define as const if the declaration of iconv() needs const. */
-#define ICONV_CPP_CONST const
+#define ICONV_CPP_CONST
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
