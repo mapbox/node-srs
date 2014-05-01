@@ -148,10 +148,10 @@
 #define HOST_FILLORDER FILLORDER_LSB2MSB
 
 /* Define as const if the declaration of iconv() needs const. */
-#define ICONV_CONST 
+#define ICONV_CONST const
 
 /* For .cpp files, define as const if the declaration of iconv() needs const. */
-#define ICONV_CPP_CONST 
+#define ICONV_CPP_CONST const
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
@@ -203,10 +203,10 @@
 /* #undef VSI_NEED_LARGEFILE64_SOURCE */
 
 /* Define to name of 64bit stat function */
-#define VSI_STAT64 stat64
+#define VSI_STAT64 stat
 
 /* Define to name of 64bit stat structure */
-#define VSI_STAT64_T stat64
+#define VSI_STAT64_T stat
 
 /* Define to 1 if your processor stores words with the most significant byte
    first (like Motorola and SPARC, unlike Intel and VAX). */

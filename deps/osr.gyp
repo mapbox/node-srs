@@ -12,7 +12,13 @@
           'include_dirs': [
              './win-include'
           ]
-        }, {
+        }],
+        [ 'OS=="freebsd"', {
+          'include_dirs': [
+             './bsd-include'
+          ]
+        }],
+        [ 'OS!="freebsd" and OS!="win"', {
           'include_dirs': [
              './unix-include'
           ]
