@@ -151,7 +151,7 @@
 #define ICONV_CONST const
 
 /* For .cpp files, define as const if the declaration of iconv() needs const. */
-#define ICONV_CPP_CONST
+#define ICONV_CPP_CONST const
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
