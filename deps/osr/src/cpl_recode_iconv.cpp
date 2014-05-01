@@ -97,7 +97,7 @@ char *CPLRecodeIconv( const char *pszSource,
     size_t  nDstCurLen = MAX(CPL_RECODE_DSTBUF_SIZE, nSrcLen + 1);
     size_t  nDstLen = nDstCurLen;
     char    *pszDestination = (char *)CPLCalloc( nDstCurLen, sizeof(char) );
-    const char    *pszDstBuf = pszDestination;
+    ICONV_CPP_CONST char    *pszDstBuf = pszDestination;
 
     while ( nSrcLen > 0 )
     {
