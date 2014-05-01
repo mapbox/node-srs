@@ -1,5 +1,11 @@
 # changelog
 
+0.4.0
+
+ - Now builds on FreeBSD
+ - `srs.jsonCrs` added for detecting projection inside JSON object representing GeoJSON. Pass the result to `srs.parse`
+ - `srs.parse` no longer supports being passed a filepath to a GeoJSON.
+
 0.3.12
 
  - Fixed generation of valid `srs_settings.js` on windows (#39)
