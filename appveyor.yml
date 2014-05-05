@@ -17,9 +17,15 @@ install:
   - npm --version
   # ensure python is on path so that srs_settings.js are generated
   - SET PATH=c:\python27;%PATH%
+  # ensure MSBuild 12 is found
+  - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
+  # install node-gyp locally for node 0.8 build
+  # otherwise node-gyp that comes with node is used and doesn't yet know about --msvs_version=2013
+  - npm install node-gyp
   - npm install --build-from-source --msvs_version=2013
   - npm install mocha
   - npm test
+  - node-pre-gyp package publish
 
 build: OFF
 
