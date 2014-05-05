@@ -24,6 +24,7 @@ install:
   # install node-gyp locally for node 0.8 build
   # otherwise node-gyp that comes with node is used and doesn't yet know about --msvs_version=2013
   - npm install node-gyp
+  - npm install aws-sdk
   - npm install --build-from-source --msvs_version=2013
   - npm install mocha
   - npm test
