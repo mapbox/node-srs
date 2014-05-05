@@ -2,6 +2,10 @@ environment:
   matrix:
     - nodejs_version: 0.8
     - nodejs_version: 0.10
+  node_pre_gyp_accessKeyId:
+    secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
+  node_pre_gyp_secretAccessKey:
+    secure: 8f5eTxMHpuVGHon2wbqrZuq3wzQfEuXMCcOyafBLza0T2VIOoBjbjDbgRbyRIzsT
 
 platform:
   - x64
