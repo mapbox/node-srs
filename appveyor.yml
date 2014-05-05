@@ -12,8 +12,8 @@ install:
   - node --version
   - npm --version
   # ensure python is on path so that srs_settings.js are generated
-  - cmd: SET PATH=c:\python27;%PATH%
-  - npm install --build-from-source
+  - SET PATH=c:\python27;%PATH%
+  - npm install --build-from-source --msvs_version=2013
   - npm install mocha
   - npm test
 

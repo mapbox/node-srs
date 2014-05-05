@@ -57,8 +57,8 @@
       ],
       'copies': [
           {
-            'files': [ '<(PRODUCT_DIR)/_srs.node' ],
-            'destination': './lib/'
+            'files': [ '<(PRODUCT_DIR)/<(module_name).node' ],
+            'destination': '<(module_path)'
           }
       ]
     }
