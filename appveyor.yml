@@ -1,7 +1,7 @@
 environment:
   matrix:
-    - nodejs_version: 0.8
     - nodejs_version: 0.10
+    - nodejs_version: 0.8
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
   node_pre_gyp_secretAccessKey:
