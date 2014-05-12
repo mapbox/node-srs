@@ -28,7 +28,9 @@ install:
   - npm install --build-from-source --msvs_version=2013
   - npm install mocha
   - npm test
-  - node-pre-gyp package publish
+  #make commit message env var shorter
+  - SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
+  - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp package publish
 
 build: OFF
 
