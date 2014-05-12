@@ -30,6 +30,7 @@ install:
   - npm test
   # make commit message env var shorter
   - SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
+  - ECHO %CM%
   - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp package publish 2>&1
 
 build: OFF
