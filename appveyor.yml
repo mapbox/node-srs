@@ -7,6 +7,12 @@ environment:
   node_pre_gyp_secretAccessKey:
     secure: 8f5eTxMHpuVGHon2wbqrZuq3wzQfEuXMCcOyafBLza0T2VIOoBjbjDbgRbyRIzsT
 
+branches:
+  # whitelist
+  only:
+    #- master
+    - node-pre-gyp_appveyor
+
 platform:
   - x64
 #  - x86
