@@ -1,21 +1,21 @@
 environment:
   matrix:
     - nodejs_version: 0.10
-#    - nodejs_version: 0.8
+    - nodejs_version: 0.8
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
   node_pre_gyp_secretAccessKey:
     secure: 8f5eTxMHpuVGHon2wbqrZuq3wzQfEuXMCcOyafBLza0T2VIOoBjbjDbgRbyRIzsT
 
-branches:
+#branches:
   # whitelist
-  only:
+#  only:
     #- master
-    - node-pre-gyp_appveyor
+#    - node-pre-gyp_appveyor
 
 platform:
   - x64
-#  - x86
+  - x86
 
 install:
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)

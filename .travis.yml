@@ -28,6 +28,7 @@ before_install:
 
 install:
  # test building from source
+ - npm install aws-sdk
  - npm install --build-from-source
  - npm test
  - node-pre-gyp package testpackage
