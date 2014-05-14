@@ -1,6 +1,6 @@
 environment:
   matrix:
-    - nodejs_version: 0.10
+    - nodejs_version: 0.10.28
 #    - nodejs_version: 0.8
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
@@ -8,17 +8,27 @@ environment:
     secure: 8f5eTxMHpuVGHon2wbqrZuq3wzQfEuXMCcOyafBLza0T2VIOoBjbjDbgRbyRIzsT
 
 #branches:
-  # whitelist
+#  whitelist
 #  only:
-    #- master
+#    - master
 #    - node-pre-gyp_appveyor
 
 platform:
   - x64
-#  - x86
+    forcex86:
+  - x86
+    forcex86: -forcex86
+
+# this is how to allow failing jobs in the matrix
+matrix:
+  allow_failures:
+    - platform: x86
+    - platform: x64
 
 install:
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
+  # always installs x86
+  #- ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
+  - cinst nodejs -Version %nodejs_version% %forcex86%
   - node --version
   - node -e "console.log('node version: ' + process.version + ', architecture: ' + process.arch);"
   - npm --version
