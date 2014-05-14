@@ -28,7 +28,7 @@ install:
   #- ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
   - cinst nodejs -Version %nodejs_version%
   - node --version
-  - node -e "console.log('node version: ' + process.version + ', architecture ' + process.arch);"
+  - node -e "console.log('node version ' + process.version + ', architecture ' + process.arch);"
   - npm --version
   # ensure python is on path so that srs_settings.js are generated
   - SET PATH=c:\python27;%PATH%
