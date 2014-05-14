@@ -15,9 +15,7 @@ environment:
 
 platform:
   - x64
-    forcex86: 
   - x86
-    forcex86: -forcex86
 
 # this is how to allow failing jobs in the matrix
 matrix:
@@ -28,7 +26,7 @@ matrix:
 install:
   # always installs x86
   #- ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - cinst nodejs -Version %nodejs_version% %forcex86%
+  - cinst nodejs -Version %nodejs_version%
   - node --version
   - node -e "console.log('node version: ' + process.version + ', architecture: ' + process.arch);"
   - npm --version
