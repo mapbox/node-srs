@@ -33,6 +33,7 @@ install:
  - npm test
  - node-pre-gyp package testpackage
  - npm test
+ - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then node-pre-gyp unpublish publish; fi;
 
 before_script:
  # test publishing and installing from remote if
