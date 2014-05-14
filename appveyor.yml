@@ -26,6 +26,8 @@ matrix:
 install:
   # always installs x86
   #- ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
+  - ps: Get-Command "Update-NodeJsInstallation" | Format-List *
+  - ps: Get-Command "Get-NodeJsLatestBuild" | Format-List *
   - cinst nodejs -Version %nodejs_version%
   - node --version
   - node -e "console.log('node version ' + process.version + ', architecture ' + process.arch);"
