@@ -1,7 +1,7 @@
 environment:
   matrix:
-    - nodejs_version: 0.10.28
-#    - nodejs_version: 0.8
+    - nodejs_version: 0.10
+    - nodejs_version: 0.8
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
   node_pre_gyp_secretAccessKey:
@@ -14,7 +14,7 @@ environment:
 #    - node-pre-gyp_appveyor
 
 platform:
-  - x64
+#  - x64
   - x86
 
 # this is how to allow failing jobs in the matrix
@@ -25,10 +25,13 @@ matrix:
 
 install:
   # always installs x86
-  #- ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - ps: Get-Command "Update-NodeJsInstallation" | Format-List *
-  - ps: Get-Command "Get-NodeJsLatestBuild" | Format-List *
-  - cinst nodejs -Version %nodejs_version%
+  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
+  #- ps: Get-Command "Update-NodeJsInstallation" | Format-List *
+  #- ps: Get-Command "Get-NodeJsLatestBuild" | Format-List *
+  #- ps: Get-Command "Get-InstalledNodeJsVersion" | Format-List *
+  # not using chocolatey at the moment, don't know how to set envars depeding on platform
+  # flag: -forcex86
+  #- cinst nodejs -Version %nodejs_version%
   - node --version
   - node -e "console.log('node version ' + process.version + ', architecture ' + process.arch);"
   - npm --version
