@@ -15,7 +15,7 @@ environment:
 
 platform:
   - x64
-    forcex86:
+    forcex86: 
   - x86
     forcex86: -forcex86
 
