@@ -6,7 +6,7 @@ deps/osr/data
 deps/osr/port
 deps/osr/ogr
 lib/srs_settings.js
-lib/_srs.node
+lib/binding
 *pyc
 .sconsign.dblite
 node_modules

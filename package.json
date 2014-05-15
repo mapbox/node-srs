@@ -12,7 +12,7 @@
     "mercator"
   ],
   "binary": {
-      "module_name": "_srs",
+      "module_name": "srs",
       "module_path": "./lib/binding/{node_abi}-{platform}-{arch}",
       "remote_path": "./{module_name}/v{version}",
       "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",

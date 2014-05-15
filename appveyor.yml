@@ -14,6 +14,8 @@ environment:
 #    - node-pre-gyp_appveyor
 
 platform:
+#x64 disabled, because Update-NodeJsInstallation always installs x86
+#waiting for Feodor/AppVeyor to improve that Commandlet.
 #  - x64
   - x86
 
