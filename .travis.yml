@@ -55,8 +55,6 @@ script:
  - if [[ "$platform" == 'darwin' ]]; then brew install libzip; npm install --build-from-source --shared_libzip --shared_libzip_includes=`brew --prefix`/include --shared_libzip_libpath=`brew --prefix`/lib; fi
  # crashing for some reason on travis os x
  #- npm test
- - echo $COMMIT_MESSAGE
- - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then node-pre-gyp unpublish publish; fi;
 
 
 after_success:
