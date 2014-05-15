@@ -39,6 +39,7 @@ install:
 before_script:
  # test publishing and installing from remote if
  # [publish binary] is present in commit message
+ - echo "before_script"
  - PUBLISH_BINARY=false
  - echo $COMMIT_MESSAGE
  - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then echo yes;PUBLISH_BINARY=true; fi;
