@@ -33,7 +33,6 @@ install:
  - npm test
  - node-pre-gyp package testpackage
  - npm test
- - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then node-pre-gyp unpublish publish; fi;
 
 before_script:
  # test publishing and installing from remote if
@@ -51,6 +50,8 @@ script:
  - if [[ "$platform" == 'darwin' ]]; then brew install libzip; npm install --build-from-source --shared_libzip --shared_libzip_includes=`brew --prefix`/include --shared_libzip_libpath=`brew --prefix`/lib; fi
  # crashing for some reason on travis os x
  #- npm test
+ - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then node-pre-gyp unpublish publish; fi;
+
 
 after_success:
  # if success then query and display all published binaries
