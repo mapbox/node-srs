@@ -13,7 +13,6 @@ env:
 
 before_install:
  - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
- - echo $TRAVIS_COMMIT_MESSAGE
  - echo $COMMIT_MESSAGE
  - export PATH=`pwd`/node_modules/.bin:$PATH
  # here we set up the node version on the fly based on the matrix value.
@@ -40,6 +39,7 @@ before_script:
  # test publishing and installing from remote if
  # [publish binary] is present in commit message
  - PUBLISH_BINARY=false
+ - echo $COMMIT_MESSAGE
  - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then echo yes;PUBLISH_BINARY=true; fi;
  - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp publish info; rm -rf {build,lib/binding}; npm install --fallback-to-build=false; npm test; fi
 
@@ -52,6 +52,7 @@ script:
  - if [[ "$platform" == 'darwin' ]]; then brew install libzip; npm install --build-from-source --shared_libzip --shared_libzip_includes=`brew --prefix`/include --shared_libzip_libpath=`brew --prefix`/lib; fi
  # crashing for some reason on travis os x
  #- npm test
+ - echo $COMMIT_MESSAGE
  - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then node-pre-gyp unpublish publish; fi;
 
 
