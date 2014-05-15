@@ -12,6 +12,7 @@ env:
    - secure: 1cPR5S+Gg4JiA3j8cvjKxSY3AshM0inXzHB/i/7P/ZjnxdvQQuZ48lK0e3TFvXQVTbA0rWYYrwuo62Fb9fc9bA8hDoOU2aruoF6hcEyuAbG7ERGRRJO9g6XaZKW1G0yK18T+1X6OBP7eXNZEPxl0OqBL8l3MKO3vuGxR3+5VQ0A=
 
 before_install:
+ # echo $TRAVIS_COMMIT_MESSAGE not available yet? https://github.com/esnuco/spring-petclinic/commit/abded17c3f57cf4e611dbad613d294f1b62c0dc2
  - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
  - echo $COMMIT_MESSAGE
  - export PATH=`pwd`/node_modules/.bin:$PATH
@@ -41,6 +42,7 @@ before_script:
  - PUBLISH_BINARY=false
  - echo $COMMIT_MESSAGE
  - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then echo yes;PUBLISH_BINARY=true; fi;
+ - echo $PUBLISH_BINARY
  - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp publish info; rm -rf {build,lib/binding}; npm install --fallback-to-build=false; npm test; fi
 
 script:
