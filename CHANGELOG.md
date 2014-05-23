@@ -1,5 +1,9 @@
 # changelog
 
+0.4.1
+
+ - Now shipping binaries for OS X, Windows, and Ubuntu Linux
+
 0.4.0
 
  - Now builds on FreeBSD
