@@ -21,7 +21,7 @@ srs.node:
 
 clean:
 	rm -rf build
-	rm -f lib/_srs.node
+	rm -rf lib/binding
 
 test:
 	@PATH="./node_modules/mocha/bin:${PATH}" && NODE_PATH="./lib:$(NODE_PATH)" mocha -R spec

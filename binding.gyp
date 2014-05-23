@@ -6,7 +6,7 @@
   },
   'targets': [
     {
-      'target_name': '_srs',
+      'target_name': 'srs',
       'conditions': [
         ['shared_gdal == "false"',
         {
@@ -36,13 +36,13 @@
         'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
       },
       'sources': [
-        'src/_srs.cc'
+        'src/srs.cc'
       ],
     },
     {
       'target_name': 'action_after_build',
       'type': 'none',
-      'dependencies': [ '_srs' ],
+      'dependencies': [ 'srs' ],
       'actions': [
           {
             'action_name': 'generate_setting',
@@ -57,8 +57,8 @@
       ],
       'copies': [
           {
-            'files': [ '<(PRODUCT_DIR)/_srs.node' ],
-            'destination': './lib/'
+            'files': [ '<(PRODUCT_DIR)/<(module_name).node' ],
+            'destination': '<(module_path)'
           }
       ]
     }

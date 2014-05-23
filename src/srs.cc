@@ -204,5 +204,5 @@ extern "C" {
 
   }
 
-  NODE_MODULE(_srs, init);
+  NODE_MODULE(srs, init);
 }
