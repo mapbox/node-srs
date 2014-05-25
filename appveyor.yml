@@ -1,9 +1,17 @@
 environment:
   matrix:
-    - nodejs_version: 0.10
-      nodeplatform:
-    - nodejs_version: 0.8
+    - node1064: dummy
+      nodejs_version: 0.10
       nodeplatform: 'x64'
+    - node1032: dummy
+      nodejs_version: 0.10
+      nodeplatform: 'x86'
+    - node864: dummy
+      nodejs_version: 0.8
+      nodeplatform: 'x64'
+    - node832: dummy
+      nodejs_version: 0.8
+      nodeplatform: 'x86'
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
   node_pre_gyp_secretAccessKey:
@@ -13,20 +21,20 @@ branches:
   only:
     - master
 
-platform:
+#platform:
 #x64 disabled, because Update-NodeJsInstallation always installs x86
 #waiting for Feodor/AppVeyor to improve that Commandlet.
 #  - x64
-  - x86
+#  - x86
 
 # this is how to allow failing jobs in the matrix
-matrix:
-  allow_failures:
-    - platform: x86
-    - platform: x64
+#matrix:
+#  allow_failures:
+#    - platform: x86
+#    - platform: x64
 
 install:
-  # always installs x86
+  - cmd: echo "nodeplatform" %nodeplatform%
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version) $env:nodeplatform
   # get information about Feodor's node update scripts
   #- ps: Get-Command "Update-NodeJsInstallation" | Format-List *
