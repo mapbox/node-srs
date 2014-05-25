@@ -1,17 +1,7 @@
 environment:
   matrix:
-    - node1064: dummy
-      nodejs_version: 0.10
-      nodeplatform: 'x64'
-    - node1032: dummy
-      nodejs_version: 0.10
-      nodeplatform: 'x86'
-    - node864: dummy
-      nodejs_version: 0.8
-      nodeplatform: 'x64'
-    - node832: dummy
-      nodejs_version: 0.8
-      nodeplatform: 'x86'
+    - nodejs_version: 0.10
+    - nodejs_version: 0.8
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
   node_pre_gyp_secretAccessKey:
@@ -21,31 +11,19 @@ branches:
   only:
     - master
 
-#platform:
-#platforms disabled, node 32/64 hack with 4 env vars
-#waiting for Feodor's feedback
-#  - x64
-#  - x86
+platform:
+  - x64
+  - x86
 
 # this is how to allow failing jobs in the matrix
-#matrix:
-#  allow_failures:
-#    - platform: x86
-#    - platform: x64
+matrix:
+  allow_failures:
+    - platform: x86
+    - platform: x64
 
 install:
-  - cmd: echo "nodeplatform" %nodeplatform%
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version) $env:nodeplatform
-  # get information about Feodor's node update scripts
-  #- ps: Get-Command "Update-NodeJsInstallation" | Format-List *
-  #- ps: Get-Command "Get-NodeJsLatestBuild" | Format-List *
-  #- ps: Get-Command "Get-InstalledNodeJsVersion" | Format-List *
-  # not using chocolatey at the moment, don't know how to set envars depeding on platform
-  # cinst installs x64 as default and doesn't change path settings:
-  # node version installed before cinst is still used
-  # flag: -forcex86
-  #- cinst nodejs -Version %nodejs_version%
-  - node --version
+  - ps: Write-Output '$env:Platform:' $env:Platform
+  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version) $env:Platform
   - node -e "console.log('node version ' + process.version + ', architecture ' + process.arch);"
   - npm --version
   # ensure python is on path so that srs_settings.js are generated
