@@ -1,7 +1,9 @@
 environment:
   matrix:
     - nodejs_version: 0.10
+      nodeplatform:
     - nodejs_version: 0.8
+      nodeplatform: 'x64'
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
   node_pre_gyp_secretAccessKey:
@@ -25,7 +27,7 @@ matrix:
 
 install:
   # always installs x86
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
+  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version) $env:nodeplatform
   # get information about Feodor's node update scripts
   #- ps: Get-Command "Update-NodeJsInstallation" | Format-List *
   #- ps: Get-Command "Get-NodeJsLatestBuild" | Format-List *
