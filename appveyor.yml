@@ -22,8 +22,8 @@ branches:
     - master
 
 #platform:
-#x64 disabled, because Update-NodeJsInstallation always installs x86
-#waiting for Feodor/AppVeyor to improve that Commandlet.
+#platforms disabled, node 32/64 hack with 4 env vars
+#waiting for Feodor's feedback
 #  - x64
 #  - x86
 
