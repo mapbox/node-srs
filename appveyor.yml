@@ -1,6 +1,6 @@
 environment:
   matrix:
-    - nodejs_version: "0.11.13"
+    - nodejs_version: 0.11
     - nodejs_version: 0.10
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
