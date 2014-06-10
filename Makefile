@@ -1,34 +1,21 @@
-all: srs.node
+all: srs
 
-NPROCS:=1
-OS:=$(shell uname -s)
-
-ifeq ($(OS),Linux)
-	NPROCS:=$(shell grep -c ^processor /proc/cpuinfo)
-endif
-ifeq ($(OS),Darwin)
-	NPROCS:=$(shell sysctl -n hw.ncpu)
-endif
-
-srs.node:
-	`npm explore npm -g -- pwd`/bin/node-gyp-bin/node-gyp build
-
-32:
-	# note: requires FAT (aka duel 32 bit and 54 bit arch) node binary from .pkg
-	`npm explore npm -g -- pwd`/bin/node-gyp-bin/node-gyp configure build --target_arch=ia32
-	arch -i386 /usr/local/bin/node ./node_modules/.bin/_mocha
-
+srs:
+	PATH=`npm explore npm -g -- pwd`/bin/node-gyp-bin:./node_modules/.bin:$${PATH} && ./node_modules/.bin/node-pre-gyp build
 
 clean:
-	rm -rf build
-	rm -rf lib/binding
+	@rm -rf ./build
+	rm -rf lib/binding/
+	rm -f test/tmp/*
+	rm -rf ./build
+	rm -rf ./out
+
+rebuild:
+	@make clean
+	@./configure
+	@make
 
 test:
-	@PATH="./node_modules/mocha/bin:${PATH}" && NODE_PATH="./lib:$(NODE_PATH)" mocha -R spec
-
-check: test
-
-lint:
-	@jshint lib/*js test/*js --config=jshint.json
+	@PATH=./node_modules/mocha/bin:${PATH} && NODE_PATH=./lib:$NODE_PATH mocha -R spec
 
 .PHONY: test
