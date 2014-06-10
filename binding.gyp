@@ -38,6 +38,9 @@
       'sources': [
         'src/srs.cc'
       ],
+      "include_dirs" : [
+          "<!(node -e \"require('nan')\")"
+      ]
     },
     {
       'target_name': 'action_after_build',

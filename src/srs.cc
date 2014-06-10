@@ -3,6 +3,7 @@
 
 // node
 #include <node.h>
+#include <nan.h>
 #include <node_version.h>
 
 // stl
@@ -34,42 +35,32 @@ OGRERR_DICT = { 1 : (OGRException, "Not enough data."),
                 }
 */
 
-static Handle<Value> parse(const Arguments& args)
-{
-    HandleScope scope;
-
+NAN_METHOD(parse) {
+  NanScope();
     if (args.Length() != 1 || !args[0]->IsString())
-      return ThrowException(Exception::TypeError(
-        String::New("first argument must be srs string in any form readable by OGR, like WKT (.prj file) or a proj4 string")));
+      return NanThrowTypeError("first argument must be srs string in any form readable by OGR, like WKT (.prj file) or a proj4 string");
 
-    OGRSpatialReference oSRS;
-
-    Local<Object> result = Object::New();
-
-    result->Set(String::NewSymbol("input"), args[0]->ToString());
-    // intialize as undefined
-    result->Set(String::NewSymbol("proj4"), Undefined());
-    result->Set(String::NewSymbol("srid"), Undefined());
-    result->Set(String::NewSymbol("auth"), Undefined());
-    result->Set(String::NewSymbol("pretty_wkt"), Undefined());
-    result->Set(String::NewSymbol("esri"), Undefined());
-    result->Set(String::NewSymbol("name"), Undefined());
+    Local<Object> result = NanNew<Object>();
+    result->Set(NanNew<String>("input"), args[0]->ToString());
+    result->Set(NanNew<String>("proj4"), NanUndefined());
+    result->Set(NanNew<String>("srid"), NanUndefined());
+    result->Set(NanNew<String>("auth"), NanUndefined());
+    result->Set(NanNew<String>("pretty_wkt"), NanUndefined());
+    result->Set(NanNew<String>("esri"), NanUndefined());
+    result->Set(NanNew<String>("name"), NanUndefined());
 
     std::string wkt_string = TOSTR(args[0]->ToString());
-
     const char *wkt_char = wkt_string.data();
-
     bool error = false;
-
-    Handle<Value> err;
-
+    std::string err_msg;
+    OGRSpatialReference oSRS;
     if( oSRS.SetFromUserInput(wkt_char) != OGRERR_NONE )
     {
         error = true;
         std::ostringstream s;
         s << "OGR Error type #" << CPLE_AppDefined
           << " problem occured importing from srs wkt: " << wkt_string << ".\n";;
-        err = ThrowException(Exception::TypeError(String::New(s.str().c_str())));
+        err_msg = s.str();
 
         // try again to import from ESRI
         oSRS.Clear();
@@ -84,7 +75,7 @@ static Handle<Value> parse(const Arguments& args)
         else
         {
             error = false;
-            result->Set(String::NewSymbol("esri"), Boolean::New(true));
+            result->Set(NanNew<String>("esri"), NanNew<Boolean>(true));
         }
     }
     else
@@ -92,99 +83,78 @@ static Handle<Value> parse(const Arguments& args)
         error = false;
         if (wkt_string.substr(0,6) == "ESRI::")
         {
-            result->Set(String::NewSymbol("esri"), Boolean::New(true));
+            result->Set(NanNew<String>("esri"), NanNew<Boolean>(true));
         }
         else
         {
-            result->Set(String::NewSymbol("esri"), Boolean::New(false));
+            result->Set(NanNew<String>("esri"), NanNew<Boolean>(false));
         }
     }
 
-    if (error)
-        return err;
+    if (error) {
+        return NanThrowError(err_msg.c_str());
+    } else {
+        char  *srs_output = NULL;
+        if (oSRS.Validate() == OGRERR_NONE) {
+            result->Set(NanNew<String>("valid"), NanNew<Boolean>(true));
+        } else if (oSRS.Validate() == OGRERR_UNSUPPORTED_SRS) {
+            result->Set(NanNew<String>("valid"), NanNew<Boolean>(false));
+        } else {
+            result->Set(NanNew<String>("valid"), NanNew<Boolean>(false));
+        }
 
-    char  *srs_output = NULL;
-    if( oSRS.Validate() == OGRERR_NONE)
-        result->Set(String::NewSymbol("valid"), Boolean::New(true));
-    else if (oSRS.Validate() == OGRERR_UNSUPPORTED_SRS)
-        result->Set(String::NewSymbol("valid"), Boolean::New(false));
-    else
-        result->Set(String::NewSymbol("valid"), Boolean::New(false));
+        if (oSRS.exportToProj4( &srs_output ) == OGRERR_NONE ) {
+            // proj4 strings from osr have an uneeded trailing slash, so we trim it...
+            result->Set(NanNew<String>("proj4"), NanNew<String>(CPLString(srs_output).Trim().c_str()));
+        }
 
-    // TODO - trim output of proj4 result
-    if (oSRS.exportToProj4( &srs_output ) != OGRERR_NONE )
-    {
-        //std::ostringstream s;
-        //s << "OGR Error type #" << CPLE_AppDefined
-        //  << " problem occured when converting to proj4 format " << wkt_string << ".\n";
-        // for now let proj4 errors be non-fatal so that some info can be known...
-        //std::clog << s.str();
-        //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
+        CPLFree( srs_output );
 
+        if (oSRS.AutoIdentifyEPSG() != OGRERR_NONE )
+        {
+            // do nothing
+        }
+
+        if (oSRS.IsGeographic())
+        {
+            result->Set(NanNew<String>("is_geographic"), NanNew<Boolean>(true));
+            const char *code = oSRS.GetAuthorityCode("GEOGCS");
+            if (code) {
+                result->Set(NanNew<String>("srid"), NanNew<Integer>(atoi(code)));
+            }
+            const char *auth = oSRS.GetAuthorityName("GEOGCS");
+            if (auth) {
+                result->Set(NanNew<String>("auth"), NanNew<String>(auth));
+            }
+            const char *name = oSRS.GetAttrValue("GEOGCS");
+            if (name) {
+                result->Set(NanNew<String>("name"), NanNew<String>(name));
+            }
+        }
+        else
+        {
+            result->Set(NanNew<String>("is_geographic"), NanNew<Boolean>(false));
+            const char *code = oSRS.GetAuthorityCode("PROJCS");
+            if (code) {
+                result->Set(NanNew<String>("srid"), NanNew<Integer>(atoi(code)));
+            }
+            const char *auth = oSRS.GetAuthorityName("PROJCS");
+            if (auth) {
+                result->Set(NanNew<String>("auth"), NanNew<String>(auth));
+            }
+            const char *name = oSRS.GetAttrValue("PROJCS");
+            if (name) {
+                result->Set(NanNew<String>("name"), NanNew<String>(name));
+            }
+        }
+
+        char  *srs_output2 = NULL;
+        if (oSRS.exportToPrettyWkt( &srs_output2 , 0) == OGRERR_NONE ) {
+            result->Set(NanNew<String>("pretty_wkt"), NanNew<String>(srs_output2));
+        }
+        CPLFree(srs_output2);
+        NanReturnValue(result);
     }
-    else
-    {
-        // proj4 strings from osr have an uneeded trailing slash, so we trim it...
-        result->Set(String::NewSymbol("proj4"), String::New(CPLString(srs_output).Trim()));
-    }
-
-    CPLFree( srs_output );
-
-    if (oSRS.AutoIdentifyEPSG() != OGRERR_NONE )
-    {
-        /*std::ostringstream s;
-        s << "OGR Error type #" << CPLE_AppDefined
-          << " problem occured when attempting to auto identify epsg code " << wkt_string << ".\n";
-        std::clog << s.str();
-        */
-        //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
-    }
-
-    if (oSRS.IsGeographic())
-    {
-        result->Set(String::NewSymbol("is_geographic"), Boolean::New(true));
-        const char *code = oSRS.GetAuthorityCode("GEOGCS");
-        if (code)
-            result->Set(String::NewSymbol("srid"), Integer::New(atoi(code)));
-        const char *auth = oSRS.GetAuthorityName("GEOGCS");
-        if (auth)
-            result->Set(String::NewSymbol("auth"), String::New(auth));
-        const char *name = oSRS.GetAttrValue("GEOGCS");
-        if (name)
-            result->Set(String::NewSymbol("name"), String::New(name));
-    }
-    else
-    {
-        result->Set(String::NewSymbol("is_geographic"), Boolean::New(false));
-        const char *code = oSRS.GetAuthorityCode("PROJCS");
-        if (code)
-            result->Set(String::NewSymbol("srid"), Integer::New(atoi(code)));
-        const char *auth = oSRS.GetAuthorityName("PROJCS");
-        if (auth)
-            result->Set(String::NewSymbol("auth"), String::New(auth));
-        const char *name = oSRS.GetAttrValue("PROJCS");
-        if (name)
-            result->Set(String::NewSymbol("name"), String::New(name));
-    }
-
-    char  *srs_output2 = NULL;
-    if (oSRS.exportToPrettyWkt( &srs_output2 , 0) != OGRERR_NONE )
-    {
-        // this does not yet actually return errors
-        //std::ostringstream s;
-        //s << "OGR Error type #" << CPLE_AppDefined
-        //  << " problem occured when converting to pretty wkt format " << wkt_string << ".\n";
-        //std::clog << s.str();
-        //return ThrowException(Exception::TypeError(String::New(s.str().c_str())));
-    }
-    else
-    {
-        result->Set(String::NewSymbol("pretty_wkt"), String::New(srs_output2));
-    }
-
-    CPLFree( srs_output2 );
-    //OGRSpatialReference::DestroySpatialReference( &oSRS );
-    return scope.Close(result);
 }
 
 
@@ -194,14 +164,11 @@ extern "C" {
   {
 
     NODE_SET_METHOD(target, "_parse", parse);
-
     // versions of deps
-    Local<Object> versions = Object::New();
-    versions->Set(String::NewSymbol("node"), String::New(NODE_VERSION+1));
-    versions->Set(String::NewSymbol("v8"), String::New(V8::GetVersion()));
-    // ogr/osr ?
-    target->Set(String::NewSymbol("versions"), versions);
-
+    Local<Object> versions = NanNew<Object>();
+    versions->Set(NanNew<String>("node"), NanNew<String>(NODE_VERSION+1));
+    versions->Set(NanNew<String>("v8"), NanNew<String>(V8::GetVersion()));
+    target->Set(NanNew<String>("versions"), versions);
   }
 
   NODE_MODULE(srs, init);
