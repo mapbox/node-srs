@@ -1,6 +1,6 @@
 {
   "name": "srs",
-  "version": "0.4.1",
+  "version": "0.4.1-alpha",
   "main": "./lib/index.js",
   "description": "Spatial reference library for node",
   "keywords": [
