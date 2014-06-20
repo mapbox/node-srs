@@ -1,5 +1,9 @@
 # changelog
 
+0.4.3
+
+ - No changes: just re-published to try to avoid npm shasum error upon download
+
 0.4.2
 
  - Now supporting node v0.11.x

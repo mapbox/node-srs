@@ -33,6 +33,7 @@ install:
   #- npm install node-gyp
   - npm install --build-from-source --msvs_version=2013
   - npm test
+  - node-pre-gyp package
   # make commit message env var shorter 
   - SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
   - ECHO commit message %CM%
