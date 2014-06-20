@@ -15,11 +15,11 @@
     "osr"
   ],
   "binary": {
-      "module_name": "srs",
-      "module_path": "./lib/binding/{node_abi}-{platform}-{arch}",
-      "remote_path": "./{module_name}/v{version}",
-      "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
-      "host": "https://mapbox-node-binary.s3.amazonaws.com/"
+    "module_name": "srs",
+    "module_path": "./lib/binding/{node_abi}-{platform}-{arch}",
+    "remote_path": "./{module_name}/v{version}",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://mapbox-node-binary.s3.amazonaws.com/"
   },
   "url": "http://github.com/mapbox/node-srs",
   "repository": {
@@ -27,23 +27,25 @@
     "url": "git://github.com/mapbox/node-srs.git"
   },
   "dependencies": {
-      "node-pre-gyp": "0.5.x"
+    "nan": "~1.2.0",
+    "node-pre-gyp": "0.5.x"
   },
   "bundledDependencies": [
-      "node-pre-gyp"
+    "node-pre-gyp"
   ],
   "author": "Dane Springmeyer <dane@mapbox.com>",
   "licenses": [
     "BSD"
   ],
   "engines": {
-    "node": ">= 0.6.13"
+      "node": ">= 0.8.0 < 0.13"
   },
   "scripts": {
     "install": "node-pre-gyp install --fallback-to-build",
     "test": "mocha -R spec"
   },
   "devDependencies": {
-    "mocha": "~1.18.2"
+    "mocha": "~1.18.2",
+    "aws-sdk": "~2.0.0-rc.19"
   }
 }

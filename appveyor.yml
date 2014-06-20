@@ -1,22 +1,14 @@
 environment:
   matrix:
+    - nodejs_version: 0.11
     - nodejs_version: 0.10
-    - nodejs_version: 0.8
   node_pre_gyp_accessKeyId:
     secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
   node_pre_gyp_secretAccessKey:
     secure: 8f5eTxMHpuVGHon2wbqrZuq3wzQfEuXMCcOyafBLza0T2VIOoBjbjDbgRbyRIzsT
 
-#branches:
-#  whitelist
-#  only:
-#    - master
-#    - node-pre-gyp_appveyor
-
 platform:
-#x64 disabled, because Update-NodeJsInstallation always installs x86
-#waiting for Feodor/AppVeyor to improve that Commandlet.
-#  - x64
+  - x64
   - x86
 
 # this is how to allow failing jobs in the matrix
@@ -26,18 +18,8 @@ matrix:
     - platform: x64
 
 install:
-  # always installs x86
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  # get information about Feodor's node update scripts
-  #- ps: Get-Command "Update-NodeJsInstallation" | Format-List *
-  #- ps: Get-Command "Get-NodeJsLatestBuild" | Format-List *
-  #- ps: Get-Command "Get-InstalledNodeJsVersion" | Format-List *
-  # not using chocolatey at the moment, don't know how to set envars depeding on platform
-  # cinst installs x64 as default and doesn't change path settings:
-  # node version installed before cinst is still used
-  # flag: -forcex86
-  #- cinst nodejs -Version %nodejs_version%
-  - node --version
+  - ps: Write-Output '$env:Platform:' $env:Platform
+  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version) $env:Platform
   - node -e "console.log('node version ' + process.version + ', architecture ' + process.arch);"
   - npm --version
   # ensure python is on path so that srs_settings.js are generated
@@ -48,20 +30,18 @@ install:
   - SET PATH=C:\projects\node-srs\node_modules\node-pre-gyp\bin;%PATH%
   # install node-gyp locally for node 0.8 build
   # otherwise node-gyp that comes with node is used and doesn't yet know about --msvs_version=2013
-  - npm install node-gyp
-  - npm install aws-sdk
+  #- npm install node-gyp
   - npm install --build-from-source --msvs_version=2013
-  - npm install mocha
   - npm test
   # make commit message env var shorter 
   - SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
   - ECHO commit message %CM%
   - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp --msvs_version=2013 package unpublish publish 2>&1
 
+artifacts:
+  - path: build\stage
+    name: BuildFiles
+
 build: OFF
-
 test: OFF
-
-test_script: OFF
-
 deploy: OFF
