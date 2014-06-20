@@ -11,11 +11,16 @@ platform:
   - x64
   - x86
 
-# this is how to allow failing jobs in the matrix
 matrix:
   allow_failures:
     - platform: x86
+      nodejs_version: 0.10
+    - platform: x86
+      nodejs_version: 0.11
     - platform: x64
+      nodejs_version: 0.10
+    - platform: x64
+      nodejs_version: 0.11
 
 install:
   - ps: Write-Output '$env:Platform:' $env:Platform
