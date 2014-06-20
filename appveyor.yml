@@ -29,7 +29,7 @@ install:
   - SET PATH=C:\projects\node-srs\node_modules\node-pre-gyp\bin;%PATH%
   # install node-gyp locally for node 0.8 build
   # otherwise node-gyp that comes with node is used and doesn't yet know about --msvs_version=2013
-  #- npm install node-gyp
+  - npm install node-gyp
   - npm install --build-from-source --msvs_version=2013
   - npm test
   - node-pre-gyp package
