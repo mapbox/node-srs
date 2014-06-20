@@ -7,10 +7,6 @@ environment:
   node_pre_gyp_secretAccessKey:
     secure: 8f5eTxMHpuVGHon2wbqrZuq3wzQfEuXMCcOyafBLza0T2VIOoBjbjDbgRbyRIzsT
 
-branches:
-  only:
-    - master
-
 platform:
   - x64
   - x86
@@ -42,10 +38,10 @@ install:
   - ECHO commit message %CM%
   - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp --msvs_version=2013 package unpublish publish 2>&1
 
+artifacts:
+  - path: build\stage
+    name: BuildFiles
+
 build: OFF
-
 test: OFF
-
-test_script: OFF
-
 deploy: OFF

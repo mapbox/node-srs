@@ -1,5 +1,9 @@
 # changelog
 
+0.4.2
+
+ - Now supporting node v0.11.x
+
 0.4.1
 
  - Now shipping binaries for OS X, Windows, and Ubuntu Linux

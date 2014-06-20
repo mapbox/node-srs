@@ -1,6 +1,6 @@
 {
   "name": "srs",
-  "version": "0.4.1-alpha",
+  "version": "0.4.1",
   "main": "./lib/index.js",
   "description": "Spatial reference library for node",
   "keywords": [
@@ -38,7 +38,7 @@
     "BSD"
   ],
   "engines": {
-    "node": ">= 0.6.13"
+      "node": ">= 0.8.0 < 0.13"
   },
   "scripts": {
     "install": "node-pre-gyp install --fallback-to-build",

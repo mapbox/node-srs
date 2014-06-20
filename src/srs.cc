@@ -36,7 +36,7 @@ OGRERR_DICT = { 1 : (OGRException, "Not enough data."),
 */
 
 NAN_METHOD(parse) {
-  NanScope();
+    NanScope();
     if (args.Length() != 1 || !args[0]->IsString())
       return NanThrowTypeError("first argument must be srs string in any form readable by OGR, like WKT (.prj file) or a proj4 string");
 
