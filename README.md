@@ -2,7 +2,7 @@
 
 Linux: [![Build Status](https://secure.travis-ci.org/mapbox/node-srs.svg)](http://travis-ci.org/mapbox/node-srs)
 
-Windows: [![Build status](https://ci.appveyor.com/api/projects/status/m0qrfj79nbsoe5gb)](https://ci.appveyor.com/project/springmeyer/node-srs)
+Windows: [![Build status](https://ci.appveyor.com/api/projects/status/ff1n3h7h506i4vx0)](https://ci.appveyor.com/project/Mapbox/node-srs)
 
 This module tries to detect projections, also known as "spatial reference systems". It works similiarly to [gdalsrsinfo](http://www.gdal.org/gdalsrsinfo.html).
 
