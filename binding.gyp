@@ -33,7 +33,10 @@
       'cflags_cc!': ['-fno-rtti', '-fno-exceptions'],
       'xcode_settings': {
         'GCC_ENABLE_CPP_RTTI': 'YES',
-        'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
+        'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
+        'OTHER_LDFLAGS':[
+          '-Wl,-bind_at_load'
+        ]
       },
       'sources': [
         'src/srs.cc'
