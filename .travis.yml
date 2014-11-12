@@ -1,7 +1,6 @@
 language: cpp
 
 compiler:
- - gcc
  - clang
 
 env:
@@ -44,7 +43,7 @@ before_script:
  - echo $COMMIT_MESSAGE
  - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then echo yes;PUBLISH_BINARY=true; fi;
  - echo $PUBLISH_BINARY
- - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp publish info; rm -rf {build,lib/binding}; npm install --fallback-to-build=false; npm test; fi
+ - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp unpublish publish info; rm -rf {build,lib/binding}; npm install --fallback-to-build=false; npm test; fi
 
 script:
  # test building with against shared gdal
