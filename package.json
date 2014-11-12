@@ -17,7 +17,7 @@
   "binary": {
     "module_name"  : "srs",
     "module_path"  : "./lib/binding/{node_abi}-{platform}-{arch}",
-    "remote_path"  : "./{name}/v{version}/",
+    "remote_path"  : "./{name}/v{version}/{toolset}/",
     "package_name" : "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
     "host"         : "https://mapbox-node-binary.s3.amazonaws.com"
   },
