@@ -27,7 +27,6 @@ before_install:
  - node --version
  - npm --version
  - platform=$(uname -s | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/")
- - if [[ "$platform" == 'linux' ]]; then sudo apt-get -qq update; fi;
 
 install:
  # test building from source
@@ -52,10 +51,8 @@ script:
  - make clean
  - node-pre-gyp clean
  - rm -rf lib/binding
- - if [[ "$platform" == 'linux' ]]; then sudo apt-get -qq install libgdal1-dev; npm install --build-from-source --shared_gdal; fi
- - if [[ "$platform" == 'darwin' ]]; then brew install libzip; npm install --build-from-source --shared_libzip --shared_libzip_includes=`brew --prefix`/include --shared_libzip_libpath=`brew --prefix`/lib; fi
- # crashing for some reason on travis os x
- #- npm test
+ - if [[ "$platform" == 'linux' ]]; then sudo apt-get -qq update; sudo apt-get --force-yes -qq install libgdal-dev libgdal1-dev libgdal1h=1.10.0-1~precise1; npm install --build-from-source --shared_gdal; fi;
+ - npm test
 
 
 after_success:
