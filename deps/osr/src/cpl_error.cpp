@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_error.cpp 26070 2013-06-11 20:05:23Z rouault $
+ * $Id: cpl_error.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Name:     cpl_error.cpp
  * Project:  CPL - Common Portability Library
@@ -8,6 +8,7 @@
  *
  **********************************************************************
  * Copyright (c) 1998, Daniel Morissette
+ * Copyright (c) 2007-2013, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -41,7 +42,7 @@
 #define TIMESTAMP_DEBUG
 //#define MEMORY_DEBUG
 
-CPL_CVSID("$Id: cpl_error.cpp 26070 2013-06-11 20:05:23Z rouault $");
+CPL_CVSID("$Id: cpl_error.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 static void *hErrorMutex = NULL;
 static void *pErrorHandlerUserData = NULL; 

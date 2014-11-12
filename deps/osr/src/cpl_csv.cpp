@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_csv.cpp 25340 2012-12-21 20:30:21Z rouault $
+ * $Id: cpl_csv.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  CSV (comma separated value) file access.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 1999, Frank Warmerdam
+ * Copyright (c) 2009-2012, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,7 +33,7 @@
 #include "cpl_multiproc.h"
 #include "gdal_csv.h"
 
-CPL_CVSID("$Id: cpl_csv.cpp 25340 2012-12-21 20:30:21Z rouault $");
+CPL_CVSID("$Id: cpl_csv.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 /* ==================================================================== */
 /*      The CSVTable is a persistant set of info about an open CSV      */

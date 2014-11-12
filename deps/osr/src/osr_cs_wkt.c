@@ -1,12 +1,12 @@
 /******************************************************************************
- * $Id: osr_cs_wkt.c 26291 2013-08-10 20:34:29Z rouault $
+ * $Id: osr_cs_wkt.c 27729 2014-09-24 00:40:16Z goatbar $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
  * Purpose:  CS WKT parser
  * Author:   Even Rouault, <even dot rouault at mines dash paris dot org>
  *
  ******************************************************************************
- * Copyright (c) 2013 Even Rouault, <even dot rouault at mines dash paris dot org>
+ * Copyright (c) 2013, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,6 +35,8 @@
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 #include "osr_cs_wkt.h"
+
+#include "cpl_port.h"
 
 /************************************************************************/
 /*                        osr_cs_wkt_error()                            */
@@ -99,7 +101,7 @@ static const osr_cs_wkt_tokens tokens[] =
 /*                         osr_cs_wkt_lex()                             */
 /************************************************************************/
 
-int osr_cs_wkt_lex(YYSTYPE* pNode, osr_cs_wkt_parse_context *context)
+int osr_cs_wkt_lex(CPL_UNUSED YYSTYPE* pNode, osr_cs_wkt_parse_context *context)
 {
     size_t i;
     const char *pszInput = context->pszNext;

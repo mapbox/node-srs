@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_vsil_win32.cpp 23882 2012-02-02 19:50:45Z rouault $
+ * $Id: cpl_vsil_win32.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Implement VSI large file api for Win32.
@@ -7,6 +7,7 @@
  *
  **********************************************************************
  * Copyright (c) 2000, Frank Warmerdam <warmerdam@pobox.com>
+ * Copyright (c) 2008-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +30,7 @@
 
 #include "cpl_vsi_virtual.h"
 
-CPL_CVSID("$Id: cpl_vsil_win32.cpp 23882 2012-02-02 19:50:45Z rouault $");
+CPL_CVSID("$Id: cpl_vsil_win32.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 #if defined(WIN32)
 
@@ -93,6 +94,7 @@ class VSIWin32Handle : public VSIVirtualHandle
     virtual int       Flush();
     virtual int       Close();
     virtual int       Truncate( vsi_l_offset nNewSize );
+    virtual void     *GetNativeFileDescriptor() { return (void*) hFile; }
 };
 
 /************************************************************************/

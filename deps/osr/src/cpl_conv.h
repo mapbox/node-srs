@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_conv.h 26282 2013-08-08 21:15:36Z rouault $
+ * $Id: cpl_conv.h 27121 2014-04-03 22:08:55Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Convenience functions declarations.
@@ -8,6 +8,7 @@
  *
  ******************************************************************************
  * Copyright (c) 1998, Frank Warmerdam
+ * Copyright (c) 2007-2013, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -239,6 +240,12 @@ void CPL_DLL *CPLZLibInflate( const void* ptr, size_t nBytes,
 int CPL_DLL CPLValidateXML(const char* pszXMLFilename,
                            const char* pszXSDFilename,
                            char** papszOptions);
+						   
+/* -------------------------------------------------------------------- */
+/*      Locale handling. Prevents parallel executions of setlocale().   */
+/* -------------------------------------------------------------------- */
+char* CPLsetlocale (int category, const char* locale);
+void CPLCleanupSetlocaleMutex(void);
 
 CPL_C_END
 

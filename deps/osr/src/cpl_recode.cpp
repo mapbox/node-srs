@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_recode.cpp 24555 2012-06-10 09:49:55Z rouault $
+ * $Id: cpl_recode.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Name:     cpl_recode.cpp
  * Project:  CPL - Common Portability Library
@@ -9,6 +9,7 @@
  **********************************************************************
  * Copyright (c) 2011, Andrey Kiselev <dron@ak4719.spb.edu>
  * Copyright (c) 2008, Frank Warmerdam
+ * Copyright (c) 2011-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,7 +26,7 @@
 
 #include "cpl_string.h"
 
-CPL_CVSID("$Id: cpl_recode.cpp 24555 2012-06-10 09:49:55Z rouault $");
+CPL_CVSID("$Id: cpl_recode.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 #ifdef CPL_RECODE_ICONV
 extern void CPLClearRecodeIconvWarningFlags();
@@ -335,3 +336,28 @@ void CPLClearRecodeWarningFlags()
 #endif
     CPLClearRecodeStubWarningFlags();
 }
+
+
+/************************************************************************/
+/*                         CPLStrlenUTF8()                              */
+/************************************************************************/
+
+/**
+ * Return the number of UTF-8 characters of a nul-terminated string.
+ *
+ * This is different from strlen() which returns the number of bytes.
+ *
+ * @param pszUTF8Str a nul-terminated UTF-8 string
+ *
+ * @return the number of UTF-8 characters. 
+ */
+
+int CPLStrlenUTF8(const char *pszUTF8Str) {
+    int i = 0, j = 0;
+    while (pszUTF8Str[i]) {
+        if ((pszUTF8Str[i] & 0xc0) != 0x80) j++;
+        i++;
+    }
+    return j;
+}
+

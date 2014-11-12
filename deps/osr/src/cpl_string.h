@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_string.h 26402 2013-09-05 21:21:01Z warmerdam $
+ * $Id: cpl_string.h 27044 2014-03-16 23:41:27Z rouault $
  *
  * Name:     cpl_string.h
  * Project:  CPL - Common Portability Library
@@ -8,6 +8,7 @@
  *
  **********************************************************************
  * Copyright (c) 1998, Daniel Morissette
+ * Copyright (c) 2008-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -177,6 +178,7 @@ wchar_t CPL_DLL *CPLRecodeToWChar( const char *pszSource,
                                    const char *pszDstEncoding ) CPL_WARN_UNUSED_RESULT;
 int CPL_DLL CPLIsUTF8(const char* pabyData, int nLen);
 char CPL_DLL *CPLForceToASCII(const char* pabyData, int nLen, char chReplacementChar) CPL_WARN_UNUSED_RESULT;
+int CPL_DLL CPLStrlenUTF8(const char *pszUTF8Str);
 
 CPL_C_END
 

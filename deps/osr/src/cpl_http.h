@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_http.h 25478 2013-01-10 00:28:54Z warmerdam $
+ * $Id: cpl_http.h 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  Common Portability Library
  * Purpose:  Function wrapper for libcurl HTTP access.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2006, Frank Warmerdam
+ * Copyright (c) 2009, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),

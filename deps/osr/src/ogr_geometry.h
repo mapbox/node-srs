@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: ogr_geometry.h 26326 2013-08-15 12:51:05Z rouault $
+ * $Id: ogr_geometry.h 27088 2014-03-24 23:18:08Z bishop $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
  * Purpose:  Classes for manipulating simple features that is not specific
@@ -8,6 +8,7 @@
  *
  ******************************************************************************
  * Copyright (c) 1999, Frank Warmerdam
+ * Copyright (c) 2008-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -82,6 +83,7 @@ class CPL_DLL OGRGeometry
 
   protected:
     int                   nCoordDimension;
+    int getIsoGeometryType() const;
     
   public:
                 OGRGeometry();
@@ -102,7 +104,7 @@ class CPL_DLL OGRGeometry
     // IWks Interface
     virtual int WkbSize() const = 0;
     virtual OGRErr importFromWkb( unsigned char *, int=-1 )=0;
-    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char * ) const = 0;
+    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char *, OGRwkbVariant=wkbVariantOgc ) const = 0;
     virtual OGRErr importFromWkt( char ** ppszInput ) = 0;
     virtual OGRErr exportToWkt( char ** ppszDstText ) const = 0;
     
@@ -194,7 +196,7 @@ class CPL_DLL OGRPoint : public OGRGeometry
     // IWks Interface
     virtual int WkbSize() const;
     virtual OGRErr importFromWkb( unsigned char *, int=-1 );
-    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char * ) const;
+    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char *, OGRwkbVariant=wkbVariantOgc ) const;
     virtual OGRErr importFromWkt( char ** );
     virtual OGRErr exportToWkt( char ** ppszDstText ) const;
     
@@ -276,7 +278,7 @@ class CPL_DLL OGRLineString : public OGRCurve
     // IWks Interface
     virtual int WkbSize() const;
     virtual OGRErr importFromWkb( unsigned char *, int = -1 );
-    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char * ) const;
+    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char *, OGRwkbVariant=wkbVariantOgc ) const;
     virtual OGRErr importFromWkt( char ** );
     virtual OGRErr exportToWkt( char ** ppszDstText ) const;
 
@@ -293,6 +295,8 @@ class CPL_DLL OGRLineString : public OGRCurve
     virtual void StartPoint(OGRPoint *) const;
     virtual void EndPoint(OGRPoint *) const;
     virtual void Value( double, OGRPoint * ) const;
+    virtual double Project(const OGRPoint *) const;
+    virtual OGRLineString* getSubLine(double, double, int) const;
     
     // ILineString methods
     int         getNumPoints() const { return nPointCount; }
@@ -306,9 +310,10 @@ class CPL_DLL OGRLineString : public OGRCurve
     
     // non standard.
     virtual void setCoordinateDimension( int nDimension ); 
-    void        setNumPoints( int );
+    void        setNumPoints( int nNewPointCount, int bZeroizeNewContent = TRUE );
     void        setPoint( int, OGRPoint * );
     void        setPoint( int, double, double );
+    void        setZ( int, double );
     void        setPoint( int, double, double, double );
     void        setPoints( int, OGRRawPoint *, double * = NULL );
     void        setPoints( int, double * padfX, double * padfY,
@@ -390,7 +395,7 @@ class CPL_DLL OGRLinearRing : public OGRLineString
     // object cant be serialized on its own. 
     virtual int WkbSize() const;
     virtual OGRErr importFromWkb( unsigned char *, int=-1 );
-    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char * ) const;
+    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char *, OGRwkbVariant=wkbVariantOgc ) const;
 };
 
 /************************************************************************/
@@ -447,7 +452,7 @@ class CPL_DLL OGRPolygon : public OGRSurface
     // IWks Interface
     virtual int WkbSize() const;
     virtual OGRErr importFromWkb( unsigned char *, int = -1 );
-    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char * ) const;
+    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char *, OGRwkbVariant=wkbVariantOgc ) const;
     virtual OGRErr importFromWkt( char ** );
     virtual OGRErr exportToWkt( char ** ppszDstText ) const;
 
@@ -470,6 +475,9 @@ class CPL_DLL OGRPolygon : public OGRSurface
     int         getNumInteriorRings() const;
     OGRLinearRing *getInteriorRing( int );
     const OGRLinearRing *getInteriorRing( int ) const;
+
+    OGRLinearRing *stealExteriorRing();
+    OGRLinearRing *stealInteriorRing(int);
 
     OGRBoolean IsPointOnSurface( const OGRPoint * ) const;
 
@@ -514,7 +522,7 @@ class CPL_DLL OGRGeometryCollection : public OGRGeometry
     // IWks Interface
     virtual int WkbSize() const;
     virtual OGRErr importFromWkb( unsigned char *, int = -1 );
-    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char * ) const;
+    virtual OGRErr exportToWkb( OGRwkbByteOrder, unsigned char *, OGRwkbVariant=wkbVariantOgc ) const;
     virtual OGRErr importFromWkt( char ** );
     virtual OGRErr exportToWkt( char ** ppszDstText ) const;
 

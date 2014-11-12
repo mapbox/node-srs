@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_vsil_unix_stdio_64.cpp 25713 2013-03-09 11:41:30Z rouault $
+ * $Id: cpl_vsil_unix_stdio_64.cpp 27722 2014-09-22 15:37:31Z goatbar $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Implement VSI large file api for Unix platforms with fseek64()
@@ -8,6 +8,7 @@
  *
  **********************************************************************
  * Copyright (c) 2001, Frank Warmerdam
+ * Copyright (c) 2010-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -51,7 +52,7 @@
 #include <dirent.h>
 #include <errno.h>
 
-CPL_CVSID("$Id: cpl_vsil_unix_stdio_64.cpp 25713 2013-03-09 11:41:30Z rouault $");
+CPL_CVSID("$Id: cpl_vsil_unix_stdio_64.cpp 27722 2014-09-22 15:37:31Z goatbar $");
 
 #if defined(UNIX_STDIO_64)
 
@@ -140,6 +141,7 @@ class VSIUnixStdioHandle : public VSIVirtualHandle
 {
     FILE          *fp;
     vsi_l_offset  nOffset;
+    int           bReadOnly;
     int           bLastOpWrite;
     int           bLastOpRead;
     int           bAtEOF;
@@ -149,7 +151,7 @@ class VSIUnixStdioHandle : public VSIVirtualHandle
 #endif
   public:
                       VSIUnixStdioHandle(VSIUnixStdioFilesystemHandler *poFSIn,
-                                         FILE* fpIn);
+                                         FILE* fpIn, int bReadOnlyIn);
 
     virtual int       Seek( vsi_l_offset nOffset, int nWhence );
     virtual vsi_l_offset Tell();
@@ -159,6 +161,7 @@ class VSIUnixStdioHandle : public VSIVirtualHandle
     virtual int       Flush();
     virtual int       Close();
     virtual int       Truncate( vsi_l_offset nNewSize );
+    virtual void     *GetNativeFileDescriptor() { return (void*) (size_t) fileno(fp); }
 };
 
 
@@ -166,9 +169,13 @@ class VSIUnixStdioHandle : public VSIVirtualHandle
 /*                       VSIUnixStdioHandle()                           */
 /************************************************************************/
 
-VSIUnixStdioHandle::VSIUnixStdioHandle(VSIUnixStdioFilesystemHandler *poFSIn,
-                                       FILE* fpIn) :
-    fp(fpIn), nOffset(0), bLastOpWrite(FALSE), bLastOpRead(FALSE), bAtEOF(FALSE)
+VSIUnixStdioHandle::VSIUnixStdioHandle(
+#ifndef VSI_COUNT_BYTES_READ
+CPL_UNUSED
+#endif
+                                       VSIUnixStdioFilesystemHandler *poFSIn,
+                                       FILE* fpIn, int bReadOnlyIn) :
+    fp(fpIn), nOffset(0), bReadOnly(bReadOnlyIn), bLastOpWrite(FALSE), bLastOpRead(FALSE), bAtEOF(FALSE)
 #ifdef VSI_COUNT_BYTES_READ
     , nTotalBytesRead(0), poFS(poFSIn)
 #endif
@@ -198,10 +205,31 @@ int VSIUnixStdioHandle::Close()
 int VSIUnixStdioHandle::Seek( vsi_l_offset nOffset, int nWhence )
 
 {
+    GByte abyTemp[4096];
+
     // seeks that do nothing are still surprisingly expensive with MSVCRT.
     // try and short circuit if possible.
     if( nWhence == SEEK_SET && nOffset == this->nOffset )
         return 0;
+
+    // on a read-only file, we can avoid a lseek() system call to be issued
+    // if the next position to seek to is within the buffered page
+    if( bReadOnly && nWhence == SEEK_SET )
+    {
+        GIntBig nDiff = (GIntBig)nOffset - (GIntBig)this->nOffset;
+        if( nDiff > 0 && nDiff < 4096 )
+        {
+            int nRead = (int)fread(abyTemp, 1, (int)nDiff, fp);
+            if( nRead == (int)nDiff )
+            {
+                this->nOffset = nOffset;
+                bLastOpWrite = FALSE;
+                bLastOpRead = FALSE;
+                bAtEOF = FALSE;
+                return 0;
+            }
+        }
+    }
 
     int     nResult = VSI_FSEEK64( fp, nOffset, nWhence );
     int     nError = errno;
@@ -454,7 +482,8 @@ VSIUnixStdioFilesystemHandler::Open( const char *pszFilename,
         return NULL;
     }
 
-    VSIUnixStdioHandle *poHandle = new VSIUnixStdioHandle(this, fp);
+    int bReadOnly = strcmp(pszAccess, "rb") == 0 || strcmp(pszAccess, "r") == 0;
+    VSIUnixStdioHandle *poHandle = new VSIUnixStdioHandle(this, fp, bReadOnly );
 
     errno = nError;
 
@@ -462,7 +491,7 @@ VSIUnixStdioFilesystemHandler::Open( const char *pszFilename,
 /*      If VSI_CACHE is set we want to use a cached reader instead      */
 /*      of more direct io on the underlying file.                       */
 /* -------------------------------------------------------------------- */
-    if( (EQUAL(pszAccess,"r") || EQUAL(pszAccess,"rb"))
+    if( bReadOnly
         && CSLTestBoolean( CPLGetConfigOption( "VSI_CACHE", "FALSE" ) ) )
     {
         return VSICreateCachedFile( poHandle );
@@ -479,7 +508,7 @@ VSIUnixStdioFilesystemHandler::Open( const char *pszFilename,
 
 int VSIUnixStdioFilesystemHandler::Stat( const char * pszFilename, 
                                          VSIStatBufL * pStatBuf,
-                                         int nFlags)
+                                         CPL_UNUSED int nFlags)
 
 {
     return( VSI_STAT64( pszFilename, pStatBuf ) );

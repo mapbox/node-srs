@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_path.cpp 25181 2012-10-27 11:52:46Z rouault $
+ * $Id: cpl_path.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Portable filename/path parsing, and forming ala "Glob API".
@@ -7,6 +7,7 @@
  *
  **********************************************************************
  * Copyright (c) 1999, Frank Warmerdam
+ * Copyright (c) 2008-2012, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,7 +32,7 @@
 #include "cpl_string.h"
 #include "cpl_multiproc.h"
 
-CPL_CVSID("$Id: cpl_path.cpp 25181 2012-10-27 11:52:46Z rouault $");
+CPL_CVSID("$Id: cpl_path.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 
 /* should be size of larged possible filename */
@@ -480,6 +481,8 @@ const char *CPLFormFilename( const char * pszPath,
         /* FIXME? would be better to ask the filesystems what they */
         /* prefer as directory separator */
         if (strncmp(pszPath, "/vsicurl/", 9) == 0)
+            pszAddedPathSep = "/";
+        else if (strncmp(pszPath, "/vsizip/", 8) == 0)
             pszAddedPathSep = "/";
         else
             pszAddedPathSep = SEP_STRING;

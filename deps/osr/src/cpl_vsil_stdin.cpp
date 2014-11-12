@@ -1,12 +1,12 @@
 /**********************************************************************
- * $Id: cpl_vsil_stdin.cpp 24432 2012-05-17 16:20:57Z rouault $
+ * $Id: cpl_vsil_stdin.cpp 27722 2014-09-22 15:37:31Z goatbar $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Implement VSI large file api for stdin
  * Author:   Even Rouault, <even dot rouault at mines dash paris dot org>
  *
  **********************************************************************
- * Copyright (c) 2010, Even Rouault
+ * Copyright (c) 2010-2012, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37,7 +37,7 @@
 #include <fcntl.h>
 #endif
 
-CPL_CVSID("$Id: cpl_vsil_stdin.cpp 24432 2012-05-17 16:20:57Z rouault $");
+CPL_CVSID("$Id: cpl_vsil_stdin.cpp 27722 2014-09-22 15:37:31Z goatbar $");
 
 /* We buffer the first 1MB of standard input to enable drivers */
 /* to autodetect data. In the first MB, backward and forward seeking */
@@ -264,9 +264,8 @@ size_t VSIStdinHandle::Read( void * pBuffer, size_t nSize, size_t nCount )
 /*                               Write()                                */
 /************************************************************************/
 
-size_t VSIStdinHandle::Write( const void * pBuffer, size_t nSize, 
-                                  size_t nCount )
-
+size_t VSIStdinHandle::Write( CPL_UNUSED const void * pBuffer, CPL_UNUSED size_t nSize, 
+                              CPL_UNUSED size_t nCount )
 {
     CPLError(CE_Failure, CPLE_NotSupported,
              "Write() unsupported on /vsistdin");

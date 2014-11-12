@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: ogr_srs_esri.cpp 26257 2013-07-31 22:37:24Z kyle $
+ * $Id: ogr_srs_esri.cpp 27050 2014-03-18 00:09:03Z kyle $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
  * Purpose:  OGRSpatialReference translation to/from ESRI .prj definitions.
@@ -7,6 +7,8 @@
  *
  ******************************************************************************
  * Copyright (c) 2000, Frank Warmerdam
+ * Copyright (c) 2007-2013, Even Rouault <even dot rouault at mines-paris dot org>
+ * Copyright (c) 2013, Kyle Shannon <kyle at pobox dot com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +36,7 @@
 
 #include "ogr_srs_esri_names.h"
 
-CPL_CVSID("$Id: ogr_srs_esri.cpp 26257 2013-07-31 22:37:24Z kyle $");
+CPL_CVSID("$Id: ogr_srs_esri.cpp 27050 2014-03-18 00:09:03Z kyle $");
 
 void  SetNewName( OGRSpatialReference* pOgr, const char* keyName, const char* newName );
 int   RemapImgWGSProjcsName(OGRSpatialReference* pOgr, const char* pszProjCSName, 

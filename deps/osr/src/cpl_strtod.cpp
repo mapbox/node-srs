@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_strtod.cpp 24899 2012-09-03 11:42:58Z rouault $
+ * $Id: cpl_strtod.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Functions to convert ASCII string to floating point number.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2006, Andrey Kiselev
+ * Copyright (c) 2008-2012, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +34,7 @@
 
 #include "cpl_conv.h"
 
-CPL_CVSID("$Id: cpl_strtod.cpp 24899 2012-09-03 11:42:58Z rouault $");
+CPL_CVSID("$Id: cpl_strtod.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 // XXX: with GCC 2.95 strtof() function is only available when in c99 mode.
 // Fix it here not touching the compiler options.

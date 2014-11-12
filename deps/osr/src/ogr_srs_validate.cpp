@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: ogr_srs_validate.cpp 26440 2013-09-11 11:11:32Z rouault $
+ * $Id: ogr_srs_validate.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
  * Purpose:  Implementation of the OGRSpatialReference::Validate() method and
@@ -8,6 +8,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2001, Frank Warmerdam <warmerdam@pobox.com>
+ * Copyright (c) 2008-2013, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,7 +33,7 @@
 #include "ogr_p.h"
 #include "osr_cs_wkt.h"
 
-CPL_CVSID("$Id: ogr_srs_validate.cpp 26440 2013-09-11 11:11:32Z rouault $");
+CPL_CVSID("$Id: ogr_srs_validate.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 /* why would fipszone and zone be paramers when they relate to a composite
    projection which renders done into a non-zoned projection? */

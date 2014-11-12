@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cplstring.cpp 26402 2013-09-05 21:21:01Z warmerdam $
+ * $Id: cplstring.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  GDAL 
  * Purpose:  CPLString implementation.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2005, Frank Warmerdam <warmerdam@pobox.com>
+ * Copyright (c) 2011, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,7 +31,7 @@
 #include "cpl_string.h"
 #include <string>
 
-CPL_CVSID("$Id: cplstring.cpp 26402 2013-09-05 21:21:01Z warmerdam $");
+CPL_CVSID("$Id: cplstring.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 /*
  * The CPLString class is derived from std::string, so the vast majority 

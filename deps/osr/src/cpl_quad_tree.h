@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_quad_tree.h 15067 2008-07-28 22:08:58Z rouault $
+ * $Id: cpl_quad_tree.h 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Implementation of quadtree building and searching functions.
@@ -9,6 +9,7 @@
  *
  ******************************************************************************
  * Copyright (c) 1999-2008, Frank Warmerdam
+ * Copyright (c) 2008-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -73,6 +74,9 @@ void        CPL_DLL   CPLQuadTreeSetMaxDepth(CPLQuadTree *hQuadtree,
 
 void        CPL_DLL   CPLQuadTreeInsert(CPLQuadTree *hQuadtree,
                                         void* hFeature);
+void        CPL_DLL   CPLQuadTreeInsertWithBounds(CPLQuadTree *hQuadtree,
+                                                  void* hFeature,
+                                                  const CPLRectObj* psBounds);
 
 void        CPL_DLL **CPLQuadTreeSearch(const CPLQuadTree *hQuadtree,
                                         const CPLRectObj* pAoi,

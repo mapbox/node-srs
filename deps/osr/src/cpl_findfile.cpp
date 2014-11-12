@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_findfile.cpp 20089 2010-07-17 20:42:03Z rouault $
+ * $Id: cpl_findfile.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Generic data file location finder, with application hooking.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2000, Frank Warmerdam
+ * Copyright (c) 2009-2010, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,7 +32,7 @@
 #include "cpl_string.h"
 #include "cpl_multiproc.h"
 
-CPL_CVSID("$Id: cpl_findfile.cpp 20089 2010-07-17 20:42:03Z rouault $");
+CPL_CVSID("$Id: cpl_findfile.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 typedef struct
 {
