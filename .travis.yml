@@ -2,12 +2,12 @@ language: cpp
 
 compiler:
  - gcc
+ - clang
 
 env:
   matrix:
-   - NODE_NVM_VERSION="0.11.13"
-   - NODE_NVM_VERSION="0.10"
-   - NODE_NVM_VERSION="0.8"
+   - NODE_NVM_VERSION="0.11.14"
+   - NODE_NVM_VERSION="0.10.33"
   global:
    - secure: J5pbPr7g29oKVLrGpKXUQQUV5TJpMf2/TkPZZXezZdO5ywR7M2PfFOUOqexKUylcLyLmEgDilSJhhTLHYz+wx42VPbCTB7Q3sSZdhM0RUXc5mO4BcRKoEUHkIy2Ibp6SbcfzupT/oELFLiZSiS2xojldVMoUAs8IzLGcYStO7Jc=
    - secure: 1cPR5S+Gg4JiA3j8cvjKxSY3AshM0inXzHB/i/7P/ZjnxdvQQuZ48lK0e3TFvXQVTbA0rWYYrwuo62Fb9fc9bA8hDoOU2aruoF6hcEyuAbG7ERGRRJO9g6XaZKW1G0yK18T+1X6OBP7eXNZEPxl0OqBL8l3MKO3vuGxR3+5VQ0A=
