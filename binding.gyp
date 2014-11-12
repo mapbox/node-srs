@@ -6,7 +6,31 @@
   },
   'targets': [
     {
+      'target_name': 'action_before_build',
+      'hard_dependency': 1,
+      'type': 'none',
+      'actions': [
+        {
+          'action_name': 'generate_setting',
+          'inputs': [
+            'gen_settings.py'
+          ],
+          'outputs': [
+            '<(SHARED_INTERMEDIATE_DIR)/srs_settings.js'
+          ],
+          'action': ['python', 'gen_settings.py', '<@(shared_gdal)', '<(SHARED_INTERMEDIATE_DIR)/srs_settings.js']
+        }
+      ],
+      'copies': [
+        {
+          'files': [ '<(SHARED_INTERMEDIATE_DIR)/srs_settings.js' ],
+          'destination': '<(module_path)'
+        }
+      ]
+    },
+    {
       'target_name': 'srs',
+      'dependencies': [ 'action_before_build' ],
       'conditions': [
         ['shared_gdal == "false"',
           {
@@ -49,19 +73,7 @@
     {
       'target_name': 'action_after_build',
       'type': 'none',
-      'dependencies': [ 'srs' ],
-      'actions': [
-        {
-          'action_name': 'generate_setting',
-          'inputs': [
-            'gen_settings.py'
-          ],
-          'outputs': [
-            'lib/srs_settings.js'
-          ],
-          'action': ['python', 'gen_settings.py', '<@(shared_gdal)']
-        },
-      ],
+      'dependencies': [ '<(module_name)' ],
       'copies': [
         {
           'files': [ '<(PRODUCT_DIR)/<(module_name).node' ],
