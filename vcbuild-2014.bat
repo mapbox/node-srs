@@ -1,0 +1,2 @@
+call node_modules\.bin\node-pre-gyp.cmd --msvs_version=2013 --toolset=v140 --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --target=0.10.33 build
+call ..\v0.10.33-nodecpp11\Release\node.exe node_modules\mocha\bin\mocha
