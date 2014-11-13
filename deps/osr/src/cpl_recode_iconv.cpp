@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_recode_iconv.cpp 24555 2012-06-10 09:49:55Z rouault $
+ * $Id: cpl_recode_iconv.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Name:     cpl_recode_iconv.cpp
  * Project:  CPL - Common Portability Library
@@ -9,6 +9,7 @@
  *
  **********************************************************************
  * Copyright (c) 2011, Andrey Kiselev <dron@ak4719.spb.edu>
+ * Copyright (c) 2011-2012, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,7 +26,7 @@
 
 #include "cpl_port.h"
 
-CPL_CVSID("$Id: cpl_recode_iconv.cpp 24555 2012-06-10 09:49:55Z rouault $");
+CPL_CVSID("$Id: cpl_recode_iconv.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 #ifdef CPL_RECODE_ICONV
 

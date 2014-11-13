@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_vsil.cpp 26194 2013-07-23 19:53:32Z rouault $
+ * $Id: cpl_vsil.cpp 27110 2014-03-28 21:29:20Z rouault $
  *
  * Project:  VSI Virtual File System
  * Purpose:  Implementation VSI*L File API and other file system access
@@ -8,6 +8,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2005, Frank Warmerdam <warmerdam@pobox.com>
+ * Copyright (c) 2008-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +34,7 @@
 #include "cpl_string.h"
 #include <string>
 
-CPL_CVSID("$Id: cpl_vsil.cpp 26194 2013-07-23 19:53:32Z rouault $");
+CPL_CVSID("$Id: cpl_vsil.cpp 27110 2014-03-28 21:29:20Z rouault $");
 
 /************************************************************************/
 /*                             VSIReadDir()                             */
@@ -866,7 +867,7 @@ int VSIFPutcL( int nChar, VSILFILE * fp )
  * 
  * @return TRUE in case of success.
  *
- * @since GDAL 2.0
+ * @since GDAL 1.11
  */
 
 int VSIIngestFile( VSILFILE* fp,
@@ -1006,6 +1007,31 @@ int VSIIngestFile( VSILFILE* fp,
     if( bFreeFP )
         VSIFCloseL( fp );
     return TRUE;
+}
+
+/************************************************************************/
+/*                        VSIFGetNativeFileDescriptorL()                */
+/************************************************************************/
+
+/**
+ * \brief Returns the "native" file descriptor for the virtual handle.
+ *
+ * This will only return a non-NULL value for "real" files handled by the
+ * operating system (to be opposed to GDAL virtual file systems).
+ *
+ * On POSIX systems, this will be a integer value ("fd") cast as a void*.
+ * On Windows systems, this will be the HANDLE.
+ *
+ * @param fp file handle opened with VSIFOpenL(). 
+ * 
+ * @return the native file descriptor, or NULL.
+ */
+
+void *VSIFGetNativeFileDescriptorL( VSILFILE* fp )
+{
+    VSIVirtualHandle *poFileHandle = (VSIVirtualHandle *) fp;
+    
+    return poFileHandle->GetNativeFileDescriptor();
 }
 
 

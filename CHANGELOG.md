@@ -1,5 +1,11 @@
 # changelog
 
+0.4.4
+
+ - Upgraded to GDAL 1.11.1
+ - Stopped providing binaries for node v0.8.x
+ - Now providing binaries against Visual Studio 2014 (pass --toolset=v140) and use binaries from https://github.com/mapbox/node-cpp11
+
 0.4.3
 
  - No changes: just re-published to try to avoid npm shasum error upon download

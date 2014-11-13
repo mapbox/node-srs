@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_vsi_virtual.h 23995 2012-02-19 22:39:17Z rouault $
+ * $Id: cpl_vsi_virtual.h 27720 2014-09-21 17:58:47Z goatbar $
  *
  * Project:  VSI Virtual File System
  * Purpose:  Declarations for classes related to the virtual filesystem.
@@ -10,6 +10,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2005, Frank Warmerdam <warmerdam@pobox.com>
+ * Copyright (c) 2010-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60,7 +61,8 @@ class CPL_DLL VSIVirtualHandle {
     virtual int       Eof() = 0;
     virtual int       Flush() {return 0;}
     virtual int       Close() = 0;
-    virtual int       Truncate( vsi_l_offset nNewSize ) { return -1; }
+    virtual int       Truncate( CPL_UNUSED vsi_l_offset nNewSize ) { return -1; }
+    virtual void     *GetNativeFileDescriptor() { return NULL; }
     virtual           ~VSIVirtualHandle() { }
 };
 
@@ -187,7 +189,7 @@ public:
 };
 
 VSIVirtualHandle* VSICreateBufferedReaderHandle(VSIVirtualHandle* poBaseHandle);
-VSIVirtualHandle* VSICreateCachedFile( VSIVirtualHandle* poBaseHandle );
+VSIVirtualHandle* VSICreateCachedFile( VSIVirtualHandle* poBaseHandle, size_t nChunkSize = 32768, size_t nCacheSize = 0 );
 VSIVirtualHandle* VSICreateGZipWritable( VSIVirtualHandle* poBaseHandle, int bRegularZLibIn, int bAutoCloseBaseHandle );
 
 #endif /* ndef CPL_VSI_VIRTUAL_H_INCLUDED */

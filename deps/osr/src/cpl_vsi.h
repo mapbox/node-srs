@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_vsi.h 26194 2013-07-23 19:53:32Z rouault $
+ * $Id: cpl_vsi.h 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Author:   Frank Warmerdam, warmerdam@pobox.com
@@ -8,6 +8,7 @@
  *
  ******************************************************************************
  * Copyright (c) 1998, Frank Warmerdam
+ * Copyright (c) 2008-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -170,6 +171,8 @@ int CPL_DLL     VSIStatL( const char *, VSIStatBufL * );
 int CPL_DLL     VSIStatExL( const char * pszFilename, VSIStatBufL * psStatBuf, int nFlags );
 
 int CPL_DLL     VSIIsCaseSensitiveFS( const char * pszFilename );
+
+void CPL_DLL   *VSIFGetNativeFileDescriptorL( VSILFILE* );
 
 /* ==================================================================== */
 /*      Memory allocation                                               */

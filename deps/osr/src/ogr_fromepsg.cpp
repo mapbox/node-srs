@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: ogr_fromepsg.cpp 25727 2013-03-10 14:56:33Z rouault $
+ * $Id: ogr_fromepsg.cpp 27729 2014-09-24 00:40:16Z goatbar $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
  * Purpose:  Generate an OGRSpatialReference object based on an EPSG
@@ -8,6 +8,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2000, Frank Warmerdam
+ * Copyright (c) 2008-2013, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,7 +33,7 @@
 #include "ogr_p.h"
 #include "cpl_csv.h"
 
-CPL_CVSID("$Id: ogr_fromepsg.cpp 25727 2013-03-10 14:56:33Z rouault $");
+CPL_CVSID("$Id: ogr_fromepsg.cpp 27729 2014-09-24 00:40:16Z goatbar $");
 
 #ifndef PI
 #  define PI 3.14159265358979323846
@@ -1324,7 +1325,7 @@ static OGRErr SetEPSGGeogCS( OGRSpatialReference * poSRS, int nGeogCS )
 /************************************************************************/
 
 static double OGR_FetchParm( double *padfProjParms, int *panParmIds, 
-                             int nTargetId, double dfFromGreenwich )
+                             int nTargetId, CPL_UNUSED double dfFromGreenwich )
 
 {
     int i;

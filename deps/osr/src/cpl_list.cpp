@@ -1,5 +1,5 @@
 /**********************************************************************
- * $Id: cpl_list.cpp 14693 2008-06-12 18:21:54Z rouault $
+ * $Id: cpl_list.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Name:     cpl_list.cpp
  * Project:  CPL - Common Portability Library
@@ -8,6 +8,7 @@
  *
  **********************************************************************
  * Copyright (c) 2003, Andrey Kiselev <dron@remotesensing.org>
+ * Copyright (c) 2008, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,7 +32,7 @@
 #include "cpl_list.h"
 #include "cpl_conv.h"
 
-CPL_CVSID("$Id: cpl_list.cpp 14693 2008-06-12 18:21:54Z rouault $");
+CPL_CVSID("$Id: cpl_list.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 /*=====================================================================
                     List manipulation functions.

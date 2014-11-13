@@ -1,31 +1,26 @@
+GDAL_VER="1.11.1"
+wget http://download.osgeo.org/gdal/1.11.1/gdal-${GDAL_VER}.tar.gz
+tar xf gdal-${GDAL_VER}.tar.gz
+cp gdal-${GDAL_VER}/data/*.{csv,txt,wkt} ../lib/srs_data/
 mkdir -p osr
 rm -rf osr/*
-cd osr
-svn co https://svn.osgeo.org/gdal/trunk/gdal/port
-svn co https://svn.osgeo.org/gdal/trunk/gdal/ogr
-svn co https://svn.osgeo.org/gdal/trunk/gdal/data
-cp data/*.{csv,txt,wkt} ../../lib/srs_data/
-rm -rf ogr/ogrsf_frmts
-rm -rf ogr/wcts
-cd ../
-patch osr/src/ogr_srs_proj4.cpp < ogr_srs_proj4.diff
-patch osr/src/ogr_p.h < ogr_p.diff
-mkdir osr/src
-wget http://svn.osgeo.org/gdal/trunk/gdal/gcore/gdal_version.h
-mv gdal_version.h osr/src/gdal_version.h
-cp osr/ogr/ogr_srs*.* osr/src/
-cp osr/ogr/ogrspatialreference.* osr/src/
-cp osr/ogr/ogr_spatialref.h osr/src/
-cp osr/ogr/osr_cs_wkt_parser.* osr/src/
-cp osr/ogr/osr_cs_wkt.* osr/src/
-cp osr/ogr/ogrct.* osr/src/
-cp osr/ogr/ogr_fromepsg.* osr/src/
-cp osr/ogr/ogr_core.h osr/src/
-cp osr/ogr/ogr_p.h osr/src/
-cp osr/ogr/ogr_geometry.h osr/src/
+# TODO - fix fuzz
+mkdir -p osr/src
+rm -rf osr/src/*
+mv gdal-${GDAL_VER}/gcore/gdal_version.h osr/src/gdal_version.h
+cp gdal-${GDAL_VER}/ogr/ogr_srs*.* osr/src/
+cp gdal-${GDAL_VER}/ogr/ogrspatialreference.* osr/src/
+cp gdal-${GDAL_VER}/ogr/ogr_spatialref.h osr/src/
+cp gdal-${GDAL_VER}/ogr/osr_cs_wkt_parser.* osr/src/
+cp gdal-${GDAL_VER}/ogr/osr_cs_wkt.* osr/src/
+cp gdal-${GDAL_VER}/ogr/ogrct.* osr/src/
+cp gdal-${GDAL_VER}/ogr/ogr_fromepsg.* osr/src/
+cp gdal-${GDAL_VER}/ogr/ogr_core.h osr/src/
+cp gdal-${GDAL_VER}/ogr/ogr_p.h osr/src/
+cp gdal-${GDAL_VER}/ogr/ogr_geometry.h osr/src/
 # cpl
-cp osr/port/*.h osr/src/
-cp osr/port/*.cpp osr/src/
+cp gdal-${GDAL_VER}/port/*.h osr/src/
+cp gdal-${GDAL_VER}/port/*.cpp osr/src/
 rm osr/src/cpl_odbc.cpp
 rm osr/src/cpl_vsil_gzip.cpp
 rm osr/src/cpl_minizip_ioapi.cpp
@@ -35,7 +30,11 @@ rm osr/src/cpl_win32ce_api.cpp
 rm osr/src/vsipreload.cpp
 rm osr/src/cpl_vsil_simple.cpp
 rm osr/src/xmlreformat.cpp
-#cleanup
-#rm -rf osr/port
-#rm -rf osr/data
-#rm -rf osr/ogr
+rm osr/src/cpl_virtualmem.*
+# patches
+patch osr/src/cpl_conv.cpp < cpl_conv.diff
+patch osr/src/ogr_srs_proj4.cpp < ogr_srs_proj4.diff
+patch osr/src/ogr_p.h < ogr_p.diff
+
+# cleanup
+rm osr/src/*.orig

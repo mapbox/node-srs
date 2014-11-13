@@ -1,12 +1,12 @@
 /******************************************************************************
- * $Id: cpl_vsil_tar.cpp 21781 2011-02-21 21:57:41Z rouault $
+ * $Id: cpl_vsil_tar.cpp 27044 2014-03-16 23:41:27Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Implement VSI large file api for tar files (.tar).
  * Author:   Even Rouault, even.rouault at mines-paris.org
  *
  ******************************************************************************
- * Copyright (c) 2010, Even Rouault
+ * Copyright (c) 2010-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
 
 #include "cpl_vsi_virtual.h"
 
-CPL_CVSID("$Id: cpl_vsil_tar.cpp 21781 2011-02-21 21:57:41Z rouault $");
+CPL_CVSID("$Id: cpl_vsil_tar.cpp 27044 2014-03-16 23:41:27Z rouault $");
 
 
 /************************************************************************/
@@ -133,7 +133,9 @@ int VSITarReader::GotoNextFile()
         (abyHeader[147] != '\0' && abyHeader[147] != ' ') ||
         abyHeader[154] != '\0' ||
         abyHeader[155] != ' ')
+    {
         return FALSE;
+    }
 
     osNextFileName = abyHeader;
     nNextFileSize = 0;
@@ -148,6 +150,12 @@ int VSITarReader::GotoNextFile()
     nCurOffset = VSIFTellL(fp);
 
     GUIntBig nBytesToSkip = ((nNextFileSize + 511) / 512) * 512;
+    if( nBytesToSkip > (~((GUIntBig)0)) - nCurOffset )
+    {
+        CPLError(CE_Failure, CPLE_AppDefined, "Bad .tar structure");
+        return FALSE;
+    }
+
     VSIFSeekL(fp, nBytesToSkip, SEEK_CUR);
 
     return TRUE;

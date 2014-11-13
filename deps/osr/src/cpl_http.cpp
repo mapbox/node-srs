@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_http.cpp 26221 2013-07-27 00:00:37Z warmerdam $
+ * $Id: cpl_http.cpp 27517 2014-07-11 18:12:54Z kyle $
  *
  * Project:  libcurl based HTTP client
  * Purpose:  libcurl based HTTP client
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2006, Frank Warmerdam
+ * Copyright (c) 2008-2013, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -43,7 +44,7 @@ void CPLHTTPSetOptions(CURL *http_handle, char** papszOptions);
 
 #endif
 
-CPL_CVSID("$Id: cpl_http.cpp 26221 2013-07-27 00:00:37Z warmerdam $");
+CPL_CVSID("$Id: cpl_http.cpp 27517 2014-07-11 18:12:54Z kyle $");
 
 // list of named persistent http sessions 
 
@@ -135,14 +136,16 @@ static size_t CPLHdrWriteFct(void *buffer, size_t size, size_t nmemb, void *reqI
  *                form proxy.server.com:port_number
  * <li>PROXYUSERPWD=val, where val is of the form username:password
  * <li>PROXYAUTH=[BASIC/NTLM/DIGEST/ANY] to specify an proxy authentication scheme to use.
+ * <li>NETRC=[YES/NO] to enable or disable use of $HOME/.netrc, default YES.
  * <li>CUSTOMREQUEST=val, where val is GET, PUT, POST, DELETE, etc.. (GDAL >= 1.9.0)
  * </ul>
  *
  * Alternatively, if not defined in the papszOptions arguments, the PROXY,  
- * PROXYUSERPWD and PROXYAUTH values are searched in the configuration options named 
- * GDAL_HTTP_PROXY, GDAL_HTTP_PROXYUSERPWD and GDAL_PROXY_AUTH, as proxy configuration belongs 
- * to networking setup and makes more sense at the configuration option level 
- * than at the connection level.
+ * PROXYUSERPWD, PROXYAUTH and NETRC values are searched in the configuration 
+ * options named GDAL_HTTP_PROXY, GDAL_HTTP_PROXYUSERPWD, GDAL_PROXY_AUTH and 
+ * GDAL_HTTP_NETRC, as proxy configuration belongs to networking setup and 
+ * makes more sense at the configuration option level than at the connection 
+ * level.
  *
  * @return a CPLHTTPResult* structure that must be freed by 
  * CPLHTTPDestroyResult(), or NULL if libcurl support is disabled
@@ -399,6 +402,13 @@ void CPLHTTPSetOptions(CURL *http_handle, char** papszOptions)
     }
 #endif
 
+    /* Support use of .netrc - default enabled */
+    const char *pszHttpNetrc = CSLFetchNameValue( papszOptions, "NETRC" );
+    if( pszHttpNetrc == NULL )
+        pszHttpNetrc = CPLGetConfigOption( "GDAL_HTTP_NETRC", "YES" );
+    if( pszHttpNetrc == NULL || CSLTestBoolean(pszHttpNetrc) )
+        curl_easy_setopt(http_handle, CURLOPT_NETRC, 1L);
+
     /* Support setting userid:password */
     const char *pszUserPwd = CSLFetchNameValue( papszOptions, "USERPWD" );
     if (pszUserPwd == NULL)
@@ -484,9 +494,9 @@ void CPLHTTPSetOptions(CURL *http_handle, char** papszOptions)
 
     /* NOSIGNAL should be set to true for timeout to work in multithread
      * environments on Unix, requires libcurl 7.10 or more recent.
-     * (this force avoiding the use of sgnal handlers)
+     * (this force avoiding the use of signal handlers)
      */
-#ifdef CURLOPT_NOSIGNAL
+#if LIBCURL_VERSION_NUM >= 0x070A00
     curl_easy_setopt(http_handle, CURLOPT_NOSIGNAL, 1 );
 #endif
 

@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_vsil_subfile.cpp 26025 2013-05-25 07:55:06Z rouault $
+ * $Id: cpl_vsil_subfile.cpp 27722 2014-09-22 15:37:31Z goatbar $
  *
  * Project:  VSI Virtual File System
  * Purpose:  Implementation of subfile virtual IO functions.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2005, Frank Warmerdam <warmerdam@pobox.com>
+ * Copyright (c) 2009-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36,7 +37,7 @@
 #  include <wce_errno.h>
 #endif
 
-CPL_CVSID("$Id: cpl_vsil_subfile.cpp 26025 2013-05-25 07:55:06Z rouault $");
+CPL_CVSID("$Id: cpl_vsil_subfile.cpp 27722 2014-09-22 15:37:31Z goatbar $");
 
 /************************************************************************/
 /* ==================================================================== */
@@ -372,9 +373,9 @@ int VSISubFileFilesystemHandler::Stat( const char * pszFilename,
     if( nResult == 0 )
     {
         if( nSize != 0 )
-            psStatBuf->st_size = (long)nSize;
+            psStatBuf->st_size = nSize;
         else
-            psStatBuf->st_size -= (long)nOff;
+            psStatBuf->st_size -= nOff;
     }
 
     return nResult;
@@ -384,8 +385,7 @@ int VSISubFileFilesystemHandler::Stat( const char * pszFilename,
 /*                               Unlink()                               */
 /************************************************************************/
 
-int VSISubFileFilesystemHandler::Unlink( const char * pszFilename )
-
+int VSISubFileFilesystemHandler::Unlink( CPL_UNUSED const char * pszFilename )
 {
     errno = EACCES;
     return -1;
@@ -395,9 +395,8 @@ int VSISubFileFilesystemHandler::Unlink( const char * pszFilename )
 /*                               Mkdir()                                */
 /************************************************************************/
 
-int VSISubFileFilesystemHandler::Mkdir( const char * pszPathname,
-                                    long nMode )
-
+int VSISubFileFilesystemHandler::Mkdir( CPL_UNUSED const char * pszPathname,
+                                        CPL_UNUSED long nMode )
 {
     errno = EACCES;
     return -1;
@@ -407,8 +406,7 @@ int VSISubFileFilesystemHandler::Mkdir( const char * pszPathname,
 /*                               Rmdir()                                */
 /************************************************************************/
 
-int VSISubFileFilesystemHandler::Rmdir( const char * pszPathname )
-
+int VSISubFileFilesystemHandler::Rmdir( CPL_UNUSED const char * pszPathname )
 {
     errno = EACCES;
     return -1;
@@ -418,8 +416,7 @@ int VSISubFileFilesystemHandler::Rmdir( const char * pszPathname )
 /*                              ReadDir()                               */
 /************************************************************************/
 
-char **VSISubFileFilesystemHandler::ReadDir( const char *pszPath )
-
+char **VSISubFileFilesystemHandler::ReadDir( CPL_UNUSED const char *pszPath )
 {
     errno = EACCES;
     return NULL;

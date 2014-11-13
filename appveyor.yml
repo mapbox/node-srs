@@ -1,47 +1,69 @@
 environment:
-  matrix:
-    - nodejs_version: 0.11
-    - nodejs_version: 0.10
   node_pre_gyp_accessKeyId:
-    secure: T1Pel/pv9SVfiVvZW8TLZnvZX6M4HQTiR7LUZnF1tuY=
+    secure: 7DrSVc5eIGtmMcki5H+iRft+Tk3MJTwDBQEUuJHWaQ4=
   node_pre_gyp_secretAccessKey:
-    secure: 8f5eTxMHpuVGHon2wbqrZuq3wzQfEuXMCcOyafBLza0T2VIOoBjbjDbgRbyRIzsT
+    secure: 1amwJJw9fu0j6dXnc5KsAQbSYf7Cjw/dapT6OZWABa6nc52grkKeLQ+DGaOfQz8i
+  matrix:
+    - nodejs_version: 0.10.32
+      platform: x86
+      msvs_toolset: 12
+    - nodejs_version: 0.10.32
+      platform: x64
+      msvs_toolset: 12
+    - nodejs_version: 0.11.13
+      platform: x86
+      msvs_toolset: 12
+    - nodejs_version: 0.11.13
+      platform: x64
+      msvs_toolset: 12
+    # custoom 64 bit visual studio 2014 builds
+    - nodejs_version: 0.10.33
+      platform: x64
+      msvs_toolset: 14
+      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
+    - nodejs_version: 0.11.14
+      platform: x64
+      msvs_toolset: 14
+      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
 
-platform:
-  - x64
-  - x86
-
-# this is how to allow failing jobs in the matrix
-matrix:
-  allow_failures:
-    - platform: x86
-    - platform: x64
+os: Visual Studio 2014 CTP4
 
 install:
-  - ps: Write-Output '$env:Platform:' $env:Platform
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version) $env:Platform
-  - node -e "console.log('node version ' + process.version + ', architecture ' + process.arch);"
-  - npm --version
-  # ensure python is on path so that srs_settings.js are generated
-  - SET PATH=c:\python27;%PATH%
-  # ensure MSBuild 12 is found
-  - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
+  # add local node to path (since we install it for msvs_toolset == 14)
+  - SET PATH=%CD%;%PATH%;
   # add local node-pre-gyp dir to path
-  - SET PATH=C:\projects\node-srs\node_modules\node-pre-gyp\bin;%PATH%
-  # install node-gyp locally for node 0.8 build
-  # otherwise node-gyp that comes with node is used and doesn't yet know about --msvs_version=2013
-  #- npm install node-gyp
-  - npm install --build-from-source --msvs_version=2013
+  - SET PATH=node_modules\.bin;%PATH%
+  # use 64 bit python if platform is 64 bit
+  - if "%PLATFORM%" == "x64" set PATH=C:\Python27-x64;%PATH%
+  # install node version per visual studio toolset
+  - if "%msvs_toolset%" == "12" powershell Install-Product node $env:nodejs_version $env:Platform
+  - if "%msvs_toolset%" == "14" powershell Write-Output "fetching https://mapbox.s3.amazonaws.com/node-cpp11/v$env:nodejs_version/$env:Platform/node.exe"
+  - if "%msvs_toolset%" == "14" powershell Start-FileDownload "https://mapbox.s3.amazonaws.com/node-cpp11/v$env:nodejs_version/$env:Platform/node.exe"
+  - node -v
+  - node -e "console.log(process.argv,process.execPath)"
+  # upgrade node-gyp to support --msvs_version=2013
+  - npm install node-gyp
+  # clear out node-gyp header cache
+  - if "%msvs_toolset%" == "14" rd /s /q %USERPROFILE%\.node-gyp
+  - SET PATH=C:\Program Files (x86)\MSBuild\%msvs_toolset%.0\bin;%PATH%
+  - SET PATH=C:\Program Files (x86)\Microsoft Visual Studio %msvs_toolset%.0\VC\bin;%PATH%
+  - if %platform% == x64 CALL "C:\Program Files (x86)\Microsoft Visual Studio %msvs_toolset%.0\VC\vcvarsall.bat" amd64
+  - if %platform% == x86 CALL "C:\Program Files (x86)\Microsoft Visual Studio %msvs_toolset%.0\VC\vcvarsall.bat" amd64_x86
+  - npm install --build-from-source --msvs_version=2013 %TOOLSET_ARGS% --loglevel=http
+  - node_modules\.bin\node-pre-gyp reveal module --silent > module.txt
+  - SET /p MODULE=<module.txt
+  - del module.txt
+  - node -e "console.log(process.execPath)" > node_path.txt
+  - SET /p NODE_EXE_PATH=<node_path.txt
+  - del node_path.txt
+  # should display MSVCP140.dll if build with visual studio 2014 and /MD
+  - dumpbin /DEPENDENTS "%NODE_EXE_PATH%"
+  - dumpbin /DEPENDENTS "%MODULE%"
   - npm test
-  - node-pre-gyp package
-  # make commit message env var shorter 
+  - node-pre-gyp package %TOOLSET_ARGS%
+  # make commit message env var shorter
   - SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
-  - ECHO commit message %CM%
-  - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp --msvs_version=2013 package unpublish publish 2>&1
-
-artifacts:
-  - path: build\stage
-    name: BuildFiles
+  - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp --msvs_version=2013 unpublish publish %TOOLSET_ARGS%
 
 build: OFF
 test: OFF

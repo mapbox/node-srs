@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_conv.cpp 25795 2013-03-24 13:16:52Z rouault $
+ * $Id: cpl_conv.cpp 27550 2014-07-25 20:43:52Z rouault $
  *
  * Project:  CPL - Common Portability Library
  * Purpose:  Convenience functions.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 1998, Frank Warmerdam
+ * Copyright (c) 2007-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,8 +34,11 @@
 #include "cpl_string.h"
 #include "cpl_vsi.h"
 #include "cpl_multiproc.h"
+#if defined(_MSC_VER) && (_MSC_VER >= 1900)
+#include <windows.h>
+#endif
 
-CPL_CVSID("$Id: cpl_conv.cpp 25795 2013-03-24 13:16:52Z rouault $");
+CPL_CVSID("$Id: cpl_conv.cpp 27550 2014-07-25 20:43:52Z rouault $");
 
 #if defined(WIN32CE)
 #  include "cpl_wince.h"
@@ -47,6 +51,9 @@ static volatile char **papszConfigOptions = NULL;
 static void *hSharedFileMutex = NULL;
 static volatile int nSharedFileCount = 0;
 static volatile CPLSharedFileInfo *pasSharedFileList = NULL;
+
+/* Used by CPLsetlocale() */
+static void *hSetLocaleMutex = NULL;
 
 /* Note: ideally this should be added in CPLSharedFileInfo* */
 /* but CPLSharedFileInfo is exposed in the API, hence that trick */
@@ -1295,9 +1302,9 @@ int CPLPrintDouble( char *pszBuffer, const char *pszFormat,
     if ( pszLocale || EQUAL( pszLocale, "" ) )
     {
         // Save the current locale
-        pszCurLocale = setlocale(LC_ALL, NULL );
+        pszCurLocale = CPLsetlocale(LC_ALL, NULL );
         // Set locale to the specified value
-        setlocale( LC_ALL, pszLocale );
+        CPLsetlocale( LC_ALL, pszLocale );
     }
 #else
     (void) pszLocale;
@@ -1319,7 +1326,7 @@ int CPLPrintDouble( char *pszBuffer, const char *pszFormat,
 #if defined(HAVE_LOCALE_H) && defined(HAVE_SETLOCALE)
     // Restore stored locale back
     if ( pszCurLocale )
-        setlocale( LC_ALL, pszCurLocale );
+        CPLsetlocale( LC_ALL, pszCurLocale );
 #endif
 
     return CPLPrintString( pszBuffer, szTemp, 64 );
@@ -1379,9 +1386,9 @@ int CPLPrintTime( char *pszBuffer, int nMaxLen, const char *pszFormat,
     if ( pszLocale || EQUAL( pszLocale, "" ) )
     {
         // Save the current locale
-        pszCurLocale = setlocale(LC_ALL, NULL );
+        pszCurLocale = CPLsetlocale(LC_ALL, NULL );
         // Set locale to the specified value
-        setlocale( LC_ALL, pszLocale );
+        CPLsetlocale( LC_ALL, pszLocale );
     }
 #else
     (void) pszLocale;
@@ -1393,7 +1400,7 @@ int CPLPrintTime( char *pszBuffer, int nMaxLen, const char *pszFormat,
 #if defined(HAVE_LOCALE_H) && defined(HAVE_SETLOCALE)
     // Restore stored locale back
     if ( pszCurLocale )
-        setlocale( LC_ALL, pszCurLocale );
+        CPLsetlocale( LC_ALL, pszCurLocale );
 #endif
 
     nChars = CPLPrintString( pszBuffer, pszTemp, nMaxLen );
@@ -1560,11 +1567,20 @@ CPLGetConfigOption( const char *pszKey, const char *pszDefault )
         pszResult = CSLFetchNameValue( (char **) papszConfigOptions, pszKey );
     }
 
-#if !defined(WIN32CE) 
+#if defined(_MSC_VER) && (_MSC_VER >= 1900)
+    const int buffSize = 65535;
+    static char buffer[buffSize];
+    if (GetEnvironmentVariableA(pszKey, buffer, buffSize))
+    {
+        pszResult = buffer;
+    }
+#else
+  #if !defined(WIN32CE)
     if( pszResult == NULL )
         pszResult = getenv( pszKey );
+  #endif
 #endif
-    
+
     if( pszResult == NULL )
         return pszDefault;
     else
@@ -1615,6 +1631,16 @@ CPLSetConfigOption( const char *pszKey, const char *pszValue )
 }
 
 /************************************************************************/
+/*                   CPLSetThreadLocalTLSFreeFunc()                     */
+/************************************************************************/
+
+/* non-stdcall wrapper function for CSLDestroy() (#5590) */
+static void CPLSetThreadLocalTLSFreeFunc( void* pData )
+{
+    CSLDestroy( (char**) pData );
+}
+
+/************************************************************************/
 /*                   CPLSetThreadLocalConfigOption()                    */
 /************************************************************************/
 
@@ -1649,7 +1675,8 @@ CPLSetThreadLocalConfigOption( const char *pszKey, const char *pszValue )
     papszTLConfigOptions = 
         CSLSetNameValue( papszTLConfigOptions, pszKey, pszValue );
 
-    CPLSetTLSWithFreeFunc( CTLS_CONFIGOPTIONS, papszTLConfigOptions, (CPLTLSFreeFunc)CSLDestroy );
+    CPLSetTLSWithFreeFunc( CTLS_CONFIGOPTIONS, papszTLConfigOptions,
+                           CPLSetThreadLocalTLSFreeFunc );
 }
 
 /************************************************************************/
@@ -2231,9 +2258,9 @@ int CPLUnlinkTree( const char *pszPath )
 /* -------------------------------------------------------------------- */
 /*      First, ensure there isn't any such file yet.                    */
 /* -------------------------------------------------------------------- */
-    VSIStatBuf sStatBuf;
+    VSIStatBufL sStatBuf;
 
-    if( VSIStat( pszPath, &sStatBuf ) != 0 )
+    if( VSIStatL( pszPath, &sStatBuf ) != 0 )
     {
         CPLError( CE_Failure, CPLE_AppDefined, 
                   "It seems no file system object called '%s' exists.",
@@ -2399,16 +2426,23 @@ int CPLMoveFile( const char *pszNewPath, const char *pszOldPath )
 /*                             CPLLocaleC()                             */
 /************************************************************************/
 
-CPLLocaleC::CPLLocaleC() : pszOldLocale(CPLStrdup(setlocale(LC_NUMERIC,NULL)))
+CPLLocaleC::CPLLocaleC()
 
 {
-    if( CSLTestBoolean(CPLGetConfigOption("GDAL_DISABLE_CPLLOCALEC","NO"))
-        || EQUAL(pszOldLocale,"C")
-        || EQUAL(pszOldLocale,"POSIX")
-        || setlocale(LC_NUMERIC,"C") == NULL )
+    if( CSLTestBoolean(CPLGetConfigOption("GDAL_DISABLE_CPLLOCALEC","NO")) )
     {
-        CPLFree( pszOldLocale );
         pszOldLocale = NULL;
+    }
+    else
+    {
+        pszOldLocale = CPLStrdup(CPLsetlocale(LC_NUMERIC,NULL));
+        if( EQUAL(pszOldLocale,"C")
+            || EQUAL(pszOldLocale,"POSIX")
+            || CPLsetlocale(LC_NUMERIC,"C") == NULL )
+        {
+            CPLFree( pszOldLocale );
+            pszOldLocale = NULL;
+        }
     }
 }
 
@@ -2421,9 +2455,44 @@ CPLLocaleC::~CPLLocaleC()
 {
     if( pszOldLocale != NULL )
     {
-        setlocale( LC_NUMERIC, pszOldLocale );
+        CPLsetlocale( LC_NUMERIC, pszOldLocale );
         CPLFree( pszOldLocale );
     }
+}
+
+
+/************************************************************************/
+/*                          CPLsetlocale()                              */
+/************************************************************************/
+
+/**
+ * Prevents parallel executions of setlocale().
+ *
+ * Calling setlocale() concurrently from two or more threads is a 
+ * potential data race. A mutex is used to provide a critical region so
+ * that only one thread at a time can be executing setlocale().
+ *
+ * @param category See your compiler's documentation on setlocale.
+ * @param locale See your compiler's documentation on setlocale.
+ *
+ * @return See your compiler's documentation on setlocale.
+ */
+char* CPLsetlocale (int category, const char* locale)
+{
+    CPLMutexHolder oHolder(&hSetLocaleMutex);
+    return setlocale(category, locale);
+}
+
+
+/************************************************************************/
+/*                       CPLCleanupSetlocaleMutex()                     */
+/************************************************************************/
+
+void CPLCleanupSetlocaleMutex(void)
+{
+    if( hSetLocaleMutex != NULL )
+        CPLDestroyMutex(hSetLocaleMutex);
+    hSetLocaleMutex = NULL;
 }
 
 /************************************************************************/

@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cpl_vsi_mem.cpp 24698 2012-07-23 09:10:33Z rouault $
+ * $Id: cpl_vsi_mem.cpp 27157 2014-04-12 12:59:41Z rouault $
  *
  * Project:  VSI Virtual File System
  * Purpose:  Implementation of Memory Buffer virtual IO functions.
@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  * Copyright (c) 2005, Frank Warmerdam <warmerdam@pobox.com>
+ * Copyright (c) 2007-2014, Even Rouault <even dot rouault at mines-paris dot org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -42,7 +43,7 @@
 #endif
 
 
-CPL_CVSID("$Id: cpl_vsi_mem.cpp 24698 2012-07-23 09:10:33Z rouault $");
+CPL_CVSID("$Id: cpl_vsi_mem.cpp 27157 2014-04-12 12:59:41Z rouault $");
 
 /*
 ** Notes on Multithreading:
@@ -281,9 +282,9 @@ int VSIMemHandle::Seek( vsi_l_offset nOffset, int nWhence )
         if( !bUpdate ) // Read-only files cannot be extended by seek.
         {
             CPLDebug( "VSIMemHandle", 
-                      "Attempt to extend read-only file '%s' to length %d from %d, .", 
+                      "Attempt to extend read-only file '%s' to length " CPL_FRMT_GUIB " from " CPL_FRMT_GUIB ".",
                       poFile->osFilename.c_str(), 
-                      (int) this->nOffset, (int) poFile->nLength );
+                      this->nOffset, poFile->nLength );
 
             this->nOffset = poFile->nLength;
             errno = EACCES;
@@ -541,7 +542,7 @@ int VSIMemFilesystemHandler::Stat( const char * pszFilename,
     }
     else
     {
-        pStatBuf->st_size = (long)poFile->nLength;
+        pStatBuf->st_size = poFile->nLength;
         pStatBuf->st_mode = S_IFREG;
     }
 
