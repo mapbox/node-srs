@@ -32,6 +32,7 @@ rm osr/src/cpl_vsil_simple.cpp
 rm osr/src/xmlreformat.cpp
 rm osr/src/cpl_virtualmem.*
 # patches
+patch osr/src/cpl_conv.cpp < cpl_conv.diff
 patch osr/src/ogr_srs_proj4.cpp < ogr_srs_proj4.diff
 patch osr/src/ogr_p.h < ogr_p.diff
 
