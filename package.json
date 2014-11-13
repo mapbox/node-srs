@@ -1,4 +1,4 @@
-{
+"~0.6.0"{
   "name": "srs",
   "version": "0.4.4",
   "main": "./lib/index.js",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "nan": "~1.4.1",
-    "node-pre-gyp": "https://github.com/mapbox/node-pre-gyp/tarball/master"
+    "node-pre-gyp": "~0.6.0"
   },
   "bundledDependencies": [
     "node-pre-gyp"
