@@ -41,6 +41,7 @@
       "node": ">= 0.8.0 < 0.13"
   },
   "scripts": {
+    "prepublish": "npm ls",
     "install": "node-pre-gyp install --fallback-to-build",
     "test": "mocha -R spec"
   },
