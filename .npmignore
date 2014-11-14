@@ -1,1 +1,7 @@
-gyp
+build
+.DS_Store
+*.o
+*.a
+lib/binding
+*pyc
+node_modules
