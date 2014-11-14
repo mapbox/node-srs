@@ -50,4 +50,5 @@ script:
  - rm -rf ./build
  - rm -rf ./lib/binding
  - if [[ "$platform" == 'linux' ]]; then sudo apt-get -qq update; sudo apt-get --force-yes -qq install libgdal-dev libgdal1-dev libgdal1h=1.10.0-1~precise1; npm install --build-from-source --shared_gdal --clang=1; fi;
+ - if [[ "$platform" == 'darwin' ]]; then brew install gdal; npm install --build-from-source --shared_gdal --clang=1; fi;
  - npm test
