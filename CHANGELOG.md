@@ -1,5 +1,9 @@
 # changelog
 
+0.4.5
+
+ - Upgraded bundled node-pre-gyp
+
 0.4.4
 
  - Upgraded to GDAL 1.11.1

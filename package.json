@@ -1,6 +1,6 @@
 {
   "name": "srs",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "main": "./lib/index.js",
   "description": "Spatial reference library for node",
   "keywords": [
@@ -15,11 +15,11 @@
     "osr"
   ],
   "binary": {
-    "module_name"  : "srs",
-    "module_path"  : "./lib/binding/{node_abi}-{platform}-{arch}",
-    "remote_path"  : "./{name}/v{version}/{toolset}/",
-    "package_name" : "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
-    "host"         : "https://mapbox-node-binary.s3.amazonaws.com"
+    "module_name" : "srs",
+    "module_path" : "./lib/binding/{node_abi}-{platform}-{arch}",
+    "host"        : "https://mapbox-node-binary.s3.amazonaws.com",
+    "remote_path" : "./{name}/v{version}/{toolset}/",
+    "package_name": "{node_abi}-{platform}-{arch}.tar.gz"
   },
   "url": "http://github.com/mapbox/node-srs",
   "repository": {
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "nan": "~1.4.1",
-    "node-pre-gyp": "~0.6.0"
+    "node-pre-gyp": "~0.6.1"
   },
   "bundledDependencies": [
     "node-pre-gyp"
