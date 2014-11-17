@@ -14,25 +14,14 @@
     "ogr",
     "osr"
   ],
-  "binary": {
-    "module_name" : "srs",
-    "module_path" : "./lib/binding/{node_abi}-{platform}-{arch}",
-    "host"        : "https://mapbox-node-binary.s3.amazonaws.com",
-    "remote_path" : "./{name}/v{version}/{toolset}/",
-    "package_name": "{node_abi}-{platform}-{arch}.tar.gz"
-  },
   "url": "http://github.com/mapbox/node-srs",
   "repository": {
     "type": "git",
     "url": "git://github.com/mapbox/node-srs.git"
   },
   "dependencies": {
-    "nan": "~1.4.1",
-    "node-pre-gyp": "~0.6.1"
+    "gdal": ">=0.3.2"
   },
-  "bundledDependencies": [
-    "node-pre-gyp"
-  ],
   "author": "Dane Springmeyer <dane@mapbox.com>",
   "licenses": [
     "BSD"
@@ -42,7 +31,6 @@
   },
   "scripts": {
     "prepublish": "npm ls",
-    "install": "node-pre-gyp install --fallback-to-build",
     "test": "mocha -R spec"
   },
   "devDependencies": {
