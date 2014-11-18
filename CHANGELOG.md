@@ -1,5 +1,9 @@
 # changelog
 
+0.4.6
+
+ - Removed getenv workaround for Visual Studio 2013
+
 0.4.5
 
  - Upgraded bundled node-pre-gyp
