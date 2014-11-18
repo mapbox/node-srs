@@ -34,9 +34,6 @@
 #include "cpl_string.h"
 #include "cpl_vsi.h"
 #include "cpl_multiproc.h"
-#if defined(_MSC_VER) && (_MSC_VER >= 1900)
-#include <windows.h>
-#endif
 
 CPL_CVSID("$Id: cpl_conv.cpp 27550 2014-07-25 20:43:52Z rouault $");
 
@@ -1567,20 +1564,11 @@ CPLGetConfigOption( const char *pszKey, const char *pszDefault )
         pszResult = CSLFetchNameValue( (char **) papszConfigOptions, pszKey );
     }
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1900)
-    const int buffSize = 65535;
-    static char buffer[buffSize];
-    if (GetEnvironmentVariableA(pszKey, buffer, buffSize))
-    {
-        pszResult = buffer;
-    }
-#else
-  #if !defined(WIN32CE)
+#if !defined(WIN32CE) 
     if( pszResult == NULL )
         pszResult = getenv( pszKey );
-  #endif
 #endif
-
+    
     if( pszResult == NULL )
         return pszDefault;
     else
