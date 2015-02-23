@@ -25,8 +25,8 @@ before_install:
  # objective-c in another branch (to run the same travis.yml on OS X)
  - rm -rf ~/.nvm && git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm
  - source ~/.nvm/nvm.sh
- - nvm install $NODE_NVM_VERSION
- - nvm use $NODE_NVM_VERSION
+ - nvm install $NODE_VERSION
+ - nvm use $NODE_VERSION
  - node --version
  - npm --version
  - platform=$(uname -s | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/")
