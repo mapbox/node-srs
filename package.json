@@ -27,8 +27,8 @@
     "url": "git://github.com/mapbox/node-srs.git"
   },
   "dependencies": {
-    "nan": "~1.4.1",
-    "node-pre-gyp": "~0.6.1"
+    "nan": "~1.6.2",
+    "node-pre-gyp": "~0.6.4"
   },
   "bundledDependencies": [
     "node-pre-gyp"
