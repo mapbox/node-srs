@@ -1,5 +1,5 @@
-GDAL_VER="1.11.1"
-wget http://download.osgeo.org/gdal/1.11.1/gdal-${GDAL_VER}.tar.gz
+GDAL_VER="1.11.2"
+wget http://download.osgeo.org/gdal/${GDAL_VER}/gdal-${GDAL_VER}.tar.gz
 tar xf gdal-${GDAL_VER}.tar.gz
 cp gdal-${GDAL_VER}/data/*.{csv,txt,wkt} ../lib/srs_data/
 mkdir -p osr
