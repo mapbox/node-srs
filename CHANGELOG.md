@@ -1,5 +1,11 @@
 # changelog
 
+0.4.7
+
+ - Added support (and pre-build binaries) for io.js 1.2.x and node v0.12.x
+ - Upgraded to nan@1.7.0
+ - Upgraded to node-pre-gyp@0.6.4
+
 0.4.6
 
  - Removed getenv workaround for Visual Studio 2013
