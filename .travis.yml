@@ -5,13 +5,13 @@ os:
   - osx
 
 compiler:
- - clang
+  - clang
 
 env:
   matrix:
-   - NODE_VERSION="0.10.36" JOBS=8
-   - NODE_VERSION="0.12.0" JOBS=8
-   - NODE_VERSION="iojs-v1.2.0" JOBS=8
+   - NODE_VERSION="0.10.38" JOBS=8
+   - NODE_VERSION="0.12.2" JOBS=8
+   - NODE_VERSION="iojs-v2.0.0" JOBS=8
   global:
    - secure: J5pbPr7g29oKVLrGpKXUQQUV5TJpMf2/TkPZZXezZdO5ywR7M2PfFOUOqexKUylcLyLmEgDilSJhhTLHYz+wx42VPbCTB7Q3sSZdhM0RUXc5mO4BcRKoEUHkIy2Ibp6SbcfzupT/oELFLiZSiS2xojldVMoUAs8IzLGcYStO7Jc=
    - secure: 1cPR5S+Gg4JiA3j8cvjKxSY3AshM0inXzHB/i/7P/ZjnxdvQQuZ48lK0e3TFvXQVTbA0rWYYrwuo62Fb9fc9bA8hDoOU2aruoF6hcEyuAbG7ERGRRJO9g6XaZKW1G0yK18T+1X6OBP7eXNZEPxl0OqBL8l3MKO3vuGxR3+5VQ0A=

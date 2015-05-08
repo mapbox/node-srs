@@ -1,6 +1,6 @@
 {
   "name": "srs",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "main": "./lib/index.js",
   "description": "Spatial reference library for node",
   "keywords": [
@@ -27,8 +27,8 @@
     "url": "git://github.com/mapbox/node-srs.git"
   },
   "dependencies": {
-    "nan": "~1.7.0",
-    "node-pre-gyp": "~0.6.4"
+    "nan": "~1.8.4",
+    "node-pre-gyp": "~0.6.7"
   },
   "bundledDependencies": [
     "node-pre-gyp"

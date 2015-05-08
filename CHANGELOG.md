@@ -1,5 +1,10 @@
 # changelog
 
+0.4.8
+
+ - Upgraded to nan@1.8.4
+ - Upgraded to node-pre-gyp@0.6.7
+
 0.4.7
 
  - Added support (and pre-build binaries) for io.js 1.2.x and node v0.12.x
