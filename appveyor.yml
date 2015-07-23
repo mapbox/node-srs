@@ -1,3 +1,5 @@
+os: Visual Studio 2015
+
 environment:
   node_pre_gyp_accessKeyId:
     secure: 7DrSVc5eIGtmMcki5H+iRft+Tk3MJTwDBQEUuJHWaQ4=
@@ -63,7 +65,7 @@ install:
   - SET PATH=C:\Program Files (x86)\Microsoft Visual Studio %msvs_toolset%.0\VC\bin;%PATH%
   - if %platform% == x64 CALL "C:\Program Files (x86)\Microsoft Visual Studio %msvs_toolset%.0\VC\vcvarsall.bat" amd64
   - if %platform% == x86 CALL "C:\Program Files (x86)\Microsoft Visual Studio %msvs_toolset%.0\VC\vcvarsall.bat" amd64_x86
-  - npm install --build-from-source --msvs_version=2013 %TOOLSET_ARGS% --loglevel=http
+  - npm install --build-from-source --msvs_version=2015 %TOOLSET_ARGS% --loglevel=http
   - node_modules\.bin\node-pre-gyp reveal module --silent > module.txt
   - SET /p MODULE=<module.txt
   - del module.txt
@@ -77,7 +79,7 @@ install:
   - node-pre-gyp package %TOOLSET_ARGS%
   # make commit message env var shorter
   - SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
-  - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp --msvs_version=2013 unpublish publish %TOOLSET_ARGS%
+  - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp --msvs_version=2015 unpublish publish %TOOLSET_ARGS%
 
 build: OFF
 test: OFF
