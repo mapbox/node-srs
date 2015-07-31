@@ -29,16 +29,30 @@ IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 
 ECHO downloading/installing node
-IF /I "%APPVEYOR%"=="True" IF /I "%msvs_toolset%"=="12" powershell Install-Product node $env:nodejs_version $env:Platform
+::only use Install-Product when using VS2013
+::IF /I "%APPVEYOR%"=="True" IF /I "%msvs_toolset%"=="12" powershell Install-Product node $env:nodejs_version $env:Platform
+::TESTING:
+::always install (get npm matching node), but delete installed programfiles node.exe afterwards for VS2015 (using custom node.exe)
+IF /I "%APPVEYOR%"=="True" IF /I powershell Install-Product node $env:nodejs_version $env:Platform
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 IF /I "%msvs_toolset%"=="12" GOTO NODE_INSTALLED
 
+
+::custom node for VS2015
 SET ARCHPATH=
 IF "%platform%"=="x64" (SET ARCHPATH=x64/)
 SET NODE_URL=https://mapbox.s3.amazonaws.com/node-cpp11/v%nodejs_version%/%ARCHPATH%node.exe
 ECHO downloading node^: %NODE_URL%
 powershell Invoke-WebRequest "${env:NODE_URL}" -OutFile node.exe
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+ECHO deleting node ...
+SET NODE_EXE_PRG=%ProgramFiles%\nodejs\node.exe
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NODE_EXE_PRG%"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs\node.exe
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 
@@ -53,6 +67,26 @@ ECHO node^: && node -v
 node -e "console.log(process.argv,process.execPath)"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
+
+ECHO ===== where npm puts stuff START ============
+ECHO npm root && CALL npm root
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+ECHO npm root -g && CALL npm root -g
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+ECHO npm bin && CALL npm bin
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+ECHO npm bin -g && CALL npm bin -g
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+SET NPM_BIN_DIR=
+FOR /F "tokens=*" %%i in ('CALL npm bin -g') DO SET NPM_BIN_DIR=%%i
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+IF /I "%NPM_BIN_DIR%"=="%CD%" ECHO ERROR npm bin -g equals local directory && SET ERRORLEVEL=1 && GOTO ERROR
+ECHO ===== where npm puts stuff END ============
+
+
+ECHO installing node-gyp
 CALL npm install -g node-gyp
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
@@ -71,15 +105,15 @@ IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 ECHO calling npm test
 CALL npm test
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+
+CALL node_modules\.bin\node-pre-gyp package %TOOLSET_ARGS%
+::make commit message env var shorter
+SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
+IF NOT "%CM%" == "%CM:[publish binary]=%" (ECHO publishing && CALL node-pre-gyp --msvs_version=2015 unpublish publish %TOOLSET_ARGS%) ELSE (ECHO not publishing)
 
 GOTO DONE
-
-
-  - node-pre-gyp package %TOOLSET_ARGS%
-  # make commit message env var shorter
-  - SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
-  - if not "%CM%" == "%CM:[publish binary]=%" node-pre-gyp --msvs_version=2015 unpublish publish %TOOLSET_ARGS%
-
 
 
 
