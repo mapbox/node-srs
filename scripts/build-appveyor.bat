@@ -67,6 +67,8 @@ ECHO node^: && node -v
 node -e "console.log(process.argv,process.execPath)"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
+ECHO npm^: && CALL npm -v
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 ECHO ===== where npm puts stuff START ============
 ECHO npm root && CALL npm root
