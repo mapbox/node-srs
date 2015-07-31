@@ -6,6 +6,8 @@ ECHO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ %~f0 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SET PATH=C:\Python27;%PATH%
 
+SET APPVEYOR_REPO_COMMIT_MESSAGE=local build
+
 
 IF EXIST lib\binding ECHO deleting lib/binding && RD /Q /S lib\binding
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
