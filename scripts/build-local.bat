@@ -6,7 +6,7 @@ ECHO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ %~f0 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SET PATH=C:\Python27;%PATH%
 
-SET APPVEYOR_REPO_COMMIT_MESSAGE=test local
+SET APPVEYOR_REPO_COMMIT_MESSAGE=[publish binary]
 
 SET TOOLSET_ARGS=
 

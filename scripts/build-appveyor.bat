@@ -36,18 +36,19 @@ ECHO downloading/installing node
 IF /I "%APPVEYOR%"=="True" powershell Install-Product node $env:nodejs_version $env:Platform
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-IF /I "%msvs_toolset%"=="12" GOTO NODE_INSTALLED
-
-
-::custom node for VS2015
 SET ARCHPATH=
+SET NODE_URL=https://nodejs.org/dist
 IF /I "%platform%"=="x64" (SET ARCHPATH=x64/)
-SET NODE_URL=https://mapbox.s3.amazonaws.com/node-cpp11/v%nodejs_version%/%ARCHPATH%node.exe
+::custom node for VS2015
+IF /I "%msvs_toolset%"=="14" SET NODE_URL=https://mapbox.s3.amazonaws.com/node-cpp11
+
+SET NODE_URL=%NODE_URL%/v%nodejs_version%/%ARCHPATH%node.exe
+
 ECHO downloading node^: %NODE_URL%
 powershell Invoke-WebRequest "${env:NODE_URL}" -OutFile node.exe
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-ECHO deleting node ...
+ECHO deleting installed node ...
 SET NODE_EXE_PRG=%ProgramFiles%\nodejs\node.exe
 IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
@@ -56,7 +57,10 @@ IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NOD
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 
-:NODE_INSTALLED
+
+ECHO settings prefix for npm
+CALL npm config set prefix %APPDATA%\npm
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 ECHO available node.exe^:
 where node
@@ -88,7 +92,7 @@ IF /I "%NPM_BIN_DIR%"=="%CD%" ECHO ERROR npm bin -g equals local directory && SE
 ECHO ===== where npm puts stuff END ============
 
 ::??node-gyp seems to get installed here, instead of updating the existing install in the nodejs directory
-SET PATH=%APPDATA%\npm\node_modules\node-pre-gyp\bin;%PATH%
+SET PATH=%APPDATA%\npm;%PATH%
 ECHO installing node-gyp
 CALL npm install -g node-gyp
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
