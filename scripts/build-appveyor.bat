@@ -113,7 +113,7 @@ IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 CALL node_modules\.bin\node-pre-gyp package %TOOLSET_ARGS%
 ::make commit message env var shorter
 SET CM=%APPVEYOR_REPO_COMMIT_MESSAGE%
-IF NOT "%CM%" == "%CM:[publish binary]=%" (ECHO publishing && CALL node-pre-gyp --msvs_version=2015 unpublish publish %TOOLSET_ARGS%) ELSE (ECHO not publishing)
+IF NOT "%CM%" == "%CM:[publish binary]=%" (ECHO publishing && CALL node_modules\.bin\node-pre-gyp --msvs_version=2015 unpublish publish %TOOLSET_ARGS%) ELSE (ECHO not publishing)
 
 GOTO DONE
 
