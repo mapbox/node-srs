@@ -87,7 +87,8 @@ IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 IF /I "%NPM_BIN_DIR%"=="%CD%" ECHO ERROR npm bin -g equals local directory && SET ERRORLEVEL=1 && GOTO ERROR
 ECHO ===== where npm puts stuff END ============
 
-
+::??node-gyp seems to get installed here, instead of updating the existing install in the nodejs directory
+SET PATH=%APPDATA%\npm\node_modules\node-pre-gyp\bin;%PATH%
 ECHO installing node-gyp
 CALL npm install -g node-gyp
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
