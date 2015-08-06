@@ -1,35 +1,48 @@
 language: cpp
 
-os:
-  - linux
-  - osx
+sudo: false
 
-compiler:
-  - clang
+matrix:
+  include:
+    - os: linux
+      env: NODE_VERSION="0.10.40"
+      compiler: clang
+    - os: linux
+      env: NODE_VERSION="0.12.7"
+      compiler: clang
+    - os: linux
+      env: NODE_VERSION="2.4.0"
+      compiler: clang
+    - os: osx
+      env: NODE_VERSION="0.10.40"
+      compiler: clang
+    - os: osx
+      env: NODE_VERSION="0.12.7"
+      compiler: clang
+    - os: osx
+      env: NODE_VERSION="2.4.0"
+      compiler: clang
+    # test building against shared gdal
+    - os: linux
+      env: NODE_VERSION="0.10.40" SHARED=true PUBLISH=False
+      compiler: clang
+      addons:
+        apt:
+          packages: [ 'libgdal-dev','libgdal1-dev','libgdal1h=1.10.0-1~precise1' ]
+    - os: osx
+      env: NODE_VERSION="0.10.40" SHARED=true PUBLISH=False
+      compiler: clang
 
 env:
-  matrix:
-   - NODE_VERSION="0.10.38" JOBS=8
-   - NODE_VERSION="0.12.2" JOBS=8
-   - NODE_VERSION="iojs-v2.0.0" JOBS=8
   global:
+   - JOBS: "8"
    - secure: J5pbPr7g29oKVLrGpKXUQQUV5TJpMf2/TkPZZXezZdO5ywR7M2PfFOUOqexKUylcLyLmEgDilSJhhTLHYz+wx42VPbCTB7Q3sSZdhM0RUXc5mO4BcRKoEUHkIy2Ibp6SbcfzupT/oELFLiZSiS2xojldVMoUAs8IzLGcYStO7Jc=
    - secure: 1cPR5S+Gg4JiA3j8cvjKxSY3AshM0inXzHB/i/7P/ZjnxdvQQuZ48lK0e3TFvXQVTbA0rWYYrwuo62Fb9fc9bA8hDoOU2aruoF6hcEyuAbG7ERGRRJO9g6XaZKW1G0yK18T+1X6OBP7eXNZEPxl0OqBL8l3MKO3vuGxR3+5VQ0A=
 
 before_install:
  - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
- - echo $COMMIT_MESSAGE
  - export PATH=`pwd`/node_modules/.bin:$PATH
- # here we set up the node version on the fly based on the matrix value.
- # This is done manually so that it is easy to flip the 'language' to
- # objective-c in another branch (to run the same travis.yml on OS X)
- - rm -rf ~/.nvm && git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm
- - source ~/.nvm/nvm.sh
- - nvm install $NODE_VERSION
- - nvm use $NODE_VERSION
- - node --version
- - npm --version
- - platform=$(uname -s | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/")
+ - source ./scripts/install_node.sh ${NODE_VERSION}
 
 install:
  # test building from source
@@ -38,17 +51,17 @@ install:
  - npm test
 
 before_script:
- # test publishing and installing from remote if
- # [publish binary] is present in commit message
- - echo "before_script"
- - PUBLISH_BINARY=false
- - echo $COMMIT_MESSAGE
- - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then echo yes;PUBLISH_BINARY=true; fi;
- - echo $PUBLISH_BINARY
- - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp unpublish publish info; rm -rf {build,lib/binding}; npm install --fallback-to-build=false; npm test; fi
+ - if [[ ${PUBLISH} != false ]]; then
+      if [[ ${COMMIT_MESSAGE} =~ "[publish binary]" ]]; then
+        node-pre-gyp publish;
+      elif [[ ${COMMIT_MESSAGE} =~ "[republish binary]" ]]; then
+        node-pre-gyp unpublish publish;
+      fi
+   fi
 
 script:
  # test building with against shared gdal
  - rm -rf ./build
  - rm -rf ./lib/binding
- - if [[ "$platform" == 'linux' ]]; then sudo apt-get -qq update; sudo apt-get --force-yes -qq install libgdal-dev libgdal1-dev libgdal1h=1.10.0-1~precise1; npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
+ - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Linux' ]]; then npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
+ - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Darwin' ]]; then brew uninstall gdal;brew install gdal; npm install --build-from-source --shared_gdal --clang=1; npm test; fi;

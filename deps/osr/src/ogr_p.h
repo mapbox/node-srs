@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: ogr_p.h 27044 2014-03-16 23:41:27Z rouault $
+ * $Id: ogr_p.h 28900 2015-04-14 09:40:34Z rouault $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
  * Purpose:  Some private helper functions and stuff for OGR implementation.
@@ -52,6 +52,16 @@
 #  define OGR_SWAP(x)   (x == wkbXDR)
 #endif
 
+/* PostGIS 1.X has non standard codes for the following geometry types */
+#define POSTGIS15_CURVEPOLYGON  13  /* instead of 10 */
+#define POSTGIS15_MULTICURVE    14  /* instead of 11 */
+#define POSTGIS15_MULTISURFACE  15  /* instead of 12 */
+
+/* Has been deprecated. Can only be used in very specific circumstances */
+#ifdef GDAL_COMPILATION
+#define wkb25DBitInternalUse 0x80000000
+#endif
+
 /* -------------------------------------------------------------------- */
 /*      helper function for parsing well known text format vector objects.*/
 /* -------------------------------------------------------------------- */
@@ -79,15 +89,11 @@ void OGRFormatDouble( char *pszBuffer, int nBufferLen, double dfVal, char chDeci
 /* they are compiled as plugins  */
 int CPL_DLL OGRGetDayOfWeek(int day, int month, int year);
 int CPL_DLL OGRParseXMLDateTime( const char* pszXMLDateTime,
-                               int *pnYear, int *pnMonth, int *pnDay,
-                               int *pnHour, int *pnMinute, float* pfSecond, int *pnTZ);
+                                 OGRField* psField );
 int CPL_DLL OGRParseRFC822DateTime( const char* pszRFC822DateTime,
-                                  int *pnYear, int *pnMonth, int *pnDay,
-                                  int *pnHour, int *pnMinute, int *pnSecond, int *pnTZ);
-char CPL_DLL * OGRGetRFC822DateTime(int year, int month, int day,
-                                    int hour, int minute, int second, int TZ);
-char CPL_DLL * OGRGetXMLDateTime(int year, int month, int day,
-                                 int hour, int minute, int second, int TZFlag);
+                                    OGRField* psField );
+char CPL_DLL * OGRGetRFC822DateTime(const OGRField* psField);
+char CPL_DLL * OGRGetXMLDateTime(const OGRField* psField);
 char CPL_DLL * OGRGetXML_UTF8_EscapedString(const char* pszString);
 
 int OGRCompareDate(   OGRField *psFirstTuple,
@@ -123,30 +129,5 @@ OGRErr CPL_DLL OSRGetEllipsoidInfo( int, char **, double *, double *);
 double OGRFastAtof(const char* pszStr);
 
 OGRErr CPL_DLL OGRCheckPermutation(int* panPermutation, int nSize);
-
-/* GML related */
-
-/*
-OGRGeometry *GML2OGRGeometry_XMLNode( const CPLXMLNode *psNode,
-                                      int bGetSecondaryGeometryOption,
-                                      int nRecLevel = 0,
-                                      int bIgnoreGSG = FALSE,
-                                      int bOrientation = TRUE,
-                                      int bFaceHoleNegative = FALSE );
-*/
-
-/************************************************************************/
-/*                        PostGIS EWKB encoding                         */
-/************************************************************************/
-
-//OGRGeometry CPL_DLL *OGRGeometryFromEWKB( GByte *pabyWKB, int nLength, int* pnSRID );
-//OGRGeometry CPL_DLL *OGRGeometryFromHexEWKB( const char *pszBytea, int* pnSRID );
-//char CPL_DLL * OGRGeometryToHexEWKB( OGRGeometry * poGeometry, int nSRSId );
-
-/************************************************************************/
-/*                        WKB Type Handling encoding                    */
-/************************************************************************/
-
-OGRErr OGRReadWKBGeometryType( unsigned char * pabyData, OGRwkbGeometryType *eGeometryType, OGRBoolean *b3D );
 
 #endif /* ndef OGR_P_H_INCLUDED */
