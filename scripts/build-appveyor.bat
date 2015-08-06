@@ -36,6 +36,7 @@ ECHO downloading/installing node
 IF /I "%APPVEYOR%"=="True" powershell Install-Product node $env:nodejs_version $env:Platform
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
+
 SET ARCHPATH=
 SET NODE_URL=https://nodejs.org/dist
 IF /I "%platform%"=="x64" (SET ARCHPATH=x64/)
@@ -56,11 +57,30 @@ SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs\node.exe
 IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
+::ECHO settings prefix for npm
+::CALL npm config set prefix %APPDATA%\npm
+::IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-
-ECHO settings prefix for npm
-CALL npm config set prefix %APPDATA%\npm
+::copy our own node.exe into ProgramFiles, that new npm puts everything in the right place
+ECHO copying node ...
+SET NODE_EXE_PRG=%ProgramFiles%\nodejs
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY node.exe "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NODE_EXE_PRG=%ProgramFiles(x86)%
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY node.exe "%NODE_EXE_PRG%"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+::update to latest npm, that it knows about VS2015
+SET CUR_DIR=%CD%
+IF /I "%platform%"=="x64" (ECHO CD into "%ProgramFiles%\nodejs" && CD "%ProgramFiles%\nodejs") ELSE (ECHO CD into "%ProgramFiles(x86)%\nodejs" && CD "%ProgramFiles(x86)%\nodejs")
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+CALL npm install npm
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+CD %CUR_DIR%
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
 
 ECHO available node.exe^:
 where node

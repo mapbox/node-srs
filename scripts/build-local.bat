@@ -8,6 +8,18 @@ SET PATH=C:\Python27;%PATH%
 
 SET APPVEYOR_REPO_COMMIT_MESSAGE=[publish binary]
 
+SET platform=x64
+SET nodejs_version=0.10.40
+SET msvs_toolset=14
+SET TOOLSET_ARGS=--dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
+
+CALL scripts\build-appveyor.bat
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+GOTO DONE
+
+
+
+
 SET TOOLSET_ARGS=
 
 SETLOCAL EnableDelayedExpansion
