@@ -1,5 +1,12 @@
 # changelog
 
+0.4.9
+
+ - Upgraded to gdal 2.0
+ - Now building against libc++ on osx
+ - Now providing binaries against Visual Studio 2015 (pass --toolset=v140) and use binaries from https://github.com/mapbox/node-cpp11
+
+
 0.4.8
 
  - Upgraded to nan@1.8.4
