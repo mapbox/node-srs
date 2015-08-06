@@ -65,4 +65,4 @@ script:
  - rm -rf ./build
  - rm -rf ./lib/binding
  - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Linux' ]]; then npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
- - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Darwin' ]]; then brew install gdal || true; npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
+ - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Darwin' ]]; then brew uninstall gdal;brew install gdal; npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
