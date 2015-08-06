@@ -36,18 +36,20 @@ ECHO downloading/installing node
 IF /I "%APPVEYOR%"=="True" powershell Install-Product node $env:nodejs_version $env:Platform
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-IF /I "%msvs_toolset%"=="12" GOTO NODE_INSTALLED
 
-
-::custom node for VS2015
 SET ARCHPATH=
+SET NODE_URL=https://nodejs.org/dist
 IF /I "%platform%"=="x64" (SET ARCHPATH=x64/)
-SET NODE_URL=https://mapbox.s3.amazonaws.com/node-cpp11/v%nodejs_version%/%ARCHPATH%node.exe
+::custom node for VS2015
+IF /I "%msvs_toolset%"=="14" SET NODE_URL=https://mapbox.s3.amazonaws.com/node-cpp11
+
+SET NODE_URL=%NODE_URL%/v%nodejs_version%/%ARCHPATH%node.exe
+
 ECHO downloading node^: %NODE_URL%
 powershell Invoke-WebRequest "${env:NODE_URL}" -OutFile node.exe
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-ECHO deleting node ...
+ECHO deleting installed node ...
 SET NODE_EXE_PRG=%ProgramFiles%\nodejs\node.exe
 IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
@@ -56,7 +58,38 @@ IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NOD
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 
-:NODE_INSTALLED
+::copy our own node.exe into ProgramFiles, that new npm puts everything in the right place
+ECHO copying node ...
+SET NODE_EXE_PRG=%ProgramFiles%\nodejs
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY node.exe "%NODE_EXE_PRG%"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY node.exe "%NODE_EXE_PRG%"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+
+ECHO elevating powershell script execution
+powershell Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+ECHO installing npm-windows-upgrade... && CALL npm install -g npm-windows-upgrade
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+ECHO HACKING npm-windows-upgrade
+SET NODE_EXE_PRG=%ProgramFiles%\nodejs\node_modules\npm-windows-upgrade\bin
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY /Y scripts\npm-windows-upgrade "%NODE_EXE_PRG%\npm-windows-upgrade"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs\node_modules\npm-windows-upgrade\bin
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY /Y scripts\npm-windows-upgrade "%NODE_EXE_PRG%\npm-windows-upgrade"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NODE_EXE_PRG=%APPDATA%\npm\node_modules\npm-windows-upgrade\bin
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY /Y scripts\npm-windows-upgrade "%NODE_EXE_PRG%\npm-windows-upgrade"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+
+
+ECHO upgrading npm... && CALL npm-windows-upgrade --version:3.2.1
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
 
 ECHO available node.exe^:
 where node
@@ -88,12 +121,12 @@ IF /I "%NPM_BIN_DIR%"=="%CD%" ECHO ERROR npm bin -g equals local directory && SE
 ECHO ===== where npm puts stuff END ============
 
 ::??node-gyp seems to get installed here, instead of updating the existing install in the nodejs directory
-SET PATH=%APPDATA%\npm\node_modules\node-pre-gyp\bin;%PATH%
+SET PATH=%APPDATA%\npm;%PATH%
 ECHO installing node-gyp
 CALL npm install -g node-gyp
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-CALL npm install --build-from-source --msvs_version=%msvs_version% %TOOLSET_ARGS% --loglevel=http
+CALL npm install --build-from-source --msvs_version=%msvs_version% %TOOLSET_ARGS%
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 FOR /F "tokens=*" %%i in ('CALL node_modules\.bin\node-pre-gyp reveal module --silent') DO SET MODULE=%%i
