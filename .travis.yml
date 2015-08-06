@@ -28,7 +28,6 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libgdal-dev','libgdal1-dev','libgdal1h=1.10.0-1~precise1' ]
     - os: osx
       env: NODE_VERSION="0.10.40" SHARED=true PUBLISH=False
