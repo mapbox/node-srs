@@ -6,6 +6,18 @@ ECHO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ %~f0 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SET PATH=C:\Python27;%PATH%
 
+
+ECHO deleting npm-windows-upgrade && ECHO seems, it cannot update itself???
+SET NWU_DIR=%ProgramFiles%\nodejs\node_modules\npm-windows-upgrade
+IF EXIST "%NWU_DIR%" ECHO found %NWU_DIR%, deleting... && RD /S /Q "%NWU_DIR%"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NWU_DIR=%ProgramFiles(x86)%\nodejs\node_modules\npm-windows-upgrade
+IF EXIST "%NWU_DIR%" ECHO found %NWU_DIR%, deleting... && RD /S /Q "%NWU_DIR%"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+
+
+
 SET APPVEYOR_REPO_COMMIT_MESSAGE=[publish binary]
 
 SET platform=x64

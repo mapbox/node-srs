@@ -57,28 +57,33 @@ SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs\node.exe
 IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, deleting... && DEL /F "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-::ECHO settings prefix for npm
-::CALL npm config set prefix %APPDATA%\npm
-::IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 ::copy our own node.exe into ProgramFiles, that new npm puts everything in the right place
 ECHO copying node ...
 SET NODE_EXE_PRG=%ProgramFiles%\nodejs
 IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY node.exe "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
-SET NODE_EXE_PRG=%ProgramFiles(x86)%
+SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs
 IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY node.exe "%NODE_EXE_PRG%"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-::update to latest npm, that it knows about VS2015
-SET CUR_DIR=%CD%
-IF /I "%platform%"=="x64" (ECHO CD into "%ProgramFiles%\nodejs" && CD "%ProgramFiles%\nodejs") ELSE (ECHO CD into "%ProgramFiles(x86)%\nodejs" && CD "%ProgramFiles(x86)%\nodejs")
+
+ECHO elevating powershell script execution
+powershell Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+ECHO installing npm-windows-upgrade... && CALL npm install -g npm-windows-upgrade
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-CALL npm install npm
+ECHO HACKING npm-windows-upgrade
+SET NODE_EXE_PRG=%ProgramFiles%\nodejs\node_modules\npm-windows-upgrade\bin
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY /Y scripts\npm-windows-upgrade "%NODE_EXE_PRG%\npm-windows-upgrade"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs\node_modules\npm-windows-upgrade\bin
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY /Y scripts\npm-windows-upgrade "%NODE_EXE_PRG%\npm-windows-upgrade"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-CD %CUR_DIR%
+
+ECHO upgrading npm... && CALL npm-windows-upgrade --version:3.2.1
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 
@@ -117,7 +122,7 @@ ECHO installing node-gyp
 CALL npm install -g node-gyp
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-CALL npm install --build-from-source --msvs_version=%msvs_version% %TOOLSET_ARGS% --loglevel=http
+CALL npm install --build-from-source --msvs_version=%msvs_version% %TOOLSET_ARGS%
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 FOR /F "tokens=*" %%i in ('CALL node_modules\.bin\node-pre-gyp reveal module --silent') DO SET MODULE=%%i
