@@ -81,6 +81,10 @@ IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 SET NODE_EXE_PRG=%ProgramFiles(x86)%\nodejs\node_modules\npm-windows-upgrade\bin
 IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY /Y scripts\npm-windows-upgrade "%NODE_EXE_PRG%\npm-windows-upgrade"
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+SET NODE_EXE_PRG=%APPDATA%\npm\node_modules\npm-windows-upgrade\bin
+IF EXIST "%NODE_EXE_PRG%" ECHO found %NODE_EXE_PRG%, copying... && COPY /Y scripts\npm-windows-upgrade "%NODE_EXE_PRG%\npm-windows-upgrade"
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
 
 
 ECHO upgrading npm... && CALL npm-windows-upgrade --version:3.2.1
