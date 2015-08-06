@@ -1,30 +1,38 @@
 language: cpp
 
-compiler:
-  - clang
-
 sudo: false
 
 matrix:
   include:
     - os: linux
+      env: NODE_VERSION="0.10.40"
+      compiler: clang
+    - os: linux
+      env: NODE_VERSION="0.12.7"
+      compiler: clang
+    - os: linux
+      env: NODE_VERSION="2.4.0"
+      compiler: clang
+    - os: osx
+      env: NODE_VERSION="0.10.40"
+      compiler: clang
+    - os: osx
+      env: NODE_VERSION="0.12.7"
+      compiler: clang
+    - os: osx
+      env: NODE_VERSION="2.4.0"
+      compiler: clang
+    # test building against shared gdal
+    - os: linux
       env: NODE_VERSION="0.10.40" SHARED=true PUBLISH=False
+      compiler: clang
+    - os: osx
+      env: NODE_VERSION="0.10.40" SHARED=true PUBLISH=False
+      compiler: clang
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libgdal-dev','libgdal1-dev','libgdal1h=1.10.0-1~precise1' ]
-    - os: linux
-      env: NODE_VERSION="0.10.40" PUBLISH=true
-    - os: linux
-      env: NODE_VERSION="0.12.7" PUBLISH=true
-    - os: linux
-      env: NODE_VERSION="2.4.0" PUBLISH=true
-    - os: osx
-      env: NODE_VERSION="0.10.40" PUBLISH=true
-    - os: osx
-      env: NODE_VERSION="0.12.7" PUBLISH=true
-    - os: osx
-      env: NODE_VERSION="2.4.0" PUBLISH=true
 
 env:
   global:
@@ -44,7 +52,7 @@ install:
  - npm test
 
 before_script:
- - if [[ ${PUBLISH} == false ]]; then
+ - if [[ ${PUBLISH} != false ]]; then
       if [[ ${COMMIT_MESSAGE} =~ "[publish binary]" ]]; then
         node-pre-gyp publish;
       elif [[ ${COMMIT_MESSAGE} =~ "[republish binary]" ]]; then
@@ -56,4 +64,5 @@ script:
  # test building with against shared gdal
  - rm -rf ./build
  - rm -rf ./lib/binding
- - if [[ "${SHARED:-false}" == true ]]; then npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
+ - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Linux' ]]; then npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
+ - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Darwin' ]]; then brew install gdal || true; npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
