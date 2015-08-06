@@ -1,4 +1,4 @@
-GDAL_VER="1.11.2"
+GDAL_VER="2.0.0"
 wget http://download.osgeo.org/gdal/${GDAL_VER}/gdal-${GDAL_VER}.tar.gz
 tar xf gdal-${GDAL_VER}.tar.gz
 cp gdal-${GDAL_VER}/data/*.{csv,txt,wkt} ../lib/srs_data/
@@ -33,7 +33,7 @@ rm osr/src/xmlreformat.cpp
 rm osr/src/cpl_virtualmem.*
 # patches
 patch osr/src/ogr_srs_proj4.cpp < ogr_srs_proj4.diff
-patch osr/src/ogr_p.h < ogr_p.diff
+#patch osr/src/ogr_p.h < ogr_p.diff
 
 # cleanup
-rm osr/src/*.orig
+rm -f osr/src/*.orig
