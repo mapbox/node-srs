@@ -7,37 +7,38 @@ environment:
     - nodejs_version: 0.10.40
       platform: x86
       msvs_toolset: 12
-    - nodejs_version: 0.10.40
-      platform: x64
-      msvs_toolset: 12
-    - nodejs_version: 0.12.7
-      platform: x86
-      msvs_toolset: 12
-    - nodejs_version: 0.12.7
-      platform: x64
-      msvs_toolset: 12
+#    - nodejs_version: 0.10.40
+#      platform: x64
+#      msvs_toolset: 12
+#    - nodejs_version: 0.12.7
+#      platform: x86
+#      msvs_toolset: 12
+#    - nodejs_version: 0.12.7
+#      platform: x64
+#      msvs_toolset: 12
     #### custom 64 bit visual studio 2014 builds
-    - nodejs_version: 0.10.40
-      platform: x64
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
-    - nodejs_version: 0.10.40
-      platform: x86
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
-    - nodejs_version: 0.12.7
-      platform: x86
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
-    - nodejs_version: 0.12.7
-      platform: x64
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
+#    - nodejs_version: 0.10.40
+#      platform: x64
+#      msvs_toolset: 14
+#      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
+#    - nodejs_version: 0.10.40
+#      platform: x86
+#      msvs_toolset: 14
+#      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
+#    - nodejs_version: 0.12.7
+#      platform: x86
+#      msvs_toolset: 14
+#      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
+#    - nodejs_version: 0.12.7
+#      platform: x64
+#      msvs_toolset: 14
+#      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
 
 os: Visual Studio 2015
 
 install:
-  - scripts\build-appveyor.bat
+  - ps: .\scripts\enable-rdp.ps1
+#  - scripts\build-appveyor.bat
 
 build: OFF
 test: OFF
