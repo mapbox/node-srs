@@ -7,8 +7,17 @@
 /* Define to 1 if you have the `PTHREAD_MUTEX_RECURSIVE' constant. */
 #define HAVE_PTHREAD_MUTEX_RECURSIVE 1
 
+/* Define to 1 if you have the `PTHREAD_MUTEX_ADAPTIVE_NP' constant. */
+/* #undef HAVE_PTHREAD_MUTEX_ADAPTIVE_NP */
+
+/* Define to 1 if you have the `pthread_spinlock_t' type. */
+/* #undef HAVE_PTHREAD_SPINLOCK */
+
+/* Define to 1 if you have the 5 args `mremap' function. */
+#define HAVE_5ARGS_MREMAP 1
+
 /* --prefix directory for GDAL install */
-#define GDAL_PREFIX "/usr/local"
+#define GDAL_PREFIX "/not-portable"
 
 /* Define to 1 if you have the <assert.h> header file. */
 #define HAVE_ASSERT_H 1
@@ -48,7 +57,7 @@
 #define HAVE_GETCWD 1
 
 /* Define if you have the iconv() function and it works. */
-#define HAVE_ICONV 1
+//#define HAVE_ICONV 0
 
 /* Define as 0 or 1 according to the floating point format suported by the
    machine */
@@ -67,7 +76,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the <jpeglib.h> header file. */
-#define HAVE_JPEGLIB_H 1
+/* #undef HAVE_JPEGLIB_H */
 
 /* Define to 1 if you have the `dl' library (-ldl). */
 #define HAVE_LIBDL 1
@@ -76,7 +85,7 @@
 /* #undef HAVE_LIBM */
 
 /* Define to 1 if you have the `pq' library (-lpq). */
-#define HAVE_LIBPQ 1
+/* #undef HAVE_LIBPQ */
 
 /* Define to 1 if you have the `rt' library (-lrt). */
 /* #undef HAVE_LIBRT */
@@ -94,7 +103,7 @@
 #define HAVE_MEMORY_H 1
 
 /* Define to 1 if you have the <png.h> header file. */
-#define HAVE_PNG_H 1
+/* #undef HAVE_PNG_H */
 
 /* Define to 1 if you have the `snprintf' function. */
 #define HAVE_SNPRINTF 1
@@ -179,10 +188,10 @@
 #define UNIX_STDIO_64 1
 
 /* Define to 1 if you want to use the -fvisibility GCC flag */
-/* #undef USE_GCC_VISIBILITY_FLAG */
+#define USE_GCC_VISIBILITY_FLAG 1
 
 /* Define to 1 if GCC atomic builtins are available */
-#define HAVE_GCC_ATOMIC_BUILTINS 1
+/* #undef HAVE_GCC_ATOMIC_BUILTINS */
 
 /* Define to name of 64bit fopen function */
 #define VSI_FOPEN64 fopen
@@ -203,10 +212,10 @@
 /* #undef VSI_NEED_LARGEFILE64_SOURCE */
 
 /* Define to name of 64bit stat function */
-#define VSI_STAT64 stat64
+#define VSI_STAT64 stat
 
 /* Define to name of 64bit stat structure */
-#define VSI_STAT64_T stat64
+#define VSI_STAT64_T stat
 
 /* Define to 1 if your processor stores words with the most significant byte
    first (like Motorola and SPARC, unlike Intel and VAX). */
@@ -214,6 +223,9 @@
 
 /* Define to 1 if you have the `getaddrinfo' function. */
 #define HAVE_GETADDRINFO 1
+
+/* Define to 1 if you have the _SC_PHYS_PAGES' constant. */
+/* #undef HAVE_SC_PHYS_PAGES */
 
 /* Use this file to override settings in instances where you're doing FAT compiles
    on Apple.  It is currently off by default because it doesn't seem to work with 
