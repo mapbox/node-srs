@@ -36,20 +36,20 @@ OGRERR_DICT = { 1 : (OGRException, "Not enough data."),
 */
 
 NAN_METHOD(parse) {
-    NanScope();
-    if (args.Length() != 1 || !args[0]->IsString())
-      return NanThrowTypeError("first argument must be srs string in any form readable by OGR, like WKT (.prj file) or a proj4 string");
+    Nan::HandleScope scope;
+    if (info.Length() != 1 || !info[0]->IsString())
+      return Nan::ThrowTypeError("first argument must be srs string in any form readable by OGR, like WKT (.prj file) or a proj4 string");
 
-    Local<Object> result = NanNew<Object>();
-    result->Set(NanNew<String>("input"), args[0]->ToString());
-    result->Set(NanNew<String>("proj4"), NanUndefined());
-    result->Set(NanNew<String>("srid"), NanUndefined());
-    result->Set(NanNew<String>("auth"), NanUndefined());
-    result->Set(NanNew<String>("pretty_wkt"), NanUndefined());
-    result->Set(NanNew<String>("esri"), NanUndefined());
-    result->Set(NanNew<String>("name"), NanUndefined());
+    Local<Object> result = Nan::New<Object>();
+    Nan::Set(result, Nan::New<String>("input").ToLocalChecked(), info[0]->ToString());
+    Nan::Set(result, Nan::New<String>("proj4").ToLocalChecked(), Nan::Undefined());
+    Nan::Set(result, Nan::New<String>("srid").ToLocalChecked(), Nan::Undefined());
+    Nan::Set(result, Nan::New<String>("auth").ToLocalChecked(), Nan::Undefined());
+    Nan::Set(result, Nan::New<String>("pretty_wkt").ToLocalChecked(), Nan::Undefined());
+    Nan::Set(result, Nan::New<String>("esri").ToLocalChecked(), Nan::Undefined());
+    Nan::Set(result, Nan::New<String>("name").ToLocalChecked(), Nan::Undefined());
 
-    std::string wkt_string = TOSTR(args[0]->ToString());
+    std::string wkt_string = TOSTR(info[0]->ToString());
     const char *wkt_char = wkt_string.data();
     bool error = false;
     std::string err_msg;
@@ -75,7 +75,7 @@ NAN_METHOD(parse) {
         else
         {
             error = false;
-            result->Set(NanNew<String>("esri"), NanNew<Boolean>(true));
+            Nan::Set(result, Nan::New<String>("esri").ToLocalChecked(), Nan::New<Boolean>(true));
         }
     }
     else
@@ -83,29 +83,29 @@ NAN_METHOD(parse) {
         error = false;
         if (wkt_string.substr(0,6) == "ESRI::")
         {
-            result->Set(NanNew<String>("esri"), NanNew<Boolean>(true));
+            Nan::Set(result, Nan::New<String>("esri").ToLocalChecked(), Nan::New<Boolean>(true));
         }
         else
         {
-            result->Set(NanNew<String>("esri"), NanNew<Boolean>(false));
+            Nan::Set(result, Nan::New<String>("esri").ToLocalChecked(), Nan::New<Boolean>(false));
         }
     }
 
     if (error) {
-        return NanThrowError(err_msg.c_str());
+        return Nan::ThrowError(err_msg.c_str());
     } else {
         char  *srs_output = NULL;
         if (oSRS.Validate() == OGRERR_NONE) {
-            result->Set(NanNew<String>("valid"), NanNew<Boolean>(true));
+            Nan::Set(result, Nan::New<String>("valid").ToLocalChecked(), Nan::New<Boolean>(true));
         } else if (oSRS.Validate() == OGRERR_UNSUPPORTED_SRS) {
-            result->Set(NanNew<String>("valid"), NanNew<Boolean>(false));
+            Nan::Set(result, Nan::New<String>("valid").ToLocalChecked(), Nan::New<Boolean>(false));
         } else {
-            result->Set(NanNew<String>("valid"), NanNew<Boolean>(false));
+            Nan::Set(result, Nan::New<String>("valid").ToLocalChecked(), Nan::New<Boolean>(false));
         }
 
         if (oSRS.exportToProj4( &srs_output ) == OGRERR_NONE ) {
             // proj4 strings from osr have an uneeded trailing slash, so we trim it...
-            result->Set(NanNew<String>("proj4"), NanNew<String>(CPLString(srs_output).Trim().c_str()));
+            Nan::Set(result, Nan::New<String>("proj4").ToLocalChecked(), Nan::New<String>(CPLString(srs_output).Trim().c_str()).ToLocalChecked());
         }
 
         CPLFree( srs_output );
@@ -117,43 +117,43 @@ NAN_METHOD(parse) {
 
         if (oSRS.IsGeographic())
         {
-            result->Set(NanNew<String>("is_geographic"), NanNew<Boolean>(true));
+            Nan::Set(result, Nan::New<String>("is_geographic").ToLocalChecked(), Nan::New<Boolean>(true));
             const char *code = oSRS.GetAuthorityCode("GEOGCS");
             if (code) {
-                result->Set(NanNew<String>("srid"), NanNew<Integer>(atoi(code)));
+                Nan::Set(result, Nan::New<String>("srid").ToLocalChecked(), Nan::New<Integer>(atoi(code)));
             }
             const char *auth = oSRS.GetAuthorityName("GEOGCS");
             if (auth) {
-                result->Set(NanNew<String>("auth"), NanNew<String>(auth));
+                Nan::Set(result, Nan::New<String>("auth").ToLocalChecked(), Nan::New<String>(auth).ToLocalChecked());
             }
             const char *name = oSRS.GetAttrValue("GEOGCS");
             if (name) {
-                result->Set(NanNew<String>("name"), NanNew<String>(name));
+                Nan::Set(result, Nan::New<String>("name").ToLocalChecked(), Nan::New<String>(name).ToLocalChecked());
             }
         }
         else
         {
-            result->Set(NanNew<String>("is_geographic"), NanNew<Boolean>(false));
+            Nan::Set(result, Nan::New<String>("is_geographic").ToLocalChecked(), Nan::New<Boolean>(false));
             const char *code = oSRS.GetAuthorityCode("PROJCS");
             if (code) {
-                result->Set(NanNew<String>("srid"), NanNew<Integer>(atoi(code)));
+                Nan::Set(result, Nan::New<String>("srid").ToLocalChecked(), Nan::New<Integer>(atoi(code)));
             }
             const char *auth = oSRS.GetAuthorityName("PROJCS");
             if (auth) {
-                result->Set(NanNew<String>("auth"), NanNew<String>(auth));
+                Nan::Set(result, Nan::New<String>("auth").ToLocalChecked(), Nan::New<String>(auth).ToLocalChecked());
             }
             const char *name = oSRS.GetAttrValue("PROJCS");
             if (name) {
-                result->Set(NanNew<String>("name"), NanNew<String>(name));
+                Nan::Set(result, Nan::New<String>("name").ToLocalChecked(), Nan::New<String>(name).ToLocalChecked());
             }
         }
 
         char  *srs_output2 = NULL;
         if (oSRS.exportToPrettyWkt( &srs_output2 , 0) == OGRERR_NONE ) {
-            result->Set(NanNew<String>("pretty_wkt"), NanNew<String>(srs_output2));
+            Nan::Set(result, Nan::New<String>("pretty_wkt").ToLocalChecked(), Nan::New<String>(srs_output2).ToLocalChecked());
         }
         CPLFree(srs_output2);
-        NanReturnValue(result);
+        info.GetReturnValue().Set(result);
     }
 }
 
@@ -163,12 +163,12 @@ extern "C" {
   static void init (Handle<Object> target)
   {
 
-    NODE_SET_METHOD(target, "_parse", parse);
+    Nan::SetMethod(target, "_parse", parse);
     // versions of deps
-    Local<Object> versions = NanNew<Object>();
-    versions->Set(NanNew<String>("node"), NanNew<String>(NODE_VERSION+1));
-    versions->Set(NanNew<String>("v8"), NanNew<String>(V8::GetVersion()));
-    target->Set(NanNew<String>("versions"), versions);
+    Local<Object> versions = Nan::New<Object>();
+    Nan::Set(versions, Nan::New<String>("node").ToLocalChecked(), Nan::New<String>(NODE_VERSION+1).ToLocalChecked());
+    Nan::Set(versions, Nan::New<String>("v8").ToLocalChecked(), Nan::New<String>(V8::GetVersion()).ToLocalChecked());
+    Nan::Set(target, Nan::New<String>("versions").ToLocalChecked(), versions);
   }
 
   NODE_MODULE(srs, init);
