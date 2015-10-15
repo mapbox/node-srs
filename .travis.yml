@@ -11,7 +11,7 @@ matrix:
       env: NODE_VERSION="0.12.7"
       compiler: clang
     - os: linux
-      env: NODE_VERSION="2.4.0"
+      env: NODE_VERSION="4.2.1"
       compiler: clang
     - os: osx
       env: NODE_VERSION="0.10.40"
@@ -20,7 +20,7 @@ matrix:
       env: NODE_VERSION="0.12.7"
       compiler: clang
     - os: osx
-      env: NODE_VERSION="2.4.0"
+      env: NODE_VERSION="4.2.1"
       compiler: clang
     # test building against shared gdal
     - os: linux
