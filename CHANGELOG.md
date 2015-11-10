@@ -1,5 +1,9 @@
 # changelog
 
+1.0.0
+
+ - Re-implemented as a JS module on top of node-gdal.
+
 0.4.9
 
  - Upgraded to gdal 2.0

@@ -1,6 +1,6 @@
 {
   "name": "srs",
-  "version": "0.4.9",
+  "version": "1.0.0",
   "main": "./lib/index.js",
   "description": "Spatial reference library for node",
   "keywords": [
@@ -14,37 +14,22 @@
     "ogr",
     "osr"
   ],
-  "binary": {
-    "module_name" : "srs",
-    "module_path" : "./lib/binding/{node_abi}-{platform}-{arch}",
-    "host"        : "https://mapbox-node-binary.s3.amazonaws.com",
-    "remote_path" : "./{name}/v{version}/{toolset}/",
-    "package_name": "{node_abi}-{platform}-{arch}.tar.gz"
-  },
   "url": "http://github.com/mapbox/node-srs",
   "repository": {
     "type": "git",
     "url": "git://github.com/mapbox/node-srs.git"
   },
   "dependencies": {
-    "gdal": "~0.7.0",
-    "nan": "~1.8.4",
-    "node-pre-gyp": "~0.6.7"
+    "gdal": "~0.7.0"
   },
-  "bundledDependencies": [
-    "node-pre-gyp"
-  ],
   "author": "Dane Springmeyer <dane@mapbox.com>",
   "licenses": [
     "BSD"
   ],
   "scripts": {
-    "prepublish": "npm ls",
-    "install": "node-pre-gyp install --fallback-to-build",
     "test": "mocha -R spec"
   },
   "devDependencies": {
-    "mocha": "1.x",
-    "aws-sdk": "~2.0.25"
+    "mocha": "1.x"
   }
 }
