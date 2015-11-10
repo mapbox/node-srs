@@ -1,44 +1,15 @@
 environment:
-  node_pre_gyp_accessKeyId:
-    secure: 7DrSVc5eIGtmMcki5H+iRft+Tk3MJTwDBQEUuJHWaQ4=
-  node_pre_gyp_secretAccessKey:
-    secure: 1amwJJw9fu0j6dXnc5KsAQbSYf7Cjw/dapT6OZWABa6nc52grkKeLQ+DGaOfQz8i
   matrix:
     - nodejs_version: 0.10.40
-      platform: x86
-      msvs_toolset: 12
-    - nodejs_version: 0.10.40
-      platform: x64
-      msvs_toolset: 12
     - nodejs_version: 0.12.7
-      platform: x86
-      msvs_toolset: 12
-    - nodejs_version: 0.12.7
-      platform: x64
-      msvs_toolset: 12
-    #### custom 64 bit visual studio 2014 builds
-    - nodejs_version: 0.10.40
-      platform: x64
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
-    - nodejs_version: 0.10.40
-      platform: x86
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
-    - nodejs_version: 0.12.7
-      platform: x86
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
-    - nodejs_version: 0.12.7
-      platform: x64
-      msvs_toolset: 14
-      TOOLSET_ARGS: --dist-url=https://s3.amazonaws.com/mapbox/node-cpp11 --toolset=v140
 
-os: Visual Studio 2015
+platform:
+  - x64
+  - x86
 
 install:
-#  - ps: .\scripts\enable-rdp.ps1
-  - scripts\build-appveyor.bat
+  - npm install
+  - npm test
 
 build: OFF
 test: OFF

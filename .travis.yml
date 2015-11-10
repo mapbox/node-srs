@@ -1,67 +1,7 @@
-language: cpp
+language: node_js
+
+node_js:
+  - "0.10"
+  - "0.12"
 
 sudo: false
-
-matrix:
-  include:
-    - os: linux
-      env: NODE_VERSION="0.10.40"
-      compiler: clang
-    - os: linux
-      env: NODE_VERSION="0.12.7"
-      compiler: clang
-    - os: linux
-      env: NODE_VERSION="2.4.0"
-      compiler: clang
-    - os: osx
-      env: NODE_VERSION="0.10.40"
-      compiler: clang
-    - os: osx
-      env: NODE_VERSION="0.12.7"
-      compiler: clang
-    - os: osx
-      env: NODE_VERSION="2.4.0"
-      compiler: clang
-    # test building against shared gdal
-    - os: linux
-      env: NODE_VERSION="0.10.40" SHARED=true PUBLISH=False
-      compiler: clang
-      addons:
-        apt:
-          packages: [ 'libgdal-dev','libgdal1-dev','libgdal1h=1.10.0-1~precise1' ]
-    - os: osx
-      env: NODE_VERSION="0.10.40" SHARED=true PUBLISH=False
-      compiler: clang
-
-env:
-  global:
-   - JOBS: "8"
-   - secure: J5pbPr7g29oKVLrGpKXUQQUV5TJpMf2/TkPZZXezZdO5ywR7M2PfFOUOqexKUylcLyLmEgDilSJhhTLHYz+wx42VPbCTB7Q3sSZdhM0RUXc5mO4BcRKoEUHkIy2Ibp6SbcfzupT/oELFLiZSiS2xojldVMoUAs8IzLGcYStO7Jc=
-   - secure: 1cPR5S+Gg4JiA3j8cvjKxSY3AshM0inXzHB/i/7P/ZjnxdvQQuZ48lK0e3TFvXQVTbA0rWYYrwuo62Fb9fc9bA8hDoOU2aruoF6hcEyuAbG7ERGRRJO9g6XaZKW1G0yK18T+1X6OBP7eXNZEPxl0OqBL8l3MKO3vuGxR3+5VQ0A=
-
-before_install:
- - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
- - export PATH=`pwd`/node_modules/.bin:$PATH
- - source ./scripts/install_node.sh ${NODE_VERSION}
-
-install:
- # test building from source
- - npm install --build-from-source --clang=1
- - node-pre-gyp package testpackage
- - npm test
-
-before_script:
- - if [[ ${PUBLISH} != false ]]; then
-      if [[ ${COMMIT_MESSAGE} =~ "[publish binary]" ]]; then
-        node-pre-gyp publish;
-      elif [[ ${COMMIT_MESSAGE} =~ "[republish binary]" ]]; then
-        node-pre-gyp unpublish publish;
-      fi
-   fi
-
-script:
- # test building with against shared gdal
- - rm -rf ./build
- - rm -rf ./lib/binding
- - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Linux' ]]; then npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
- - if [[ ${SHARED} == true ]] && [[ $(uname -s) == 'Darwin' ]]; then brew uninstall gdal;brew install gdal; npm install --build-from-source --shared_gdal --clang=1; npm test; fi;
