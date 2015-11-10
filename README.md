@@ -55,30 +55,9 @@ Detect a WKT string as WGS84:
   is_geographic: true }
 ```
 
-## Depends
-
- - Node >= 0.6.13 (development headers)
- - No other required dependencies (though can optionally depend on external `libgdal`)
-
 ## Installation
 
-Install from binary:
-
     npm install
-
-Install from source:
-
-    npm install --build-from-source
-
-From source:
-
-    git clone git://github.com/mapbox/node-srs.git
-    cd node-srs
-    npm install
-
-Against external libgdal (avoids compiling internal copy of libosr)
-
-    npm install --build-from-source --shared_gdal
 
 ## Test
 
