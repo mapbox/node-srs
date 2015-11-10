@@ -1,5 +1,9 @@
 # changelog
 
+1.0.1
+
+ - Removed some unnecessary data from package
+
 1.0.0
 
  - Re-implemented as a JS module on top of node-gdal.
