@@ -1,5 +1,9 @@
 # changelog
 
+## 1.1.0
+
+ - Upgraded to node-gdal@0.8.0
+
 ## 1.0.1
 
  - Removed some unnecessary data from package
