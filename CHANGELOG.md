@@ -1,5 +1,11 @@
 # changelog
 
+## 1.2.0
+
+ - Upgraded to node-gdal@0.9.x
+ - Test on OSX
+ - Test with Node.js v4, v5, v6
+
 ## 1.1.0
 
  - Upgraded to node-gdal@0.8.0
