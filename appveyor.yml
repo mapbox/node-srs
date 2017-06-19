@@ -29,8 +29,7 @@ environment:
       msvs_toolset: 14
 
 install:
-#todo link to versioned build script
-  - ps: Start-FileDownload 'https://github.com/mapbox/ci-scripts/raw/master/node/ci-js.txt' -FileName ci.bat
+  - ps: Start-FileDownload 'https://github.com/mapbox/ci-scripts/raw/v1.1.0/node/ci-js.txt' -FileName ci.bat
   - CALL ci.bat
 
 build: OFF
